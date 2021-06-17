@@ -1,0 +1,32 @@
+img {
+    width: 270px;
+    height: 60px !important;
+    background: #ffffff;
+}
+
+input {
+    background: none !important;
+    color: black !important;
+    border: none !important;
+    outline: 0px !important;
+    border-bottom: 2px solid#0275d8 !important; 
+    border-radius: 0px !important;
+}
+
+input:focus{
+    background:white;
+    color: #0275d8;
+    border: none;
+    outline: 0;
+    border-bottom: 1px solid #0275d8;
+}
+
+
+
+
+
+
+
+
+
+

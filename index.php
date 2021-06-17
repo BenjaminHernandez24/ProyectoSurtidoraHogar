@@ -1,3 +1,3 @@
 <?php
-    header('Location: Vista/Principal.php');
+    header('Location: Views/Principal.php');
 ?>
