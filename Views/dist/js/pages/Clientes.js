@@ -86,17 +86,17 @@ $(document).on("click", ".btnEditar", function(){
     $("#tipo").val(data[2]);
     $("#telefono").val(data[3]);
     /* Hacemos visible el modal */
-    $('#modalEditarCategoria').modal('show');          
+    $('#modalEditarCliente').modal('show');          
 });
 
 /* ===============================================
        OBTENEMOS FORMULARIO Y CREAMOS UN OBJETO
    ===============================================*/  
-formEditCategoria.addEventListener('submit', async (e) =>{
+formEditCliente.addEventListener('submit', async (e) =>{
     e.preventDefault();
 
     try {
-        datosClientes = new FormData(formEditCategoria);
+        datosClientes = new FormData(formEditCliente);
         datosClientes.append('editarCliente', 'OK');
         datosClientes.append('idCliente', idClientes);
     
@@ -108,7 +108,7 @@ formEditCategoria.addEventListener('submit', async (e) =>{
         resjson = await peticion.json();
 
         if(resjson.respuesta == "OK"){
-            notificacionExitosa('Cliente Modificado','modalEditarCategoria');
+            notificacionExitosa('Cliente Modificado','modalEditarCliente');
             tablaClientes.ajax.reload(null, false);
         }else{
             notificarError(resjson.respuesta);

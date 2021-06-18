@@ -21,7 +21,7 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <button id="altaCliente" class="btn btn-outline-primary bg-primary" data-toggle="modal" data-target="#nuevo_cliente">
+                                <button id="altaCliente" class="btn btn-outline-primary" data-toggle="modal" data-target="#nuevo_cliente">
                                     Agregar Nuevo Cliente
                                 </button>
                             </div>
@@ -88,7 +88,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="telefono">Teléfono</label>
-                                <input class="form-control" type="text" name="telefono" placeholder="Teléfono" required>
+                                <input class="form-control" type="number" name="telefono" placeholder="Teléfono" required>
                             </div>
                         </div>
 
@@ -97,7 +97,7 @@
                         ======================================-->
                         <div class="modal-footer">
                             <button id="closeEdit" type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Registrar</button>
+                            <button type="submit" class="btn btn-success">Registrar</button>
                         </div>
                     </form>
                 </div>
@@ -108,13 +108,13 @@
         MODAL EDITAR CATEGORIA 
         ======================================-->
 
-        <div id="modalEditarCategoria" class="modal fade" role="dialog">
+        <div id="modalEditarCliente" class="modal fade" role="dialog">
 
             <div class="modal-dialog">
 
                 <div class="modal-content">
 
-                    <form id="formEditCategoria">
+                    <form id="formEditCliente">
 
                         <!--=====================================
                         HEADER DEL MODAL
@@ -122,7 +122,7 @@
 
                         <div class="modal-header">
 
-                            <h5 class="modal-title" id="exampleModalLabel">Editar Categoria</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Editar Cliente</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -147,7 +147,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="telefono">Teléfono</label>
-                                <input id="telefono" class="form-control" type="text" name="telefono" placeholder="Teléfono" required>
+                                <input id="telefono" class="form-control" type="number" name="telefono" placeholder="Teléfono" required>
                             </div>
                         </div>
 
@@ -157,8 +157,8 @@
                         ======================================-->
 
                         <div class="modal-footer">
-                            <button id="closeEdit" type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">
+                            <button id="closeEdit" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">
                                 Guardar Cambios
                             </button>
                         </div>
