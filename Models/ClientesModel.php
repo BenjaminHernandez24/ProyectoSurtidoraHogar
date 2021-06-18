@@ -68,7 +68,6 @@ require_once 'Conexion.php';
 	            $conn = null;
 	            $conexion->closeConexion();
 
-	            return $msg;
 	        } catch (PDOException $e) {
 	            return $e->getMessage();
 	        }

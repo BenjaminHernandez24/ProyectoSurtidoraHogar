@@ -66,9 +66,11 @@ formaddProveedor.addEventListener('submit', async(e) => {
         var resjson = await peticion.json();
 
         if (resjson.respuesta == "OK") {
-            notificacionExitosa('¡Alta Exitoso!');
+            notificacionExitosa('Proveedor Registrado');
             tablaProveedores.ajax.reload(null, false);
 
+        } else if (resjson.respuesta == "EXISTE") {
+            notificarError('El Proveedor ya ha sido registrado');
         } else {
             notificarError('Ocurrio un Error');
         }
@@ -94,7 +96,7 @@ formupdateProveedor.addEventListener('submit', async(e) => {
         var resjson = await peticion.json();
 
         if (resjson.respuesta == "OK") {
-            notificacionExitosa('¡Modificación Exitoso!');
+            notificacionExitosa('Proveedor Modificado');
             tablaProveedores.ajax.reload(null, false);
 
         } else {
@@ -137,13 +139,13 @@ $(document).on('click', ".btnBorrar", async function() {
     idProveedor = data[0];
 
     const result = await Swal.fire({
-        title: '¿ESTA SEGURO DE ELIMINAR AL PROVEEDOR?',
-        text: "Si no lo esta puede cancelar la acción",
+        title: '¿ESTÁ SEGURO DE ELIMINAR ESTE PROVEEDOR?',
+        text: "¡La eliminación es permanente!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#5bc0de',
         cancelButtonColor: '#d9534f',
-        confirmButtonText: 'Si, eliminar'
+        confirmButtonText: '¡Estoy seguro!'
     });
 
     if (result.value) {

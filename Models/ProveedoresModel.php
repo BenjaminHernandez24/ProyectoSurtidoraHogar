@@ -8,6 +8,7 @@ class ProveedoresModelo
     private static $BORRAR_PROVEEDOR = "DELETE FROM proveedores WHERE id_prov = ?";
     private static $ESTATUS_PROVEEDOR = "UPDATE proveedores set estatus=? WHERE id_prov = ?";
     private static $SELECT_ALL = "SELECT * FROM proveedores";
+    private static $VALIDAR_EXISTENTE = "SELECT *FROM proveedores WHERE nom_empresa = ? and nom_prov = ?";
 
     /* ===========================
         FUNCION PARA AGREGAR  PROVEEDOR
@@ -18,13 +19,25 @@ class ProveedoresModelo
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
 
-            $pst = $conn->prepare(self::$INSERTAR_PROVEEDOR);
-            $pst->execute([$proveedor['nom_empresa'], $proveedor['tel_empresa'], $proveedor['nom_prov'], $proveedor['tel_prov'], 1]);
+            /*Verificamos si ya existe el proveedor o la empresa*/
+            $pst = $conn->prepare(self::$VALIDAR_EXISTENTE);
+            $pst->execute([$proveedor['nom_empresa'], $proveedor['nom_prov']]);
+            $validar = $pst->fetchAll();
 
+            if (empty($validar)) {
+                $pst = $conn->prepare(self::$INSERTAR_PROVEEDOR);
+                $pst->execute([$proveedor['nom_empresa'], $proveedor['tel_empresa'], $proveedor['nom_prov'], $proveedor['tel_prov'], 1]);
+
+                $conn = null;
+                $conexion->closeConexion();
+
+                return $msg="OK";
+            } else {
+                return $msg="EXISTE";
+            }
             $conn = null;
             $conexion->closeConexion();
 
-            return "OK";
         } catch (PDOException $e) {
             return $e->getMessage();
         }

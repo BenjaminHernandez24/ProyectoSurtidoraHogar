@@ -9,7 +9,7 @@
 
     <div class="wrapper">
 
-        <?php include("include/navegacion.php") ?>
+        <?php include("include/navegacion.php"); ?>
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -84,7 +84,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="tel_empresa">Teléfono Empresa</label>
-                                <input class="form-control" type="text" name="tel_empresa" placeholder="Teléfono Empresa" required>
+                                <input class="form-control" type="number" name="tel_empresa" placeholder="Teléfono Empresa" required>
                             </div>
                             <div class="mb-3">
                                 <label for="nom_prov">Nombre Proveedor</label>
@@ -92,7 +92,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="tel_prov">Teléfono Proveedor</label>
-                                <input class="form-control" type="text" name="tel_prov" placeholder="Teléfono Proveedor" required>
+                                <input class="form-control" type="number" name="tel_prov" placeholder="Teléfono Proveedor" required>
                             </div>
                         </div>
 
@@ -136,7 +136,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="tel_empresa">Teléfono Empresa</label>
-                                <input class="form-control" type="text" id="tel_empresa" name="tel_empresa" placeholder="Teléfono Empresa" required>
+                                <input class="form-control" type="number" id="tel_empresa" name="tel_empresa" placeholder="Teléfono Empresa" required>
                             </div>
                             <div class="mb-3">
                                 <label for="nom_prov">Nombre Proveedor</label>
@@ -144,7 +144,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="tel_prov">Teléfono Proveedor</label>
-                                <input class="form-control" type="text" id="tel_prov" name="tel_prov" placeholder="Teléfono Proveedor" required>
+                                <input class="form-control" type="number" id="tel_prov" name="tel_prov" placeholder="Teléfono Proveedor" required>
                             </div>
                         </div>
 
@@ -153,7 +153,7 @@
                         ======================================-->
                         <div class="modal-footer">
                             <button id="cerrarEditar" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <button type="submit" class="btn btn-success">Guardar Cambios</button>
                         </div>
                     </form>
                 </div>
