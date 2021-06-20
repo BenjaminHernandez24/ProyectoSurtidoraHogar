@@ -30,7 +30,5 @@
 
    <!-- sweetalert2 -->
    <link rel="stylesheet" href="plugins/sweetalert2/sweetalert2.min.css">
-  <!-- SweetAlert 2 -->
-  <script src="plugins/sweetalert2/sweetalert2.all.js"></script>
 
   

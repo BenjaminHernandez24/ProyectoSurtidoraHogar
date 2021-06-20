@@ -128,7 +128,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="../Views/Ayuda.php" class="nav-link">
                                         <i class="nav-icon fas fa-info"></i>
                                         <p>
                                             Ayuda

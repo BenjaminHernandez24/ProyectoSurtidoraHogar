@@ -15,3 +15,5 @@
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<!-- SweetAlert 2 -->
+ <script src="plugins/sweetalert2/sweetalert2.all.js"></script>
