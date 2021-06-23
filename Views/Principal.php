@@ -6,13 +6,13 @@
 <html lang="en">
 
 <head>
-    <?php include("include/cabezera.php"); ?>
+    <?php include "include/cabezera.php";?>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
-        <?php include("include/navegacion.php") ?>
+        <?php include "include/navegacion.php"?>
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -114,20 +114,15 @@
                     <!-- ./col -->
                 </div>
 
-
-        </div><!-- /.container-fluid -->
-
         </section>
+        </div><!-- /.container-fluid -->
 
         <!-- /.content -->
     </div>
 
 
-    <?php include("include/footer.php") ?>
-
-    </div>
+    <?php include "include/footer.php"?>
     <!-- ./wrapper -->
-    <?php include("Include/scripts.php"); ?>
+    <?php include "Include/scripts.php";?>
 </body>
-
 </html>

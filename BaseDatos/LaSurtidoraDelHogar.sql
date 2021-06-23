@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-06-2021 a las 02:55:41
+-- Tiempo de generación: 22-06-2021 a las 19:00:07
 -- Versión del servidor: 10.4.19-MariaDB
 -- Versión de PHP: 7.4.19
 
@@ -159,6 +159,7 @@ CREATE TABLE `proveedores` (
   `nom_prov` varchar(100) NOT NULL,
   `tel_prov` varchar(20) NOT NULL,
   `No_cuenta` varchar(30) NOT NULL,
+  `banco` varchar(30) NOT NULL,
   `Clave_interbancaria` varchar(30) NOT NULL,
   `estatus` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -32,11 +32,9 @@
                         <!-- Sidebar Menu -->
                         <nav class="mt-2">
                             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                                <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-cart-arrow-down"></i>
+                                        <i class="nav-icon fas fa-cart-arrow-down" style= "color: white;" ></i>
                                         <p>
                                             Ventas
                                         </p>
@@ -45,7 +43,7 @@
 
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-box-open"></i>
+                                        <i class="nav-icon fas fa-box-open" style= "color: white;"></i>
                                         <p>
                                             Productos
                                         </p>
@@ -54,7 +52,7 @@
 
                                 <li class="nav-item">
                                     <a href="../Views/proveedores.php" class="nav-link">
-                                        <i class="nav-icon fas fa-truck"></i>
+                                        <i class="nav-icon fa fa-truck" style= "color: white;"></i>
                                         <p>
                                             Proveedores
                                         </p>
@@ -63,7 +61,7 @@
 
                                 <li class="nav-item">
                                     <a href="../Views/Clientes.php" class="nav-link">
-                                        <i class="nav-icon fas fa-users"></i>
+                                        <i class="nav-icon fas fa-users" style= "color: white;"></i>
                                         <p>
                                             Clientes
                                         </p>
@@ -72,26 +70,26 @@
 
                                 <li class="nav-item has-treeview">
                                     <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-file-alt"></i>
+                                        <i class="nav-icon fas fa-file-alt" style= "color: white;"></i>
                                         <p>
                                             Reportes
-                                            <i class="fas fa-angle-left right"></i>
+                                            <i class="fas fa-angle-left right" style= "color: white;"></i>
                                         </p>
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <li class="nav-item">
                                             <a href="pages/layout/top-nav.html" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
+                                                <i class="far fa-circle nav-icon" style= "color: white;"></i>
                                                 <p>Top Navigation</p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="pages/layout/boxed.html" class="nav-link">
-                                                <i class="far fa-circle nav-icon"></i>
+                                                <i class="far fa-circle nav-icon" style= "color: white;"></i>
                                                 <p>Boxed</p>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
+                                      <!--  <li class="nav-item">
                                             <a href="pages/layout/fixed-sidebar.html" class="nav-link">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>Fixed Sidebar</p>
@@ -114,13 +112,13 @@
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>Collapsed Sidebar</p>
                                             </a>
-                                        </li>
+                                        </li>-->
                                     </ul>
                                 </li>
 
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-sliders-h"></i>
+                                        <i class="nav-icon fas fa-sliders-h" style= "color: white;"></i>
                                         <p>
                                             Ajustes
                                         </p>
@@ -128,8 +126,8 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="../Views/Ayuda.php" class="nav-link">
-                                        <i class="nav-icon fas fa-info"></i>
+                                    <a href="../Views/Ayuda_Pdf/LaSurtidoraAyuda.pdf" class="nav-link">
+                                        <i class="nav-icon fas fa-info" style= "color: white;"></i>
                                         <p>
                                             Ayuda
                                         </p>
@@ -138,7 +136,7 @@
 
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-question"></i>
+                                        <i class="nav-icon fas fa-question" style= "color: white;"></i>
                                         <p>
                                             Acerca de
                                         </p>
@@ -147,7 +145,7 @@
 
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
-                                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                                        <i class="nav-icon fas fa-sign-out-alt" style= "color: white;"></i>
                                         <p>
                                             Salir
                                         </p>
