@@ -1,7 +1,7 @@
 <?php
 require_once "../Models/ClientesModel.php";
 require_once "../Models/ValidacionesClientes/ValidacionCliente.php";
-
+//pruebaaa//
 /* REDIRECCIÓN AL MÉTODO getClientes() */
 if (isset($_POST['getClientes'])) {
 
