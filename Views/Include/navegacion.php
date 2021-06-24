@@ -1,3 +1,9 @@
+<?php
+    if(!isset($_SESSION['user'])) 
+    { 
+        session_start(); 
+    } 
+?>
 
                 <!-- Navbar -->
                 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -82,7 +88,29 @@
                                         </p>
                                     </a>
                                 </li>
-
+                                <li class="nav-item has-treeview">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-file-alt"></i>
+                                        <p>
+                                            Categoria
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="../Views/categoria_tipo.php" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Tipo de Producto</p>
+                                            </a>
+                                        </li>
+                                </li>
+                                        <li class="nav-item">
+                                            <a href="../Views/categoria_marca.php" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Marca de Producto</p>
+                                            </a>
+                                            </ul>
+                                        </li>
                                 <li class="nav-item">
                                     <a href="../Views/proveedores.php" class="nav-link">
                                         <i class="nav-icon fas fa-truck"></i>
