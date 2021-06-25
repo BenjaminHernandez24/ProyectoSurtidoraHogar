@@ -1,3 +1,10 @@
+<?php
+    if(!isset($_SESSION['user'])) 
+    { 
+        session_start(); 
+    } 
+?>
+
                 <!-- Navbar -->
                 <nav class="main-header navbar navbar-expand navbar-white navbar-light" >
                     <!-- Left navbar links -->
@@ -12,86 +19,123 @@
                 <!-- Main Sidebar Container -->
                 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #ffb200;">
                     <!-- Brand Logo -->
+                    <?php if ($_SESSION['user'] == "Empleado") { ?>
                     <a href="../Views/principal.php" class="brand-link">
-                        <img src="dist/img/surtidora.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-                        <FONT SIZE=4>
-                        <span class="brand-text font-weight-light" style="color:white">Surtidora del Hogar</span>
-                        </FONT>
+                        <img src="dist/img/letraE.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                        <span class="brand-text font-weight-light">Surtidora del Hogar</span>
                     </a>
-
+                   
                     <!-- Sidebar -->
                     <div class="sidebar">
                         <!-- Sidebar user panel (optional) -->
                         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                             <div class="image">
-                                <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                                <img src="dist/img/empleados.png" class="img-circle elevation-2" alt="User Image">
                             </div>
-                            <div class="info">
-                                <FONT SIZE=4>
-                                    <a href="../Views/principal.php" class="d-block" style="color:white">Administrador</a>
-                                </FONT>
 
+                            
+
+                            <div class="info">
+                                <a href="../Views/principal.php" class="d-block">Empleado</a>
                             </div>
+
+                            <?php }else if($_SESSION['user'] == "Administrador"){ ?>
+
+                                <a href="../Views/principal.php" class="brand-link">
+                        <img src="dist/img/letraA.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                        <span class="brand-text font-weight-light">Surtidora del Hogar</span>
+                    </a>
+                   
+                    <!-- Sidebar -->
+                    <div class="sidebar">
+                        <!-- Sidebar user panel (optional) -->
+                        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                            <div class="image">
+                                <img src="dist/img/admin.png" class="img-circle elevation-2" alt="User Image">
+                            </div>
+
+                                <div class="info">
+                                <a href="../Views/principal.php" class="d-block" style="color:white">Administrador</a>
+                            </div>
+
+                             <?php } ?>
                         </div>
 
-                        <!-- Sidebar Menu -->
-                        <nav class="mt-2" font>
+                       <!----------------------------------Menú de Administrador --------------------------------->
+                          
+
+                                    <!-- Sidebar Menu -->
+                        <nav class="mt-2">
                             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                                 <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
+                              with font-awesome or any other icon font library -->
+                               
                                 <li class="nav-item">
                                     <a href="../Views/Venta.php" class="nav-link">
                                         <i class="nav-icon fas fa-cart-arrow-down" style="color:white"></i>
-                                        <FONT SIZE=5>
-                                            <p style="color:white">
+                                            <p style="color:white; font-size: 25px;">
                                                 Ventas
                                             </p>
-                                        </FONT>
                                     </a>
                                 </li>
+                                <?php if($_SESSION['user'] == "Administrador"){ ?>
 
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="nav-icon fas fa-box-open" style="color:white"></i>
-                                        <FONT SIZE=5>
-                                            <p style="color:white">
+                                            <p style="color:white; font-size: 25px;">
                                                 Productos
                                             </p>
-                                        </FONT>
                                     </a>
                                 </li>
-
+                                <li class="nav-item has-treeview">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-file-alt" style="color:white"></i>
+                                        <p style="color:white; font-size: 25px;">
+                                            Categoria
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item">
+                                            <a href="../Views/categoria_tipo.php" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Tipo de Producto</p>
+                                            </a>
+                                        </li>
+                                </li>
+                                        <li class="nav-item">
+                                            <a href="../Views/categoria_marca.php" class="nav-link">
+                                                <i class="far fa-circle nav-icon"></i>
+                                                <p>Marca de Producto</p>
+                                            </a>
+                                            </ul>
+                                        </li>
                                 <li class="nav-item">
                                     <a href="../Views/proveedores.php" class="nav-link">
                                         <i class="nav-icon fas fa-truck" style="color:white"></i>
-                                        <FONT SIZE=5>
-                                            <p style="color:white">
+                                            <p style="color:white; font-size: 25px;">
                                                 Proveedores
                                             </p>
-                                        </FONT>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
                                     <a href="../Views/Clientes.php" class="nav-link">
                                         <i class="nav-icon fas fa-users" style="color:white"></i>
-                                        <FONT SIZE=5>
-                                            <p style="color:white">
+                                            <p style="color:white; font-size: 25px;">
                                                 Clientes
                                             </p>
-                                        </FONT>
                                     </a>
                                 </li>
 
                                 <li class="nav-item has-treeview">
                                     <a href="#" class="nav-link">
                                         <i class="nav-icon fas fa-file-alt" style="color:white"></i>
-                                        <FONT SIZE=5>
-                                            <p style="color:white">
+                                            <p style="color:white; font-size: 25px;">
                                                 Reportes
                                                 <i class="fas fa-angle-left right"></i>
                                             </p>
-                                        </FONT>
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <li class="nav-item">
@@ -136,46 +180,43 @@
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="nav-icon fas fa-sliders-h" style="color:white"></i>
-                                        <FONT SIZE=5>
-                                            <p style="color:white">
+                                            <p style="color:white; font-size: 25px;">
                                                 Ajustes
                                             </p>
-                                        </FONT>
                                     </a>
                                 </li>
-
+                                            
+                                <?php }?>
+                                <?php if ($_SESSION['user'] == "Empleado" || $_SESSION['user'] == "Administrador") { ?>
                                 <li class="nav-item">
                                     <a href="../Views/Ayuda.php" class="nav-link">
                                         <i class="nav-icon fas fa-info" style="color:white"></i>
-                                        <FONT SIZE=5>
-                                            <p style="color:white">
+                                            <p style="color:white; font-size: 25px;">
                                                 Ayuda
                                             </p>
-                                        </FONT>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="nav-icon fas fa-question" style="color:white"></i>
-                                        <FONT SIZE=5>
-                                            <p style="color:white">
+                                            <p style="color:white; font-size: 25px;">
                                                 Acerca De
                                             </p>
-                                        </FONT>
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="nav-icon fas fa-sign-out-alt" style="color:white"></i>
-                                        <FONT SIZE=5>
-                                            <p style="color:white">
+                                            <p style="color:white; font-size: 25px;">
                                                 Salir
                                             </p>
-                                        </FONT>
                                     </a>
                                 </li>
+                               
+                                <?php }?> 
+
 
                             </ul>
                         </nav>
@@ -183,3 +224,5 @@
                     </div>
                     <!-- /.sidebar -->
                 </aside>
+                
+               

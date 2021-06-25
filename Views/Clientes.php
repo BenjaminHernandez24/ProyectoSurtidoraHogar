@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-    <?php include("include/cabezera.php"); ?>
+    <?php include("Include/cabezera.php"); ?>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
     <div class="wrapper">
 
-        <?php include("include/navegacion.php"); ?>
+        <?php include("Include/navegacion.php"); ?>
 
         <!-- Tabla Clientes -->
         <?php include("FormulariosClientes/TablaFrmClientes.php"); ?>
