@@ -50,20 +50,73 @@
                 ENTRADA PARA AGREGAR PRODUCTO
                 ======================================-->
 
-                                <div class="form-group row nuevoProducto">
-
-
-
-                                </div>
-
-                                <input type="hidden" id="listaProductos" name="listaProductos">
-
-
                                 <div class="row">
 
-                                    <!--=====================================
+                                    <div class="col-xs-8 pull-right card-body form-group row">
+
+                                        <table class="table">
+
+                                            <thead>
+
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Producto</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Total</th>
+                                                </tr>
+
+                                            </thead>
+
+                                            <tbody>
+
+                                                <tr>
+                                                    <td style="width: 0%">
+
+                                                        <div class="input-group">
+                                                            <button class="btn btn-danger" type="button">X</button>
+                                                        </div>
+
+                                                    </td>
+                                                    <td style="width: 60%">
+
+                                                        <div class="input-group">
+
+                                                            <input type="Text" class="form-control input-lg" min="Producto" id="nuevoImpuestoVenta" name="nuevoImpuestoVenta" placeholder="0" value="Tornillo" readonly required>
+                                                        </div>
+
+                                                    </td>
+
+                                                    <td style="width: 10%">
+
+                                                        <div class="input-group">
+                                                            <input type="Number" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" required>
+                                                        </div>
+
+                                                    </td>
+
+                                                    <td style="width: 40%">
+
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" readonly required>
+                                                            <input type="hidden" name="totalVenta" id="totalVenta">
+                                                        </div>
+
+                                                    </td>
+
+
+                                                </tr>
+
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
+
+                                </div>
+                                <!--=====================================
                   ENTRADA IMPUESTOS Y TOTAL
                   ======================================-->
+                                <div class="row">
 
                                     <div class="col-xs-8 pull-right card-body form-group row">
 
@@ -122,7 +175,6 @@
 
                                 </div>
 
-                                <hr>
 
                                 <!--=====================================
                 ENTRADA MÉTODO DE PAGO
