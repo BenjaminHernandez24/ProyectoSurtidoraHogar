@@ -9,7 +9,10 @@ if (isset($_POST['agregarProveedores'])) {
         "nom_empresa" => $_POST['nom_empresa'], //son variables de name del imput
         "tel_empresa" => $_POST['tel_empresa'],
         "nom_prov" => $_POST['nom_prov'],
-        "tel_prov" => $_POST['tel_prov']
+        "tel_prov" => $_POST['tel_prov'],
+        "num_cuenta" => $_POST['num_cuenta'],
+        "nom_banco" => $_POST['nom_banco'],
+        "clave_interbancaria" => $_POST['clave_interbancaria']
     );
     $respuesta = ProveedoresModelo::agregarProveedor($Proveedor);
     echo json_encode(['respuesta' => $respuesta]);
@@ -24,7 +27,10 @@ if (isset($_POST['editarProveedores'])) {
         "nom_empresa" => $_POST['nom_empresa'], //son variables de name del imput
         "tel_empresa" => $_POST['tel_empresa'],
         "nom_prov" => $_POST['nom_prov'],
-        "tel_prov" => $_POST['tel_prov']
+        "tel_prov" => $_POST['tel_prov'],
+        "num_cuenta" => $_POST['num_cuenta'],
+        "nom_banco" => $_POST['nom_banco'],
+        "clave_interbancaria" => $_POST['clave_interbancaria']
     );
     $respuesta = ProveedoresModelo::editarProveedor($Proveedor);
     echo json_encode(['respuesta' => $respuesta]);

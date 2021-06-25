@@ -11,14 +11,8 @@
 
         <?php include("include/navegacion.php"); ?>
 
-        <!-- Tabla Clientes -->
-        <?php include("FormulariosProveedores/TablaFrmProveedores.php"); ?>
-
-        <!-- Formulario Agregar Proveedores -->
-        <?php include("FormulariosProveedores/FrmAgregar.php"); ?>
-
-        <!-- Formulario Editar Cliente -->
-        <?php include("FormulariosProveedores/FrmEditar.php"); ?>
+        <!--Estructura modelo venta -->
+        <?php include("FormulariosVentas/FrmVenta.php"); ?>
 
         <?php include("Include/footer.php") ?>
 

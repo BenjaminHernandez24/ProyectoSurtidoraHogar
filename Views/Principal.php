@@ -17,94 +17,79 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
 
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-12">
-                            <h1 class="m-0 text-dark">¡Bievenido al sistema!</h1>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content-header -->
 
             <!-- Main content -->
-            <section class="content">
+            <section class="content-header">
                 <div class="container-fluid">
 
                     <!-- Small boxes (Stat box) -->
-                    <div class="row">
+                    <div class="row mb-2">
 
-                        <!-- USUARIO -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-0 bg-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Proveedores</div>
-                                            <div class="h5 mb-0 font-weight-bold text-white"></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-truck fa-2x text-white"></i>
-                                        </div>
-                                    </div>
+                        <!-- PROVEEDORES -->
+                        <div class="col-lg-3 col-6" class="small-box-footer">
+                            <div class="small-box bg-green">
+                                <div class="inner">
+                                    <h3>150</h3>
+
+                                    <h1>Proveedores</h1>
                                 </div>
+                                <div class="icon">
+                                    <i class="fas fas fa-truck"></i>
+                                </div>
+                                <a href="../Views/proveedores.php" class="small-box-footer">
+                                    Acceder <i class="fas fa-arrow-circle-right"></i>
+                                </a>
                             </div>
                         </div>
 
                         <!-- PRODUCTOS -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card bg-secondary border-0 shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Productos</div>
-                                            <div class="h5 mb-0 font-weight-bold text-white"></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-box-open fa-2x text-white"></i>
-                                        </div>
-                                    </div>
+                        <div class="col-lg-3 col-6" class="small-box-footer">
+                            <div class="small-box bg-red">
+                                <div class="inner">
+                                    <h3>150</h3>
+
+                                    <h1>Productos</h1>
                                 </div>
+                                <div class="icon">
+                                    <i class="fas fa-box-open"></i>
+                                </div>
+                                <a href="../Views/Clientes.php" class="small-box-footer">
+                                    Acceder <i class="fas fa-arrow-circle-right"></i>
+                                </a>
                             </div>
                         </div>
 
                         <!-- CLIENTES -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-0 bg-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Clientes</div>
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-white"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-users fa-2x text-white"></i>
-                                        </div>
-                                    </div>
+                        <div class="col-lg-3 col-6" class="small-box-footer">
+                            <div class="small-box bg-gradient-orange">
+                                <div class="inner">
+                                    <h3 style="color:white;">150</h3>
+
+                                    <h1 style="color:white;">Clientes</h1>
                                 </div>
+                                <div class="icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <a href="../Views/Clientes.php" class="small-box-footer">
+                                    Acceder <i class="fas fa-arrow-circle-right" style="color:white;"></i>
+                                </a>
                             </div>
                         </div>
 
                         <!-- VENTAS -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-0 bg-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Ventas</div>
-                                            <div class="h5 mb-0 font-weight-bold text-white"></div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-cart-arrow-down fa-2x text-white"></i>
-                                        </div>
-                                    </div>
+                        <div class="col-lg-3 col-6" class="small-box-footer">
+                            <div class="small-box bg-blue">
+                                <div class="inner">
+                                    <h3>150</h3>
+
+                                    <h1>Ventas</h1>
                                 </div>
+                                <div class="icon">
+                                    <i class="fas fa-cart-arrow-down"></i>
+                                </div>
+                                <a href="../Views/Clientes.php" class="small-box-footer">
+                                    Acceder <i class="fas fa-arrow-circle-right"></i>
+                                </a>
                             </div>
                         </div>
 

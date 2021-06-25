@@ -33,6 +33,15 @@ async function init() {
                 "data": "tel_prov"
             },
             {
+                "data": "No_cuenta"
+            },
+            {
+                "data": "banco"
+            },
+            {
+                "data": "Clave_interbancaria"
+            },
+            {
                 "data": (s) => {
                     if (s.estatus == 1) {
                         return `<button class="btn btn-success btn-sm desactivar">Activo</button>`;
@@ -122,7 +131,9 @@ $(document).on("click", ".btnEditar", function() {
     $("#tel_empresa").val(data[2]);
     $("#nom_prov").val(data[3]);
     $("#tel_prov").val(data[4]);
-
+    $("#num_cuenta").val(data[5]);
+    $("#nom_banco").val(data[6]);
+    $("#clave_interbancaria").val(data[7]);
     /* Hacemos visible el modal */
     $('#editar_proveedor').modal('show');
 });
@@ -163,7 +174,7 @@ $(document).on('click', ".btnBorrar", async function() {
             var resjson = await peticion.json();
 
             if (resjson.respuesta == "OK") {
-                notificacionExitosa('¡ELiminación exitosa!');
+                notificacionExitosa('¡Proveedor eliminado correctamente!');
                 tablaProveedores.ajax.reload(null, false);
             } else {
                 notificarError(resjson.respuesta);
@@ -179,7 +190,7 @@ $(document).on('click', ".btnBorrar", async function() {
 
 $(document).on('click', '.desactivar', async function() {
     try {
-
+        notificacionInactivoProveedor('Usted, ha cambiado el estado del proveedor a: "Inactivo"');
         if (tablaProveedores.row(this).child.isShown()) {
             var data = tablaProveedores.row(this).data();
         } else {
@@ -209,7 +220,7 @@ $(document).on('click', '.desactivar', async function() {
 
 $(document).on('click', '.activar', async function() {
     try {
-
+        notificacionActivoProveedor('Usted, ha cambiado el estado del proveedor a: "Activo"');
         if (tablaProveedores.row(this).child.isShown()) {
             var data = tablaProveedores.row(this).data();
         } else {
@@ -255,6 +266,26 @@ function notificarError(mensaje) {
         icon: 'error',
         title: 'Oops...',
         text: mensaje
+    })
+}
+
+function notificacionActivoProveedor(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 3000
+    })
+}
+
+function notificacionInactivoProveedor(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 3000
     })
 }
 

@@ -3,8 +3,8 @@
 require_once "Conexion.php";
 class ProveedoresModelo
 {
-    private static $INSERTAR_PROVEEDOR = "INSERT INTO proveedores(nom_empresa,tel_empresa,nom_prov,tel_prov,estatus) values (?,?,?,?,?)";
-    private static $EDITAR_PROVEEDOR = "UPDATE proveedores set nom_empresa=?,tel_empresa=?,nom_prov=?,tel_prov=? WHERE id_prov = ?";
+    private static $INSERTAR_PROVEEDOR = "INSERT INTO proveedores(nom_empresa,tel_empresa,nom_prov,tel_prov,No_cuenta,banco,Clave_interbancaria,estatus) values (?,?,?,?,?,?,?,?)";
+    private static $EDITAR_PROVEEDOR = "UPDATE proveedores set nom_empresa=?,tel_empresa=?,nom_prov=?,tel_prov=?,No_cuenta=?,banco=?,Clave_interbancaria=? WHERE id_prov = ?";
     private static $BORRAR_PROVEEDOR = "DELETE FROM proveedores WHERE id_prov = ?";
     private static $ESTATUS_PROVEEDOR = "UPDATE proveedores set estatus=? WHERE id_prov = ?";
     private static $SELECT_ALL = "SELECT * FROM proveedores";
@@ -26,8 +26,7 @@ class ProveedoresModelo
 
             if (empty($validar)) {
                 $pst = $conn->prepare(self::$INSERTAR_PROVEEDOR);
-                $pst->execute([$proveedor['nom_empresa'], $proveedor['tel_empresa'], $proveedor['nom_prov'], $proveedor['tel_prov'], 1]);
-
+                $pst->execute([$proveedor['nom_empresa'], $proveedor['tel_empresa'], $proveedor['nom_prov'], $proveedor['tel_prov'],$proveedor['num_cuenta'],$proveedor['nom_banco'],$proveedor['clave_interbancaria'],1]);
                 $conn = null;
                 $conexion->closeConexion();
 
@@ -55,7 +54,7 @@ class ProveedoresModelo
 
             $pst = $conn->prepare(self::$EDITAR_PROVEEDOR);
 
-            $pst->execute([$proveedor['nom_empresa'], $proveedor['tel_empresa'], $proveedor['nom_prov'], $proveedor['tel_prov'], $proveedor['id']]);
+            $pst->execute([$proveedor['nom_empresa'], $proveedor['tel_empresa'], $proveedor['nom_prov'], $proveedor['tel_prov'],$proveedor['num_cuenta'],$proveedor['nom_banco'],$proveedor['clave_interbancaria'],$proveedor['id']]);
 
             $conn = null;
             $conexion->closeConexion();
