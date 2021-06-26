@@ -23,7 +23,7 @@ if (!isset($_SESSION['user'])) {
                 <a class="dropdown-item nav-link" href="#" style="color:white"><i class="nav-icon fas fa-sliders-h" style="color:white"> Ajustes</i></a>
                 <a class="dropdown-item nav-link" href="../Views/Ayuda.php" style="color:white"><i class="nav-icon fas fa-question-circle" style="color:white"> Ayuda</i></a>
                 <a class="dropdown-item nav-link" href="#" style="color:white"><i class="nav-icon fas fa-info-circle" style="color:white"> Acerca De</i></a>
-                <a class="dropdown-item nav-link" href="#" style="color:white"><i class="nav-icon fas fa-sign-out-alt" style="color:white"> Salir</i></a>
+                <a class="dropdown-item nav-link" href="../Views/Include/cerrarsesion.php" style="color:white"><i class="nav-icon fas fa-sign-out-alt" style="color:white"> Salir</i></a>
             </div>
         </div>
     </ul>
