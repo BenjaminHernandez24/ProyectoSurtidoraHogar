@@ -5,35 +5,60 @@ require_once "../Models/ProveedoresModel.php";
         AGREGAR PROVEEDOR
      =============================*/
 if (isset($_POST['agregarProveedores'])) {
-    $Proveedor = array(
-        "nom_empresa" => $_POST['nom_empresa'], //son variables de name del imput
-        "tel_empresa" => $_POST['tel_empresa'],
-        "nom_prov" => $_POST['nom_prov'],
-        "tel_prov" => $_POST['tel_prov'],
-        "num_cuenta" => $_POST['num_cuenta'],
-        "nom_banco" => $_POST['nom_banco'],
-        "clave_interbancaria" => $_POST['clave_interbancaria']
-    );
-    $respuesta = ProveedoresModelo::agregarProveedor($Proveedor);
-    echo json_encode(['respuesta' => $respuesta]);
+
+    if (
+        preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\(\) ]+$/', $_POST['nom_empresa']) &&
+        preg_match('/^[0-9]+$/', $_POST['tel_empresa']) &&
+        preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\(\) ]+$/', $_POST['nom_prov']) &&
+        preg_match('/^[0-9]+$/', $_POST['tel_prov']) &&
+        preg_match('/^[0-9]+$/', $_POST['num_cuenta']) &&
+        preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\(\) ]+$/', $_POST['nom_banco']) &&
+        preg_match('/^[0-9]+$/', $_POST['clave_interbancaria'])
+    ) {
+        $Proveedor = array(
+            "nom_empresa" => $_POST['nom_empresa'], //son variables de name del imput
+            "tel_empresa" => $_POST['tel_empresa'],
+            "nom_prov" => $_POST['nom_prov'],
+            "tel_prov" => $_POST['tel_prov'],
+            "num_cuenta" => $_POST['num_cuenta'],
+            "nom_banco" => $_POST['nom_banco'],
+            "clave_interbancaria" => $_POST['clave_interbancaria']
+        );
+        $respuesta = ProveedoresModelo::agregarProveedor($Proveedor);
+        echo json_encode(['respuesta' => $respuesta]);
+    } else {
+        echo json_encode(['respuesta' => 'Error en caracteres.']);
+    }
 }
 
 /* ===========================
         EDITAR PROVEEDOR
      =============================*/
 if (isset($_POST['editarProveedores'])) {
-    $Proveedor = array(
-        "id" => $_POST['idProveedor'],
-        "nom_empresa" => $_POST['nom_empresa'], //son variables de name del imput
-        "tel_empresa" => $_POST['tel_empresa'],
-        "nom_prov" => $_POST['nom_prov'],
-        "tel_prov" => $_POST['tel_prov'],
-        "num_cuenta" => $_POST['num_cuenta'],
-        "nom_banco" => $_POST['nom_banco'],
-        "clave_interbancaria" => $_POST['clave_interbancaria']
-    );
-    $respuesta = ProveedoresModelo::editarProveedor($Proveedor);
-    echo json_encode(['respuesta' => $respuesta]);
+    if (
+        preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\(\) ]+$/', $_POST['nom_empresa']) &&
+        preg_match('/^[0-9]+$/', $_POST['tel_empresa']) &&
+        preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\(\) ]+$/', $_POST['nom_prov']) &&
+        preg_match('/^[0-9]+$/', $_POST['tel_prov']) &&
+        preg_match('/^[0-9]+$/', $_POST['num_cuenta']) &&
+        preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\(\) ]+$/', $_POST['nom_banco']) &&
+        preg_match('/^[0-9]+$/', $_POST['clave_interbancaria'])
+    ) {
+        $Proveedor = array(
+            "id" => $_POST['idProveedor'],
+            "nom_empresa" => $_POST['nom_empresa'], //son variables de name del imput
+            "tel_empresa" => $_POST['tel_empresa'],
+            "nom_prov" => $_POST['nom_prov'],
+            "tel_prov" => $_POST['tel_prov'],
+            "num_cuenta" => $_POST['num_cuenta'],
+            "nom_banco" => $_POST['nom_banco'],
+            "clave_interbancaria" => $_POST['clave_interbancaria']
+        );
+        $respuesta = ProveedoresModelo::editarProveedor($Proveedor);
+        echo json_encode(['respuesta' => $respuesta]);
+    } else {
+        echo json_encode(['respuesta' => 'Error en caracteres.']);
+    }
 }
 
 /* ===========================

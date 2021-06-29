@@ -15,16 +15,19 @@ if (!isset($_SESSION['user'])) {
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-        <div class="btn-group" role="group">
-            <button style="color:white; font-size: 20px;" id="btnGroupDrop1" type="button" class="btn btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="btn-group" role="group" style="color:black;">
+        <button style="color:white; font-size: 20px;" id="btnGroupDrop1" type="button" class="btn btn-block dropdown-toggle" data-toggle="dropdown">
                 Administrador
             </button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="background-color: #F29F05; font-size: 20px;">
-                <a class="dropdown-item nav-link" href="#" style="color:white"><i class="nav-icon fas fa-sliders-h" style="color:white"> Ajustes</i></a>
-                <a class="dropdown-item nav-link" href="../Views/Ayuda.php" style="color:white" target="_blank"><i class="nav-icon fas fa-question-circle" style="color:white"> Ayuda</i></a>
-                <a class="dropdown-item nav-link" href="#" style="color:white"><i class="nav-icon fas fa-info-circle" style="color:white"> Acerca De</i></a>
-                <a class="dropdown-item nav-link" href="../Views/Include/cerrarsesion.php" style="color:white"><i class="nav-icon fas fa-sign-out-alt" style="color:white"> Salir</i></a>
-            </div>
+            <ul class="dropdown-menu" style="font-size: 20px;">
+                <li><a class="dropdown-item nav-link" href="#"><i class="nav-icon fas fa-sliders-h" style="color:#F29F05;"> Ajustes</i></a></li>
+                <li><a class="dropdown-item nav-link" href="../Views/Ayuda.php" style="color:white" target="_blank"><i class="nav-icon fas fa-question-circle" style="color:#F29F05;"> Ayuda</i></a></li>
+                <li><a class="dropdown-item nav-link" href="#" style="color:white"><i class="nav-icon fas fa-info-circle" style="color:#F29F05;"> Acerca De</i></a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item nav-link" href="../Views/Include/cerrarsesion.php" style="color:white"><i class="nav-icon fas fa-sign-out-alt" style="color:#F29F05;"> Salir</i></a></li>
+            </ul>
         </div>
     </ul>
 </nav>

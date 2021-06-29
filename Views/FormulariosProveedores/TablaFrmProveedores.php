@@ -3,10 +3,10 @@
                 <div class="container-fluid pt-4">
                     <div class="row">
                         <div class="col-12">
-
                             <div class="card">
-                                <div class="card-header">
-                                    <button id="altaProveedor" class="btn btn-outline-primary" data-toggle="modal" data-target="#nuevo_proveedor">
+                                <div class="card-header row">
+                                <i class="nav-icon fas fa-truck" style="color:#F29F05; font-size: 40px;"> Proveedores</i>
+                                    <button id="altaProveedor" class="btn btn-outline-primary ml-auto" data-toggle="modal" data-target="#nuevo_proveedor">
                                         Agregar Nuevo Proveedor
                                     </button>
                                 </div>
