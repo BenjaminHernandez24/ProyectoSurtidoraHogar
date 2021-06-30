@@ -10,7 +10,7 @@ async function init() {
         "responsive": true,
         "autoWidth": false,
         "ajax": {
-            "url": "../Controllers/tipo_producto_controller.php",
+            "url": "../Controllers/Tipo_Producto_Controller.php",
             "type": "POST",
             "data": {
                 "obtener_tipo": "OK"
@@ -34,7 +34,7 @@ form_agregar_tipo.addEventListener('submit', async(e) => {
         var datosTipo = new FormData(form_agregar_tipo);
         datosTipo.append('agregar_tipo', 'OK');
 
-        var peticion = await fetch('../Controllers/tipo_producto_controller.php', {
+        var peticion = await fetch('../Controllers/Tipo_Producto_Controller.php', {
             method: 'POST',
             body: datosTipo
         });
@@ -65,7 +65,7 @@ form_editar_tipo.addEventListener('submit', async(e) => {
         datosTipo.append('editar_tipo', 'OK');
         datosTipo.append('idTipo', idTipo);
 
-        var peticion = await fetch('../Controllers/tipo_producto_controller.php', {
+        var peticion = await fetch('../Controllers/Tipo_Producto_Controller.php', {
             method: 'POST',
             body: datosTipo
         });
@@ -129,7 +129,7 @@ $(document).on('click', ".btnBorrar", async function() {
             datosTipo.append('eliminar_tipo', 'OK');
             datosTipo.append('id_tipo', id_tipo);
  
-            var peticion = await fetch('../Controllers/tipo_producto_controller.php', {
+            var peticion = await fetch('../Controllers/Tipo_Producto_Controller.php', {
                 method: 'POST',
                 body: datosTipo
             });

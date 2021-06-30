@@ -10,7 +10,7 @@ async function init() {
         "responsive": true,
         "autoWidth": false,
         "ajax": {
-            "url": "../Controllers/marca_producto_controller.php",
+            "url": "../Controllers/Marca_Producto_Controller.php",
             "type": "POST",
             "data": {
                 "obtener_marca": "OK"
@@ -34,7 +34,7 @@ form_agregar_marca.addEventListener('submit', async(e) => {
         var datosMarca = new FormData(form_agregar_marca);
         datosMarca.append('agregar_marca', 'OK');
 
-        var peticion = await fetch('../Controllers/marca_producto_controller.php', {
+        var peticion = await fetch('../Controllers/Marca_Producto_Controller.php', {
             method: 'POST',
             body: datosMarca
         });
@@ -65,7 +65,7 @@ form_editar_marca.addEventListener('submit', async(e) => {
         datosMarca.append('editar_marca', 'OK');
         datosMarca.append('idMarca', idMarca);
 
-        var peticion = await fetch('../Controllers/marca_producto_controller.php', {
+        var peticion = await fetch('../Controllers/Marca_Producto_Controller.php', {
             method: 'POST',
             body: datosMarca
         });
@@ -129,7 +129,7 @@ $(document).on('click', ".btnBorrar", async function() {
             datosMarca.append('eliminar_marca', 'OK');
             datosMarca.append('id_marca', id_marca);
  
-            var peticion = await fetch('../Controllers/marca_producto_controller.php', {
+            var peticion = await fetch('../Controllers/Marca_Producto_Controller.php', {
                 method: 'POST',
                 body: datosMarca
             });

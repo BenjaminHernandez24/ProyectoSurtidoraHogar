@@ -24,7 +24,7 @@
         <form id="formIngresar" action="#" class="login-form">
           <div class="input-group">
             <label class="input-fill">
-              <input type="text" name="usu" id="usuario" required />
+              <input type="text" name="usu" id="usuario" autocomplete="off" required />
               <span class="input-label">Usuario</span>
               <i class="far fa-user"></i>
             </label>
