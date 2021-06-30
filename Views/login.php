@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous" />
   <link rel="stylesheet" href="dist/css/main.css" />
   <link rel="stylesheet" href="dist/css/normalize.css" />
-  <title>Login</title>
+  <title>Inicio Sesión</title>
 </head>
 
 <body>
@@ -37,14 +37,18 @@
             </label>
           </div>
 
-          <input type="submit" value="Iniciar Sesión" class="btn-login" />
+          <input type="submit" value="Iniciar Sesión"  class="btn-login" /><br> <br> 
+          <input type="button" value="Registrarme"  class="btn-login" onclick = "location='Registro.php'" />
+          <br> 
+      
+          
         </form>
       </div>
     </div>
   </main>
 
   <?php include("Include/scripts.php"); ?>
-  <script src="dist/js/pages/login.js"></script>
+  <script src="dist/js/pages/Login.js"></script>
 
 </body>
 
