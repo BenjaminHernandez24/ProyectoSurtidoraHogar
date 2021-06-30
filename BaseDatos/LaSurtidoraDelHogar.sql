@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-06-2021 a las 19:00:07
+-- Tiempo de generación: 30-06-2021 a las 04:07:19
 -- Versión del servidor: 10.4.19-MariaDB
 -- Versión de PHP: 7.4.19
 
@@ -44,19 +44,6 @@ CREATE TABLE `clientes` (
   `tipo` varchar(25) NOT NULL,
   `telefono` varchar(20) NOT NULL,
   `Estatus` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `detalle_productos`
---
-
-CREATE TABLE `detalle_productos` (
-  `id_detalle_prod` int(11) NOT NULL,
-  `id_prod` int(11) NOT NULL,
-  `stock_llenado` int(11) NOT NULL,
-  `stock_alerta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -127,23 +114,10 @@ CREATE TABLE `marcas_producto` (
 
 CREATE TABLE `productos` (
   `id_producto` int(11) NOT NULL,
-  `codigo_producto` varchar(80) NOT NULL,
-  `Nombre_producto` varchar(100) NOT NULL,
+  `nombre_producto` varchar(100) NOT NULL,
   `id_tipo` int(11) NOT NULL,
   `id_marca` int(11) NOT NULL,
   `precio_publico` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `producto_proveedor`
---
-
-CREATE TABLE `producto_proveedor` (
-  `id_producto_prov` int(11) NOT NULL,
-  `id_prov` int(11) NOT NULL,
-  `id_producto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -206,7 +180,18 @@ CREATE TABLE `salida_venta` (
   `id_inventario` int(11) NOT NULL,
   `num_piezas` int(11) NOT NULL,
   `precio_a_vender` decimal(10,0) NOT NULL,
-  `subtotal` decimal(10,0) NOT NULL,
+  `subtotal` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tickets`
+--
+
+CREATE TABLE `tickets` (
+  `id_ticket` int(11) NOT NULL,
+  `id_salida_venta` int(11) NOT NULL,
   `id_detalle_salida_venta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -236,13 +221,6 @@ ALTER TABLE `administrador`
 --
 ALTER TABLE `clientes`
   ADD PRIMARY KEY (`id_cli`);
-
---
--- Indices de la tabla `detalle_productos`
---
-ALTER TABLE `detalle_productos`
-  ADD PRIMARY KEY (`id_detalle_prod`),
-  ADD KEY `id_prod` (`id_prod`);
 
 --
 -- Indices de la tabla `detalle_salida_venta`
@@ -280,14 +258,6 @@ ALTER TABLE `productos`
   ADD KEY `Id_marca` (`id_marca`);
 
 --
--- Indices de la tabla `producto_proveedor`
---
-ALTER TABLE `producto_proveedor`
-  ADD PRIMARY KEY (`id_producto_prov`),
-  ADD KEY `id_prod` (`id_producto`),
-  ADD KEY `id_prov` (`id_prov`);
-
---
 -- Indices de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
@@ -312,7 +282,14 @@ ALTER TABLE `salida_merma`
 --
 ALTER TABLE `salida_venta`
   ADD PRIMARY KEY (`id_salida_venta`),
-  ADD KEY `id_inventario` (`id_inventario`),
+  ADD KEY `id_inventario` (`id_inventario`);
+
+--
+-- Indices de la tabla `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`id_ticket`),
+  ADD KEY `id_salida_venta` (`id_salida_venta`),
   ADD KEY `id_detalle_salida_venta` (`id_detalle_salida_venta`);
 
 --
@@ -362,12 +339,6 @@ ALTER TABLE `productos`
   MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `producto_proveedor`
---
-ALTER TABLE `producto_proveedor`
-  MODIFY `id_producto_prov` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
@@ -392,6 +363,12 @@ ALTER TABLE `salida_venta`
   MODIFY `id_salida_venta` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `tickets`
+--
+ALTER TABLE `tickets`
+  MODIFY `id_ticket` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `tipo_producto`
 --
 ALTER TABLE `tipo_producto`
@@ -400,12 +377,6 @@ ALTER TABLE `tipo_producto`
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `detalle_productos`
---
-ALTER TABLE `detalle_productos`
-  ADD CONSTRAINT `producto_detalle` FOREIGN KEY (`id_prod`) REFERENCES `productos` (`id_producto`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `entrada_compra`
@@ -428,13 +399,6 @@ ALTER TABLE `productos`
   ADD CONSTRAINT `Producto_Tipo` FOREIGN KEY (`id_tipo`) REFERENCES `tipo_producto` (`id_tipo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `producto_proveedor`
---
-ALTER TABLE `producto_proveedor`
-  ADD CONSTRAINT `producto_detalle_categoria` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `proveedor_categoria` FOREIGN KEY (`id_prov`) REFERENCES `proveedores` (`id_prov`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Filtros para la tabla `salida_devolucion`
 --
 ALTER TABLE `salida_devolucion`
@@ -450,8 +414,14 @@ ALTER TABLE `salida_merma`
 -- Filtros para la tabla `salida_venta`
 --
 ALTER TABLE `salida_venta`
-  ADD CONSTRAINT `detalle_salida_salida` FOREIGN KEY (`id_detalle_salida_venta`) REFERENCES `detalle_salida_venta` (`id_detalle_salida_venta`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `salida_venta` FOREIGN KEY (`id_inventario`) REFERENCES `inventario` (`id_inventario`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `tickets`
+--
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `tickets_detalle_salida` FOREIGN KEY (`id_detalle_salida_venta`) REFERENCES `detalle_salida_venta` (`id_detalle_salida_venta`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tickets_salida` FOREIGN KEY (`id_salida_venta`) REFERENCES `salida_venta` (`id_salida_venta`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
