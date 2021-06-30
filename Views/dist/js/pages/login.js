@@ -15,7 +15,6 @@ document.getElementById('formIngresar').addEventListener('submit', async (e) => 
 
         if (resjson.respuesta == "OK") {
             window.location.href = 'http://localhost/ProyectoSurtidoraHogar/Views/Principal.php';
-            //window.location = '../../../admin.php';
             
         } else {
             
