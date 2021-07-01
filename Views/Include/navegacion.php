@@ -57,7 +57,7 @@ if (!isset($_SESSION['user'])) {
                     <a href="../Views/principal.php" class="d-block">Empleado</a>
                 </div>
              <!-- SECCIÓN DE LOGO DE EMPRESA Y NOMBRE: USUARIO. Parte superior izquierda. -->
-            <?php } else if ($_SESSION['user'] == "Administrador") { ?>
+            <?php } else if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
 
                 <a href="../Views/principal.php" class="brand-link">
                     <img src="dist/img/surtidora.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -93,7 +93,7 @@ if (!isset($_SESSION['user'])) {
                                 </a>
                             </li>
                             <!-------------------------------Menú de Administrador ------------------------------>
-                            <?php if ($_SESSION['user'] == "Administrador") { ?>
+                            <?php if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
 
                                 <li class="nav-item has-treeview">
                                     <a href="#" class="nav-link">
