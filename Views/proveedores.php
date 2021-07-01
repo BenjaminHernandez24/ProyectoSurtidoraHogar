@@ -4,11 +4,8 @@ if (!isset($_SESSION['user'])) {
   header('Location: Login.php');
 }
 if (
-    $_SESSION['user'] != "Administrador1") {
-    header('Location: Login.php');
-  }
-  if (
-    $_SESSION['user'] != "Administrador2") {
+    $_SESSION['user'] != "Administrador1" &&
+    $_SESSION['user'] != "Administrador2" )  {
     header('Location: Login.php');
   }
 ?> 

@@ -1,5 +1,5 @@
 <?php
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user']) ) {
     session_start();
 }
 ?>
@@ -16,9 +16,15 @@ if (!isset($_SESSION['user'])) {
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <div class="btn-group" role="group" style="color:black;">
+        <?php if ($_SESSION['user'] == "Empleado") { ?>
         <button style="color:white; font-size: 20px;" id="btnGroupDrop1" type="button" class="btn btn-block dropdown-toggle" data-toggle="dropdown">
+                Empleado
+            </button>
+        <?php } else if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
+            <button style="color:white; font-size: 20px;" id="btnGroupDrop1" type="button" class="btn btn-block dropdown-toggle" data-toggle="dropdown">
                 Administrador
             </button>
+            <?php } ?>
             <ul class="dropdown-menu" style="font-size: 20px;">
                 <li><a class="dropdown-item nav-link" href="#"><i class="nav-icon fas fa-sliders-h" style="color:#F29F05;"> Ajustes</i></a></li>
                 <li><a class="dropdown-item nav-link" href="../Views/Ayuda.php" style="color:white" target="_blank"><i class="nav-icon fas fa-question-circle" style="color:#F29F05;"> Ayuda</i></a></li>
@@ -93,7 +99,7 @@ if (!isset($_SESSION['user'])) {
                                 </a>
                             </li>
                             <!-------------------------------Menú de Administrador ------------------------------>
-                            <?php if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
+                            <?php if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2" ) { ?>
 
                                 <li class="nav-item has-treeview">
                                     <a href="#" class="nav-link">
