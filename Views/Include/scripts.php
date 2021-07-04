@@ -1,10 +1,10 @@
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
-
+<script src="plugins/jquery-ui/jquery-ui.js"></script>
 
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+<link rel="stylesheet" type="text/css" href="plugins/jquery-ui/jquery-ui.css">
 
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>

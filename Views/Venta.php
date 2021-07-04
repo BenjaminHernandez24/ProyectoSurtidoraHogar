@@ -1,9 +1,9 @@
 <?php
 session_start();
 if (!isset($_SESSION['user'])) {
-  header('Location: Login.php');
+    header('Location: Login.php');
 }
-?> 
+?>
 <!doctype html>
 <html lang="en">
 
@@ -19,14 +19,15 @@ if (!isset($_SESSION['user'])) {
 
         <!--Estructura modelo venta -->
         <?php include("FormulariosVentas/FrmVenta.php"); ?>
-
+        <?php include("FormulariosVentas/FrmAgregarCliente.php"); ?>
+        <?php include("FormulariosVentas/FrmAgregarNuevoCliente.php"); ?>
         <?php include("Include/footer.php") ?>
 
     </div>
     <!-- ./wrapper -->
 
     <?php include("Include/scripts.php"); ?>
-    <script src="dist/js/pages/proveedores.js"></script>
+    <script src="dist/js/pages/Ventas.js"></script>
 
 </body>
 

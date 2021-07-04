@@ -23,37 +23,37 @@
                             <label for="nom_empresa">Nombre Empresa</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-building"></i></span>
-                                <input class="form-control" type="text" name="nom_empresa" placeholder="Nombre Empresa" required>
+                                <input autocomplete="off" class="form-control" type="text" name="nom_empresa" placeholder="Nombre Empresa" required>
                             </div>
                             <label for="tel_empresa">Teléfono Empresa</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-phone"></i></span>
-                                <input class="form-control" type="number" name="tel_empresa" placeholder="Teléfono Empresa" required>
+                                <input autocomplete="off" class="form-control" type="number" name="tel_empresa" placeholder="Teléfono Empresa" required>
                             </div>
                             <label for="nom_prov">Nombre Proveedor</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-user-tie"></i></span>
-                                <input class="form-control" type="text" name="nom_prov" placeholder="Nombre Proveedor" required>
+                                <input autocomplete="off" class="form-control" type="text" name="nom_prov" placeholder="Nombre Proveedor" required>
                             </div>
                             <label for="tel_prov">Teléfono Proveedor</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-phone"></i></span>
-                                <input class="form-control" type="number" name="tel_prov" placeholder="Teléfono Proveedor" required>
+                                <input autocomplete="off" class="form-control" type="number" name="tel_prov" placeholder="Teléfono Proveedor" required>
                             </div>
                             <label for="num_cuenta">Número de Cuenta</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-money-check"></i></span>
-                                <input class="form-control" type="number" name="num_cuenta" placeholder="Número de Cuenta" required>
+                                <input autocomplete="off" class="form-control" type="number" name="num_cuenta" placeholder="Número de Cuenta" required>
                             </div>
                             <label for="nom_banco">Banco</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-hotel"></i></span>
-                                <input class="form-control" type="text" name="nom_banco" placeholder="Banco" required>
+                                <input autocomplete="off" class="form-control" type="text" name="nom_banco" placeholder="Banco" required>
                             </div>
                             <label for="clave_interbancaria">Clave Interbancaria</label>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-money-check-alt"></i></span>
-                                <input class="form-control" type="number" name="clave_interbancaria" placeholder="Clave Interbancaria" required>
+                                <input autocomplete="off" class="form-control" type="number" name="clave_interbancaria" placeholder="Clave Interbancaria" required>
                             </div>
                         </div>
 
