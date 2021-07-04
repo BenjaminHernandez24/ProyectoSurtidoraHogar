@@ -1,9 +1,17 @@
 <?php
 session_start();
+<<<<<<< HEAD
 if (!isset($_SESSION['user'])) {
     header('Location: Login.php');
 }
 ?>
+=======
+if (!isset($_SESSION['user']) ) {
+    header('Location: Login.php');
+}
+
+?> 
+>>>>>>> 4695ae7297e0031dc5d69547c474570678ca63e4
 <!doctype html>
 <html lang="en">
 
