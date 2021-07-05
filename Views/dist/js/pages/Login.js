@@ -20,11 +20,13 @@ document.getElementById('formIngresar').addEventListener('submit', async (e) => 
         } else {
             
             notificarError(resjson.respuesta);
+            $('#formIngresar').trigger("reset");  
         }
 
     } catch (error) {
         notificarError('Se ha generado un error en el servidor!');
        console.log(error);
+       $('#formIngresar').trigger("reset");  
     }
 
 })

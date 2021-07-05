@@ -44,7 +44,7 @@ if (!isset($_SESSION['user']) ) {
     <!-- Brand Logo -->
      <!-- SECCIÓN DE LOGO DE EMPRESA Y NOMBRE: EMPLEADO. Parte superior izquierda. -->
     <?php if ($_SESSION['user'] == "Empleado") { ?>
-        <a href="../Views/principal.php" class="brand-link">
+        <a href="../Views/Principal.php" class="brand-link">
             <img src="dist/img/surtidora.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
             <span class="brand-text font-weight-light">Surtidora del Hogar</span>
         </a>
@@ -60,12 +60,12 @@ if (!isset($_SESSION['user']) ) {
 
 
                 <div class="info">
-                    <a href="../Views/principal.php" class="d-block">Empleado</a>
+                    <a href="../Views/Principal.php" class="d-block">Empleado</a>
                 </div>
              <!-- SECCIÓN DE LOGO DE EMPRESA Y NOMBRE: USUARIO. Parte superior izquierda. -->
             <?php } else if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
 
-                <a href="../Views/principal.php" class="brand-link">
+                <a href="../Views/Principal.php" class="brand-link">
                     <img src="dist/img/surtidora.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">Surtidora del Hogar</span>
                 </a>
@@ -79,7 +79,7 @@ if (!isset($_SESSION['user']) ) {
                         </div>
 
                         <div class="info">
-                            <a href="../Views/principal.php" class="d-block" style="color:white">Administrador</a>
+                            <a href="../Views/Principal.php" class="d-block" style="color:white">Administrador</a>
                         </div>
                     <?php } ?>
                     </div>
@@ -111,26 +111,27 @@ if (!isset($_SESSION['user']) ) {
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <li class="nav-item">
-                                            <a href="../Views/categoria_tipo.php" class="nav-link">
+                                            <a href="../Views/Productos.php" class="nav-link">
                                                 <i class="nav-icon fas fa-box-open" style="color:white"></i>
-                                                <p style="color:white; font-size: 20px;">Productos</p>
+                                                <p style="color:white; font-size: 20px;"> Agregar Productos</p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="../Views/categoria_tipo.php" class="nav-link">
+                                            <a href="../Views/Categoria_Tipo.php" class="nav-link">
                                                 <i class="nav-icon fas fa-boxes" style="color:white"></i>
-                                                <p style="color:white; font-size: 20px;">Tipo de Producto</p>
+                                                <p style="color:white; font-size: 20px;"> Agregar Tipo </p>
                                             </a>
                                         </li>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../Views/categoria_marca.php" class="nav-link">
+                                    <a href="../Views/Categoria_Marca.php" class="nav-link">
                                         <i class="nav-icon fas fa-boxes" style="color:white"></i>
-                                        <p style="color:white; font-size: 20px;">Marca de Producto</p>
+                                        <p style="color:white; font-size: 20px;">Agregar Marca</p>
                                     </a>
                                 </li>
                         </ul>
                         </li>
+                        <!-------//</li>-------> 
                         <li class="nav-item">
                             <a href="../Views/proveedores.php" class="nav-link">
                                 <i class="nav-icon fas fa-truck" style="color:white"></i>
@@ -198,8 +199,8 @@ if (!isset($_SESSION['user']) ) {
                         </li>
 
                     <?php } ?>
-
                     </ul>
+                    <!-- ul -->
                     </nav>
                     <!-- /.sidebar-menu -->
                 </div>

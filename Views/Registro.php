@@ -15,12 +15,12 @@
 <body>
   <main class="login-design">
     <div class="waves">
-      <img src="dist/img/linea_b.png" alt="" />
+      <img src="dist/img/usuarios.png" alt="" />
     </div>
     <div class="login">
       <div class="login-data">
         <img src="dist/img/img-SurtidoradelHogar1.JPEG" alt="" />
-        <h1>Registro</h1>
+        <h1 > Registro</h1>
         <form id="formRegistro" action="#" class="login-form">
           <div class="input-group">
             <label class="input-fill">
@@ -37,7 +37,7 @@
             </label>
           </div>
 
-          <input type="submit" value="Registrarme" class="btn-login" /> <br> <br>
+          <input type="submit"  id="nuevo_usuario" value="Registrarme" class="btn-login" /> <br> <br>
           <input type="button" value="Login"  class="btn-login" onclick = "location='Login.php'" />
           <br>
           <br>
