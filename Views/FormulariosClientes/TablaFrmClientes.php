@@ -26,7 +26,7 @@
                                             <th>Tipo</th>
                                             <th>Telefono</th>
                                             <th>Estado</th>
-                                            <th>Acciones</th>
+                                            <th class = "text-center">Acciones</th>
                                         </tr>
                                         </thead>
                                     </table>
