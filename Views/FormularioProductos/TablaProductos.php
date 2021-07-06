@@ -17,9 +17,9 @@
                                         <tr class="table table-dark">
                                             <th>ID</th>
                                             <th>Nombre de Producto</th>
+                                            <th>Precio público</th>
                                             <th>Tipo de Producto</th>
                                             <th>Marca de Producto</th>
-                                            <th>Precio Público</th>
                                         </tr>
                                     </thead>
                                 </table>

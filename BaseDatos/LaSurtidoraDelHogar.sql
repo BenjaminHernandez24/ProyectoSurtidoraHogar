@@ -103,7 +103,7 @@ CREATE TABLE `inventario` (
 
 CREATE TABLE `marcas_producto` (
   `id_marca` int(11) NOT NULL,
-  `descripcion` varchar(100) NOT NULL
+  `descripcion_marca` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -203,7 +203,7 @@ CREATE TABLE `tickets` (
 
 CREATE TABLE `tipo_producto` (
   `id_tipo` int(11) NOT NULL,
-  `descripcion` varchar(100) NOT NULL
+  `descripcion_tipo` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

@@ -1,12 +1,10 @@
 const form_agregar_producto = document.getElementById('frm_registro_producto');
 const form_editar_producto = document.getElementById('frm_editar_producto');
-
 var tabla_productos;
 var id_producto;
-var opcion;
 
 //---------- Función para llenar Tabla  de Productos. ---------//
-async function init() {
+async function tab_Productos() {
     tabla_productos = $("#TablaProductos").DataTable({
         "responsive": true,
         "autoWidth": false,
@@ -21,9 +19,9 @@ async function init() {
         "columns": [
             {"data": "id_producto"},
             {"data": "nombre_producto"},
-            {"data": "id_tipo"},
-            {"data": "id_marca"},
             {"data": "precio_publico"},
+            {"data": "descripcion_tipo"},
+            {"data": "descripcion_marca"},
             {
             "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div>"
               
@@ -31,7 +29,7 @@ async function init() {
         ]
     });
 }
-init();
+tab_Productos();
 //---------- Función para llenar Select de Tipo de Productos. (en Formularios de Registro y Editar)---------//
 async function llenar_Tipo_Producto(){
     try {
@@ -50,12 +48,13 @@ async function llenar_Tipo_Producto(){
         var selectTipoProductoEdi = document.getElementById('tipo_producto_editar');
         for(item of resjson){
             let option = document.createElement('option');
-            let option1 = document.createElement('option');
             option.value = item.id_tipo;
-            option.text = item.descripcion;
+            option.text = item.descripcion_tipo;
             selectTipoProducto.appendChild(option);
+
+            let option1 = document.createElement('option');
             option1.value = item.id_tipo;
-            option1.text = item.descripcion;
+            option1.text = item.descripcion_tipo;
             selectTipoProductoEdi.appendChild(option1);
         }
         
@@ -84,10 +83,11 @@ async function llenar_Marca_Producto(){
             let optionM1 = document.createElement('option');
             let optionM2 = document.createElement('option');
             optionM1.value = item.id_marca;
-            optionM1.text = item.descripcion;
+            optionM1.text = item.descripcion_marca;
             selectMarcaProducto.appendChild(optionM1);
+
             optionM2.value = item.id_marca;
-            optionM2.text = item.descripcion;
+            optionM2.text = item.descripcion_marca;
             selectMarcaProductoEdi.appendChild(optionM2);
         }
         

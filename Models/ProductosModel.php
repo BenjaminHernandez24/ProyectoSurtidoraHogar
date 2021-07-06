@@ -5,10 +5,10 @@ class ProductoModelo
     private static $INSERTAR_PRODUCTO = "INSERT INTO productos (nombre_producto, id_tipo, id_marca, precio_publico) values (?, ?, ?, ?)";
     private static $EDITAR_PRODUCTO = "UPDATE productos set nombre_producto = ?, id_tipo = ?, id_marca =?, precio_publico=? WHERE id_producto = ?";
     private static $BORRAR_PRODUCTO = "DELETE FROM productos WHERE id_producto = ?";
-    private static $SELECT_ALL_PRODUCTO = "SELECT * FROM productos";
     private static $VALIDAR_PRODUCTO_EXISTENTE = "SELECT * FROM productos WHERE nombre_producto = ? ";
-    private static $SELECT_ALL_TIPO_PRODUCTO = "SELECT * FROM tipo_producto ";
-    private static $SELECT_ALL_MARCA_PRODUCTO = "SELECT * FROM marcas_producto ";
+    private static $SELECT_ALL_TIPO_PRODUCTO = "SELECT * FROM tipo_producto";
+    private static $SELECT_ALL_MARCA_PRODUCTO = "SELECT * FROM marcas_producto";
+    private static $SELECT_PRODUCTOS_TIPO_MARCA = "SELECT p.id_producto, p.nombre_producto, p.precio_publico, tp.descripcion_tipo, mp.descripcion_marca FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca";
 
 //-------- FUNCIÓN PARA AGREGAR TIPO DE PRODUCTO -------//
     public static function agregar_productos($producto)
@@ -89,7 +89,7 @@ class ProductoModelo
              $conexion = new Conexion();
              $conn = $conexion->getConexion();
  
-             $pst = $conn->prepare(self::$SELECT_ALL_PRODUCTO);
+             $pst = $conn->prepare(self::$SELECT_PRODUCTOS_TIPO_MARCA);
              $pst->execute();
  
              $productos = $pst->fetchAll();
