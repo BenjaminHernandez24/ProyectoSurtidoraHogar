@@ -27,26 +27,27 @@
                         CUERPO DEL MODAL
                         ====================================== -->
                         <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="nombre">Nombre</label>
-                                <input id="nombre" class="form-control" type="text" name="nombre" placeholder="Nombre Cliente" required>
+                            
+                            <label for="nombre">Nombre</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-user-tie"></i></span>
+                                <input autocomplete="off" class="form-control" type="text" id="nombre" name="nombre" placeholder="Nombre Cliente" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="tipo">Tipo</label>
-                                <!--<input id="tipo" class="form-control" type="text" name="tipo" placeholder="Tipo" required>-->
-                                <select class="form-control" name="tipo" id="tipo">
+                            <label for="tipo">Tipo</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-user-friends"></i></span>
+                               <select class="form-control" name="tipo" id="tipo">
                                 <option value="Mayoreo">Mayoreo</option>
                                 <option value="Tecnico">Técnico</option>
                                 <option value="Empresa">Empresa</option>
                               </select>
                             </div>
-                            <div class="mb-3">
-                                <label for="telefono">Teléfono</label>
-                                <input id="telefono" class="form-control" type="number" name="telefono" placeholder="Teléfono" required>
-                            </div>
+                            <label for="telefono">Teléfono</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="addon-wrapping"><i class="fas fa-phone"></i></span>
+                                    <input autocomplete="off" class="form-control" type="number" id="telefono" name="telefono" placeholder="Teléfono Cliente" required>
+                                </div>
                         </div>
-
-
                         <!--=====================================
                         PIE DEL MODAL
                         ======================================-->

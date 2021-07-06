@@ -12,7 +12,7 @@ class ClientesModel
     private $clientes;
 
     /* OBTENER LOS CLIENTES DE LA BASE DE DATOS */
-    public function getClientes()
+    public static function getClientes()
     {
         try {
             $conexion = new Conexion();
@@ -59,7 +59,7 @@ class ClientesModel
     }
 
     /* EDITAR CLIENTES EN LA BASE DE DATOS */
-    public function EditarCliente($cliente)
+    public static function EditarCliente($cliente)
     {
         try {
             $conexion = new Conexion();
@@ -84,7 +84,7 @@ class ClientesModel
     }
 
     /* ELIMINAR CLIENTES EN LA BASE DE DATOS */
-    public function EliminarCliente($cliente)
+    public static function EliminarCliente($cliente)
     {
         try {
             $conexion = new Conexion();
@@ -109,7 +109,7 @@ class ClientesModel
     }
 
     /* CAMBIAR ESTATUS DE CLIENTE */
-    public function Estatus($cliente)
+    public static function Estatus($cliente)
     {
         try {
             $conexion = new Conexion();
