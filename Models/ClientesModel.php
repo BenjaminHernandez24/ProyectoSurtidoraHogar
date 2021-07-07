@@ -40,13 +40,20 @@ class ClientesModel
             $conexion = new Conexion();
             $conn     = $conexion->getConexion();
 
+            //Abro la transacción.
+            $conn->beginTransaction();
+
             $pst       = $conn->prepare(self::$InsertarCliente);
             $resultado = $pst->execute([$cliente['nombre_cli'], $cliente['tipo'], $cliente['telefono']]);
 
             if ($resultado == 1) {
                 $msg = "OK";
+                //Si todo esta correcto insertamos.
+                $conn->commit();
             } else {
                 $msg = "Fallo al insertar";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
             }
 
             $conn = null;
@@ -65,13 +72,20 @@ class ClientesModel
             $conexion = new Conexion();
             $conn     = $conexion->getConexion();
 
+            //Abro la transacción.
+            $conn->beginTransaction();
+
             $pst       = $conn->prepare(self::$UpdateClientes);
             $resultado = $pst->execute([$cliente['nombre_cli'], $cliente['tipo'], $cliente['telefono'], $cliente['id_cli']]);
 
             if ($resultado == 1) {
                 $msg = "OK";
+                //Si todo esta correcto insertamos.
+                $conn->commit();
             } else {
                 $msg = "Fallo al editar";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
             }
 
             $conn = null;
@@ -90,13 +104,20 @@ class ClientesModel
             $conexion = new Conexion();
             $conn     = $conexion->getConexion();
 
+            //Abro la transacción.
+            $conn->beginTransaction();
+
             $pst       = $conn->prepare(self::$EliminarCliente);
             $resultado = $pst->execute([$cliente['id_cli']]);
 
             if ($resultado == 1) {
                 $msg = "OK";
+                //Si todo esta correcto insertamos.
+                $conn->commit();
             } else {
                 $msg = "Fallo al eliminar";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
             }
 
             $conn = null;
@@ -115,13 +136,20 @@ class ClientesModel
             $conexion = new Conexion();
             $conn     = $conexion->getConexion();
 
+            //Abro la transacción.
+            $conn->beginTransaction();
+
             $pst       = $conn->prepare(self::$UpdateEstado);
             $resultado = $pst->execute([$cliente['Estatus'], $cliente['id_cli']]);
 
             if ($resultado == 1) {
                 $msg = "OK";
+                //Si todo esta correcto insertamos.
+                $conn->commit();
             } else {
                 $msg = "Fallo al cambiar estatus";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
             }
 
             $conn = null;

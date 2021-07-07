@@ -43,6 +43,13 @@ async function init() {
 /* INICIALIZAMOS LA TABLA LLENA DE CLIENTES */
 init();
 
+//Actualiza la tabla Clientes cada 1 segundo.
+setInterval('refrescar()',1000);
+
+function refrescar(){
+    tablaClientes.ajax.reload(null,false);
+}
+
 /* DAR UN CLIENTE DE ALTA */
 frmClientes.addEventListener('submit', async (e) => {
     e.preventDefault();

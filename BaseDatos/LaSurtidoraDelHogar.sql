@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-06-2021 a las 04:07:19
+-- Tiempo de generación: 07-07-2021 a las 04:04:48
 -- Versión del servidor: 10.4.19-MariaDB
--- Versión de PHP: 7.4.19
+-- Versión de PHP: 8.0.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -180,18 +180,7 @@ CREATE TABLE `salida_venta` (
   `id_inventario` int(11) NOT NULL,
   `num_piezas` int(11) NOT NULL,
   `precio_a_vender` decimal(10,0) NOT NULL,
-  `subtotal` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tickets`
---
-
-CREATE TABLE `tickets` (
-  `id_ticket` int(11) NOT NULL,
-  `id_salida_venta` int(11) NOT NULL,
+  `subtotal` decimal(10,0) NOT NULL,
   `id_detalle_salida_venta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -282,14 +271,7 @@ ALTER TABLE `salida_merma`
 --
 ALTER TABLE `salida_venta`
   ADD PRIMARY KEY (`id_salida_venta`),
-  ADD KEY `id_inventario` (`id_inventario`);
-
---
--- Indices de la tabla `tickets`
---
-ALTER TABLE `tickets`
-  ADD PRIMARY KEY (`id_ticket`),
-  ADD KEY `id_salida_venta` (`id_salida_venta`),
+  ADD KEY `id_inventario` (`id_inventario`),
   ADD KEY `id_detalle_salida_venta` (`id_detalle_salida_venta`);
 
 --
@@ -363,12 +345,6 @@ ALTER TABLE `salida_venta`
   MODIFY `id_salida_venta` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `tickets`
---
-ALTER TABLE `tickets`
-  MODIFY `id_ticket` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `tipo_producto`
 --
 ALTER TABLE `tipo_producto`
@@ -414,14 +390,8 @@ ALTER TABLE `salida_merma`
 -- Filtros para la tabla `salida_venta`
 --
 ALTER TABLE `salida_venta`
+  ADD CONSTRAINT `detalle_salida_salida` FOREIGN KEY (`id_detalle_salida_venta`) REFERENCES `detalle_salida_venta` (`id_detalle_salida_venta`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `salida_venta` FOREIGN KEY (`id_inventario`) REFERENCES `inventario` (`id_inventario`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `tickets`
---
-ALTER TABLE `tickets`
-  ADD CONSTRAINT `tickets_detalle_salida` FOREIGN KEY (`id_detalle_salida_venta`) REFERENCES `detalle_salida_venta` (`id_detalle_salida_venta`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tickets_salida` FOREIGN KEY (`id_salida_venta`) REFERENCES `salida_venta` (`id_salida_venta`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
