@@ -129,7 +129,7 @@ form_agregar_producto.addEventListener('submit', async(e) => {
             notificarError('Ese producto ya ha sido registrado');
 
         } else {
-            notificarError('Ocurrió un Error :(');
+            notificarError(resjson.respuesta);
         }
     
     } catch (error) {
@@ -176,22 +176,23 @@ form_editar_producto.addEventListener('submit', async (e) => {
     }
 });
 //---------- Al dar click en el botón Editar un Producto se muestra el modal ---------//
-$(document).on('click', '.btnEditar', function(){
+$(document).on('click', '.btnEditar', async function(){
    
     if(tabla_productos.row(this).child.isShown()){
         var data = tabla_productos.row(this).data();
     }else{
         var data = tabla_productos.row($(this).parents("tr")).data();
     }
-
+     
     id_producto = data[0];
-    $("#nom_producto_editar").val(data['nombre_producto']);
-    $("#tipo_producto_editar").val(data['id_tipo']);
-    $("#marca_producto_editar").val(data['id_marca']);
-    $("#precio_pub_editar").val(data['precio_publico']);
-
+    $("#nom_producto_editar").val(data[1]);
+    $("#precio_pub_editar").val(data[2]);
+    //$("#tipo_producto_editar").val(data[3]);
+    //var selectTipoProducto = document.getElementById('tipo_producto');
+    $("#default").val(data[3]);
     // -----Mostramos el modal -----//
     $('#editar_producto').modal('show');
+
 });  
 //---------- Fin Editar un Producto ---------//
 
@@ -250,13 +251,18 @@ function notificarError(mensaje) {
         text: mensaje
     })
 }
+// ------- Mensajes de Alert -------//
+
 function notificacionExitosa(mensaje) {
     Swal.fire(
         mensaje,
         '',
         'success'
     ).then(result => {
+        form_agregar_producto.reset();
         $('#nuevo_producto').modal('hide');	
+        document.getElementById('cerrar').click();
+        document.getElementById('cerrarEditar').click();
     });
 }
 

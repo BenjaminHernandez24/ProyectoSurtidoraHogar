@@ -2,11 +2,11 @@
 require_once "Conexion.php";
 class MarcaModelo
 {
-    private static $INSERTAR_MARCA = "INSERT INTO marcas_producto (descripcion) values (?)";
-    private static $EDITAR_MARCA = "UPDATE marcas_producto set descripcion = ? WHERE id_marca = ?";
+    private static $INSERTAR_MARCA = "INSERT INTO marcas_producto (descripcion_marca) values (?)";
+    private static $EDITAR_MARCA = "UPDATE marcas_producto set descripcion_marca = ? WHERE id_marca = ?";
     private static $BORRAR_MARCA = "DELETE FROM marcas_producto WHERE id_marca = ?";
     private static $SELECT_ALL_MARCA = "SELECT * FROM marcas_producto";
-    private static $VALIDAR_MARCA_EXISTENTE = "SELECT * FROM marcas_producto WHERE descripcion = ? ";
+    private static $VALIDAR_MARCA_EXISTENTE = "SELECT * FROM marcas_producto WHERE descripcion_marca = ? ";
 
 //-------- FUNCIÓN PARA AGREGAR MARCA DE PRODUCTO -------//
     public static function agregar_marca_producto($marca)
@@ -17,12 +17,12 @@ class MarcaModelo
 
             //-------- Se verifica si ya existe la marca de producto -------//
             $pst = $conn->prepare(self::$VALIDAR_MARCA_EXISTENTE);
-            $pst->execute([$marca ['descripcion']]);
+            $pst->execute([$marca ['descripcion_marca']]);
             $validar = $pst->fetchAll();
 
             if (empty($validar)) {
                 $pst = $conn->prepare(self::$INSERTAR_MARCA);
-                $pst->execute([$marca ['descripcion']]);
+                $pst->execute([$marca ['descripcion_marca']]);
 
                 $conn = null;
                 $conexion->closeConexion();
@@ -49,7 +49,7 @@ class MarcaModelo
  
              $pst = $conn->prepare(self::$EDITAR_MARCA);
  
-             $pst->execute([$marca['descripcion'], $marca['id_marca']]);
+             $pst->execute([$marca['descripcion_marca'], $marca['id_marca']]);
  
              $conn = null;
              $conexion->closeConexion();

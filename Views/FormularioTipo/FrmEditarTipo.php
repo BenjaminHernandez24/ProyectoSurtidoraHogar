@@ -12,8 +12,9 @@
                         </div>
                       <!----------------------- BODY ----------------------->
                         <div class="modal-body">
-                            <div class="mb-3">
                                 <label for="des_tipo">Descripción de tipo Producto</label>
+                                <div class="input-group mb-3">
+                                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-blender"></i></span>
                                 <input class="form-control" type="text" id="des_tipo" name="des_tipo" placeholder="Descripción de Tipo" required>
                             </div>
                         </div>

@@ -12,31 +12,35 @@
                         </div>
                    <!------------------------ BODY ------------------------->
                         <div class="modal-body">
-                            <div class="mb-3">
                                 <label for="nom_producto">Nombre Producto</label>
-                                <input class="form-control" type="text" name="nom_producto" placeholder="Nombre producto" required>
+                                <div class="input-group mb-3">
+                                <span class="input-group-text" id="addon-wrapping"><i class="nav-icon fas fa-box-open"></i></span>
+                                <input class="form-control" autocomplete="off" type="text" name="nom_producto" placeholder="Nombre producto" required>
                             </div>
                         </div>
                         <div class="modal-body">
-                        <div class="mb-3">
                         <label for="tipo">Tipo Producto</label>
+                        <div class="input-group mb-3">
+                        <span class="input-group-text" id="addon-wrapping"><i class="fas fa-blender"></i></span>
                         <select class="form-control" name="tipo_producto" id="tipo_producto">
                            <option value="default">Selecciona un tipo</option>
                            </select>
                            </div>
                         </div>
                         <div class="modal-body">
-                        <div class="mb-3">
                         <label for="marca">Marca Producto</label>
+                        <div class="input-group mb-3">
+                        <span class="input-group-text" id="addon-wrapping"> <i class="fas fa-tag"></i></span>
                         <select class="form-control" name="marca_producto" id="marca_producto">
                            <option value="default">Selecciona una Marca</option>
                            </select>
                            </div>
                         </div>
                         <div class="modal-body">
-                            <div class="mb-3">
                                 <label for="precio_pub">Precio Público</label>
-                                <input class="form-control" type="text" name="precio_pub" placeholder="Precio" required>
+                                <div class="input-group mb-3">
+                                <span class="input-group-text" id="addon-wrapping"> <i class="fas fa-money-check-alt"></i></span>
+                                <input class="form-control" autocomplete="off" type="number" name="precio_pub" placeholder="Precio" required>
                             </div>
                         </div>
                     <!------------------------ FOOTER ------------------------->

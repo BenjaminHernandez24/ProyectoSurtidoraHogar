@@ -19,7 +19,7 @@ async function init() {
         },
         "columns": [
             {"data": "id_marca"},
-            {"data": "descripcion"},
+            {"data": "descripcion_marca"},
             {
               "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div>"
             }]
@@ -50,7 +50,7 @@ form_agregar_marca.addEventListener('submit', async(e) => {
             notificarError('Esta marca de producto ya ha sido registrada');
 
         } else {
-            notificarError('Ocurrió un Error :(');
+            notificarError(resjson.respuesta);
         }
     } catch (error) {
         console.log(error);
@@ -77,7 +77,7 @@ form_editar_marca.addEventListener('submit', async(e) => {
             tabla_marca.ajax.reload(null, false);
 
         } else {
-            notificarError('Ocurrio un Error :(');
+            notificarError(resjson.respuesta);
         }
     } catch (error) {
         console.log(error);

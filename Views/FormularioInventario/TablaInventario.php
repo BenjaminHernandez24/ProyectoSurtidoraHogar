@@ -1,29 +1,30 @@
- <!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-
-            <!-- Tabla Categoría Marca Productos -->
+            <!-- Tabla Inventario -->
             <div class="container-fluid pt-4">
                 <div class="row">
                     <div class="col-12">
                     <div class="card">
                                 <div class="card-body">
-                                    <i class="nav-icon fas fa-boxes" style="color:#F29F05; font-size: 30px;"> Marca Productos</i>
-                                </div>
+                                    <i class="fas fa-dolly-flatbed" style="color:#F29F05; font-size: 30px;"> Inventario </i>
+                                </div> 
                             </div>
                         <div class="card">
-                            <div class="card-header">
-                                <button id="alta_marca" class="btn btn-outline-primary" data-toggle="modal" data-target="#nueva_marca">
-                                    Agregar Marca Producto
+                        <div class="card-header">
+                                <button id="alta_producto_inv" class="btn btn-outline-primary" data-toggle="modal" data-target="#nuevo_producto_inv">
+                                    Agregar Producto
                                 </button>
                             </div>
                             <!-- /.card-header -->
-
                             <div class="card-body">
-                                <table id="tab_categoria_marca" class="table table-light">
+                                <table id="tab_inventario" class="table table-light">
                                     <thead class="thead-light">
                                         <tr class="table table-dark">
-                                            <th>Id</th>
-                                            <th>Marca Producto</th>
+                                            <th>ID Inventario</th>
+                                            <th>Producto</th>
+                                            <th>Estatus aceptable</th>
+                                            <th>Estatus Alerta</th>
+                                            <th>Stock</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -37,7 +38,6 @@
                 </div>
                 <!-- /.row -->
             </div>
-            <!-- /. TABLA MARCA PRODUCTO -->
-
+            <!-- /. TABLA INVENTARIO -->
         </div>
          <!-- ends content-wrapper -->

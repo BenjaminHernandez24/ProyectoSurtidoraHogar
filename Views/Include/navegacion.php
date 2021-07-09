@@ -133,6 +133,14 @@ if (!isset($_SESSION['user']) ) {
                         </li>
                         <!-------//</li>-------> 
                         <li class="nav-item">
+                            <a href="../Views/Inventario.php" class="nav-link">
+                                <i class="fas fa-dolly-flatbed" style="color:white"></i>
+                                <p style="color:white; font-size: 25px;">
+                                    Inventario
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="../Views/proveedores.php" class="nav-link">
                                 <i class="nav-icon fas fa-truck" style="color:white"></i>
                                 <p style="color:white; font-size: 25px;">

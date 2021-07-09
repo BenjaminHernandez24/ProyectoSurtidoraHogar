@@ -19,7 +19,7 @@ async function init() {
         },
         "columns": [
             {"data": "id_tipo"},
-            {"data": "descripcion"},
+            {"data": "descripcion_tipo"},
             {
               "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div>"
             }]
@@ -50,7 +50,7 @@ form_agregar_tipo.addEventListener('submit', async(e) => {
             notificarError('Este tipo de producto ya ha sido registrado');
 
         } else {
-            notificarError('Ocurrió un Error :(');
+            notificarError(resjson.respuesta);
         }
     } catch (error) {
         console.log(error);
@@ -77,7 +77,7 @@ form_editar_tipo.addEventListener('submit', async(e) => {
             tabla_tipo.ajax.reload(null, false);
 
         } else {
-            notificarError('Ocurrio un Error :(');
+            notificarError(resjson.respuesta);
         }
     } catch (error) {
         console.log(error);

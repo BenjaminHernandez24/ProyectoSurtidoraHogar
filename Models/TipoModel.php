@@ -2,11 +2,11 @@
 require_once "Conexion.php";
 class TipoModelo
 {
-    private static $INSERTAR_TIPO = "INSERT INTO tipo_producto (descripcion) values (?)";
-    private static $EDITAR_TIPO = "UPDATE tipo_producto set descripcion = ? WHERE id_tipo = ?";
+    private static $INSERTAR_TIPO = "INSERT INTO tipo_producto (descripcion_tipo) values (?)";
+    private static $EDITAR_TIPO = "UPDATE tipo_producto set descripcion_tipo = ? WHERE id_tipo = ?";
     private static $BORRAR_TIPO = "DELETE FROM tipo_producto WHERE id_tipo = ?";
     private static $SELECT_ALL_TIPO = "SELECT * FROM tipo_producto";
-    private static $VALIDAR_TIPO_EXISTENTE = "SELECT * FROM tipo_producto WHERE descripcion = ? ";
+    private static $VALIDAR_TIPO_EXISTENTE = "SELECT * FROM tipo_producto WHERE descripcion_tipo = ? ";
 
 //-------- FUNCIÓN PARA AGREGAR TIPO DE PRODUCTO -------//
     public static function agregar_tipo_producto($tipo)
@@ -17,12 +17,12 @@ class TipoModelo
 
             //-------- Se verifica si ya existe el tipo de producto -------//
             $pst = $conn->prepare(self::$VALIDAR_TIPO_EXISTENTE);
-            $pst->execute([$tipo ['descripcion']]);
+            $pst->execute([$tipo ['descripcion_tipo']]);
             $validar = $pst->fetchAll();
 
             if (empty($validar)) {
                 $pst = $conn->prepare(self::$INSERTAR_TIPO);
-                $pst->execute([$tipo ['descripcion']]);
+                $pst->execute([$tipo ['descripcion_tipo']]);
 
                 $conn = null;
                 $conexion->closeConexion();
@@ -49,7 +49,7 @@ class TipoModelo
  
              $pst = $conn->prepare(self::$EDITAR_TIPO);
  
-             $pst->execute([$tipo['descripcion'], $tipo['id_tipo']]);
+             $pst->execute([$tipo['descripcion_tipo'], $tipo['id_tipo']]);
  
              $conn = null;
              $conexion->closeConexion();

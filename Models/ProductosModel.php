@@ -9,7 +9,7 @@ class ProductoModelo
     private static $SELECT_ALL_TIPO_PRODUCTO = "SELECT * FROM tipo_producto";
     private static $SELECT_ALL_MARCA_PRODUCTO = "SELECT * FROM marcas_producto";
     private static $SELECT_PRODUCTOS_TIPO_MARCA = "SELECT p.id_producto, p.nombre_producto, p.precio_publico, tp.descripcion_tipo, mp.descripcion_marca FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca";
-
+    private static $SELECT_ID_PRODUCTO = "SELECT id_producto  FROM productos WHERE id_producto= ?";
 //-------- FUNCIÓN PARA AGREGAR TIPO DE PRODUCTO -------//
     public static function agregar_productos($producto)
     {
@@ -136,6 +136,24 @@ class ProductoModelo
                $conexion->closeConexion();
    
                return $marcas;
+           } catch (PDOException $e) {
+               return $e->getMessage();
+           }
+       }
+       public static function obtener_id_producto($id)
+       {
+           try {
+               $conexion = new Conexion();
+               $conn = $conexion->getConexion();
+   
+               $pst = $conn->prepare(self::$SELECT_ID_PRODUCTO);
+               $pst->execute([$id]);
+   
+               $id_en = $pst->fetch();
+               $conn = null;
+               $conexion->closeConexion();
+   
+               return $id_en;
            } catch (PDOException $e) {
                return $e->getMessage();
            }

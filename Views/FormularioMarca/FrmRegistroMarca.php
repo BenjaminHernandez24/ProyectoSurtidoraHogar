@@ -13,8 +13,9 @@
                         </div>
                    <!------------------------ BODY ------------------------->
                         <div class="modal-body">
-                            <div class="mb-3">
                                 <label for="des_marca">Descripción de marca Producto</label>
+                                <div class="input-group mb-3">
+                                <span class="input-group-text" id="addon-wrapping"> <i class="fas fa-tag"></i></span>
                                 <input class="form-control" type="text" name="des_marca" placeholder="Descripción de marca" required>
                             </div>
                         </div>
