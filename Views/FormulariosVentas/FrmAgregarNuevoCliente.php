@@ -1,7 +1,7 @@
 <!--=====================================
         MODAL AGREGAR NUEVO CLIENTE
         ======================================-->
-        <div id="nuevo_cliente" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div id="modalnuevocliente" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <form method="post" id="frmClientes">

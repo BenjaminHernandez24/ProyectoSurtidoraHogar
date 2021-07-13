@@ -1,17 +1,10 @@
 <?php
 session_start();
-<<<<<<< HEAD
-if (!isset($_SESSION['user'])) {
-    header('Location: Login.php');
-}
-?>
-=======
 if (!isset($_SESSION['user']) ) {
     header('Location: Login.php');
 }
 
 ?> 
->>>>>>> 4695ae7297e0031dc5d69547c474570678ca63e4
 <!doctype html>
 <html lang="en">
 
@@ -29,6 +22,7 @@ if (!isset($_SESSION['user']) ) {
         <?php include("FormulariosVentas/FrmVenta.php"); ?>
         <?php include("FormulariosVentas/FrmAgregarCliente.php"); ?>
         <?php include("FormulariosVentas/FrmAgregarNuevoCliente.php"); ?>
+        <?php include("FormulariosVentas/FrmEditarVenta.php"); ?>
         <?php include("Include/footer.php") ?>
 
     </div>

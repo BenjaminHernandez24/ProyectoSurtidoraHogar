@@ -124,7 +124,7 @@ $(document).on("click", ".btnEditar", function() {
     } else {
         var data = tablaProveedores.row($(this).parents("tr")).data();
     }
-
+    console.log(data);
     /* Cargamos los datos obtenidos al modal editar */
     idProveedor = data[0];
     $("#nom_empresa").val(data[1]);

@@ -4,7 +4,7 @@
 <div id="modalcliente" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form method="post" id="frmClientes">
+            <form method="post" id="frmMostrarClientes">
                 <!--=====================================
                         HEADER DEL MODAL
                         ======================================-->
@@ -21,11 +21,6 @@
                         ====================================== -->
                 <div class="modal-body">
                     <div class="card">
-                        <div class="card-header">
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#nuevo_cliente">
-                                Agregar Nuevo Cliente
-                            </button>
-                        </div>
                         <!-- /.card-header -->
 
                         <div class="card-body">
@@ -49,7 +44,7 @@
                         PIE DEL MODAL
                         ======================================-->
                 <div class="modal-footer">
-                    <button id="closeCerrar" type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button id="Cerrar" type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 </div>
             </form>
         </div>

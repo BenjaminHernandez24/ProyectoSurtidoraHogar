@@ -19,6 +19,9 @@ class ProveedoresModelo
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
 
+            //Abro la transacción.
+            $conn->beginTransaction();
+
             /*Verificamos si ya existe el proveedor o la empresa*/
             $pst = $conn->prepare(self::$VALIDAR_EXISTENTE);
             $pst->execute([$proveedor['nom_empresa'], $proveedor['nom_prov']]);
@@ -26,17 +29,26 @@ class ProveedoresModelo
 
             if (empty($validar)) {
                 $pst = $conn->prepare(self::$INSERTAR_PROVEEDOR);
-                $pst->execute([$proveedor['nom_empresa'], $proveedor['tel_empresa'], $proveedor['nom_prov'], $proveedor['tel_prov'],$proveedor['num_cuenta'],$proveedor['nom_banco'],$proveedor['clave_interbancaria'],1]);
+                $resultado = $pst->execute([$proveedor['nom_empresa'], $proveedor['tel_empresa'], $proveedor['nom_prov'], $proveedor['tel_prov'], $proveedor['num_cuenta'], $proveedor['nom_banco'], $proveedor['clave_interbancaria'], 1]);
+                
+                if ($resultado == 1) {
+                    $msg = "OK";
+                    //Si todo esta correcto insertamos.
+                    $conn->commit();
+                } else {
+                    $msg = "Fallo al cambiar estatus";
+                    //Si algo falla, reestablece la bd a como estaba en un inicio.
+                    $conn->rollBack();
+                }
+                
                 $conn = null;
                 $conexion->closeConexion();
-
-                return $msg="OK";
+                return $msg;
             } else {
-                return $msg="EXISTE";
+                return $msg = "EXISTE";
             }
             $conn = null;
             $conexion->closeConexion();
-
         } catch (PDOException $e) {
             return $e->getMessage();
         }
@@ -52,14 +64,27 @@ class ProveedoresModelo
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
 
+            //Abro la transacción.
+            $conn->beginTransaction();
+
             $pst = $conn->prepare(self::$EDITAR_PROVEEDOR);
 
-            $pst->execute([$proveedor['nom_empresa'], $proveedor['tel_empresa'], $proveedor['nom_prov'], $proveedor['tel_prov'],$proveedor['num_cuenta'],$proveedor['nom_banco'],$proveedor['clave_interbancaria'],$proveedor['id']]);
+            $resultado = $pst->execute([$proveedor['nom_empresa'], $proveedor['tel_empresa'], $proveedor['nom_prov'], $proveedor['tel_prov'], $proveedor['num_cuenta'], $proveedor['nom_banco'], $proveedor['clave_interbancaria'], $proveedor['id']]);
+
+            if ($resultado == 1) {
+                $msg = "OK";
+                //Si todo esta correcto insertamos.
+                $conn->commit();
+            } else {
+                $msg = "Fallo al editar";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
+            }
 
             $conn = null;
             $conexion->closeConexion();
 
-            return "OK";
+            return $msg;
         } catch (PDOException $e) {
             return $e->getMessage();
         }
@@ -75,14 +100,27 @@ class ProveedoresModelo
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
 
+            //Abro la transacción.
+            $conn->beginTransaction();
+
             $pst = $conn->prepare(self::$BORRAR_PROVEEDOR);
 
-            $pst->execute([$id]);
+            $resultado = $pst->execute([$id]);
+
+            if ($resultado == 1) {
+                $msg = "OK";
+                //Si todo esta correcto insertamos.
+                $conn->commit();
+            } else {
+                $msg = "Fallo al editar";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
+            }
 
             $conn = null;
             $conexion->closeConexion();
 
-            return "OK";
+            return $msg;
         } catch (PDOException $e) {
             return $e->getMessage();
         }
@@ -120,13 +158,26 @@ class ProveedoresModelo
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
 
+            //Abro la transacción.
+            $conn->beginTransaction();
+
             $pst = $conn->prepare(self::$ESTATUS_PROVEEDOR);
-            $pst->execute([0, $Id]);
+            $resultado = $pst->execute([0, $Id]);
+
+            if ($resultado == 1) {
+                $msg = "OK";
+                //Si todo esta correcto insertamos.
+                $conn->commit();
+            } else {
+                $msg = "Fallo al editar";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
+            }
 
             $conexion->closeConexion();
             $conn = null;
 
-            return "OK";
+            return $msg;
         } catch (PDOException $e) {
             return $e->getMessage();
         }
@@ -142,13 +193,26 @@ class ProveedoresModelo
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
 
+            //Abro la transacción.
+            $conn->beginTransaction();
+
             $pst = $conn->prepare(self::$ESTATUS_PROVEEDOR);
-            $pst->execute([1, $Id]);
+            $resultado = $pst->execute([1, $Id]);
+
+            if ($resultado == 1) {
+                $msg = "OK";
+                //Si todo esta correcto insertamos.
+                $conn->commit();
+            } else {
+                $msg = "Fallo al editar";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
+            }
 
             $conexion->closeConexion();
             $conn = null;
 
-            return "OK";
+            return $msg;
         } catch (PDOException $e) {
             return $e->getMessage();
         }

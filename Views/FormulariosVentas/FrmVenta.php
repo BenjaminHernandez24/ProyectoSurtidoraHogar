@@ -1,3 +1,7 @@
+<?php
+require_once "../Controllers/EstadisticaController.php";
+?>
+
             <!-- TABLA PROVEEDORES -->
             <div class="content-wrapper">
                 <div class="container-fluid pt-4">
@@ -45,7 +49,7 @@
                                                         <label for="nom_empresa">Stock</label>
                                                         <div class="input-group mb-3">
                                                             <span class="input-group-text" id="addon-wrapping"><i class="fas fa-clipboard"></i></span>
-                                                            <input id="stock" type="text" class="form-control input-lg" id="nuevoTotalVenta" name="stock" total="" placeholder="0" readonly required>
+                                                            <input id="stock" type="text" class="form-control input-lg" name="stock" total="" placeholder="0" readonly required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -53,7 +57,7 @@
                                                 <label for="nom_empresa">Cantidad</label>
                                                 <div class="input-group mb-3">
                                                     <span class="input-group-text" id="addon-wrapping"><i class="fas fa-clipboard"></i></span>
-                                                    <input id="cantidad" name="cantidad" type="number" class="form-control input-lg" id="nuevoTotalVenta" total="" placeholder="0" disabled="" required>
+                                                    <input id="cantidad" name="cantidad" type="number" class="form-control input-lg" total="" placeholder="0" disabled="" required>
                                                 </div>
 
                                             </div>
@@ -68,71 +72,98 @@
                                 <!--=====================================
                 Datos de la venta
                 ======================================-->
+                                <form id="frmDatosVenta">
+                                    <div class="col">
+                                        <div class="card">
+                                            <div class="card-header" style="background-color:#D9CB04; color:white; font-size: 20px;">
+                                                <i class="fas fa-cart-plus"> Venta</i>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="nom_empresa">Subtotal</label>
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text" id="addon-wrapping"><i style="font-size: 20px;" class="fas fa-dollar-sign"></i></span>
+                                                            <input id="subtotal" name="subtotal" style="font-size: 40px;" type="text" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" readonly required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="nom_empresa">Total</label>
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text" id="addon-wrapping"><i style="font-size: 20px;" class="fas fa-dollar-sign"></i></span>
+                                                            <input id="total" name="total" style="font-size: 40px;" type="text" class="form-control input-lg" total="" placeholder="0" readonly required>
+                                                        </div>
+                                                    </div>
 
-                                <div class="col">
-                                    <div class="card">
-                                        <div class="card-header" style="background-color:#D9CB04; color:white; font-size: 20px;">
-                                            <i class="fas fa-cart-plus"> Venta</i>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <label for="nom_empresa">Subtotal</label>
-                                                    <div class="input-group mb-3">
-                                                        <span class="input-group-text" id="addon-wrapping"><i style="font-size: 20px;" class="fas fa-dollar-sign"></i></span>
-                                                        <input id="subtotal" name="subtotal" style="font-size: 40px;" type="text" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" readonly required>
+                                                </div>
+
+                                                <label for="nom_empresa">Fecha</label>
+                                                <div class="input-group mb-3">
+                                                    <span class="input-group-text" id="addon-wrapping"><i class="fas fa-calendar-alt"></i></span>
+                                                    <input type="text" style="font-size: 20px;" value="<?php $ctr = new EstadisticasControlador(); $ctr->obtenerFecha(); ?>" readonly required>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <label for="nom_empresa">Cliente</label>
+                                                        <div class="input-group mb-3">
+                                                            <input id="nombre_cliente" name="nombre_cliente" type="text" class="form-control" placeholder="Nombre del Cliente" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
+                                                            <button id="buscar_cliente" type="button" name="buscar_cliente" class="btn btn-primary" disabled="">Buscar</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label for="nom_empresa">Agregar Cliente</label>
+                                                        <div class="input-group mb-3">
+                                                            <button id="nuevo_cliente" type="button" name="nuevo_cliente" class="btn btn-primary" data-toggle="modal">Nuevo Cliente</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <label for="nom_empresa">Seleccione método de pago</label>
+                                                        <select class="form-control mb-3" id="nuevoMetodoPago" name="nuevoMetodoPago" required>
+                                                            <option value="Efectivo">Efectivo</option>
+                                                            <option value="Tarjeta Crédito">Tarjeta Crédito</option>
+                                                            <option value="Tarjeta Débito">Tarjeta Débito</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col">
+                                                        <label for="nom_empresa">Descuento</label>
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text" id="addon-wrapping"><i class="fas fa-percentage"></i></span>
+                                                            <input id="descuento" type="number" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" disabled="">
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col">
-                                                    <label for="nom_empresa">Total</label>
-                                                    <div class="input-group mb-3">
-                                                        <span class="input-group-text" id="addon-wrapping"><i style="font-size: 20px;" class="fas fa-dollar-sign"></i></span>
-                                                        <input style="font-size: 40px;" type="text" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" readonly required>
+
+                                                <div class="row" id="fila_cobro">
+                                                    <div class="col">
+                                                        <label>Cobro</label>
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text" id="addon-wrapping"><i class="fas fa-dollar-sign"></i></span>
+                                                            <input id="cobro" type="number" class="form-control input-lg" name="cobro" total="" placeholder="0" disabled="">
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                            </div>
-
-                                            <label for="nom_empresa">Fecha</label>
-                                            <div class="input-group mb-3">
-                                                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-calendar-alt"></i></span>
-                                                <input type="text" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" readonly required>
-                                            </div>
-
-                                            <label for="nom_empresa">Cliente</label>
-                                            <div class="input-group mb-3">
-                                                <input id="nombre_cliente" name="nombre_cliente" type="text" class="form-control" placeholder="Nombre del Cliente" aria-label="Recipient's username" aria-describedby="button-addon2" readonly required>
-                                                <button id="buscar_cliente" class="btn btn-primary" data-toggle="modal">Buscar</button>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col">
-                                                    <label for="nom_empresa">Seleccione método de pago</label>
-                                                    <select class="form-control mb-3" id="nuevoMetodoPago" name="nuevoMetodoPago" required>
-                                                        <option value="Efectivo">Efectivo</option>
-                                                        <option value="TC">Tarjeta Crédito</option>
-                                                        <option value="TD">Tarjeta Débito</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col">
-                                                    <label for="nom_empresa">Descuento</label>
-                                                    <div class="input-group mb-3">
-                                                        <span class="input-group-text" id="addon-wrapping"><i class="fas fa-percentage"></i></span>
-                                                        <input id="descuento" type="number" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" disabled="" required>
+                                                    <div class="col">
+                                                        <label>Cambio</label>
+                                                        <div class="input-group mb-3">
+                                                            <span class="input-group-text" id="addon-wrapping"><i class="fas fa-dollar-sign"></i></span>
+                                                            <input id="cambio" type="number" class="form-control input-lg" name="cambio" total="" placeholder="0" disabled="">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                        </div>
-                                        <div class="card-footer text-right">
-                                            <a href="#" class="btn btn-primary">Confirmar</a>
+                                            <div class="card-footer text-right">
+                                                <button type="submit" class="btn btn-primary">Confirmar</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
                             </div>
-
+                            </form>
                             <!--=====================================
                 Tabla de producto para la venta
                 ======================================-->
@@ -144,6 +175,7 @@
                                     <table id="tblDetalleVenta" class="table table-light">
                                         <thead class="thead-light">
                                             <tr class="table table-dark">
+                                                <th>ID_Inventario</th>
                                                 <th>Producto</th>
                                                 <th>Cantidad</th>
                                                 <th>Precio</th>
@@ -161,278 +193,3 @@
                     </div>
                 </div>
             </div>
-
-
-
-            <!-- <div class="content-wrapper">
-
-    <section class="container-fluid pt-4">
-        <div class="card">
-            <i class="nav-icon fas fa-truck" style="color:#F29F05; font-size: 40px;"> Ventas</i>
-        </div>
-        <div class="row">
-            <=====================================
-      EL FORMULARIO
-      ======================================
-
-            <div class="col-lg-5 col-xs-12">
-                <div class="box box-success card">
-
-                    <div class="box-header with-border card"></div>
-
-                    <form role="form" method="post" class="formularioVenta">
-
-                        <div class="box-body">
-
-                            <div class="box">
-
-
-                                <!=====================================
-                ENTRADA DEL CLIENTE
-                ======================================-
-
-                                <div class="card-body">
-
-                                    <div class="input-group">
-
-                                        <span class="input-group-text" id="addon-wrapping"><i class="fas fa-user"></i></span>
-
-                                        <select class="form-control" id="seleccionarCliente" name="seleccionarCliente" required>
-
-                                            <option value="">Seleccionar cliente</option>
-                                            <option value="1">Noe</option>
-                                            <option value="2">Benjamin</option>
-                                            <option value="3">Evelyn</option>
-
-                                        </select>
-
-                                        <span class="input-group-addon"><button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#modalAgregarCliente" data-dismiss="modal">Agregar cliente</button></span>
-
-                                    </div>
-
-                                </div>
-
-                                <!=====================================
-                ENTRADA PARA AGREGAR PRODUCTO
-                ======================================->
-
-                                <div class="row">
-
-                                    <div class="col-xs-8 pull-right card-body form-group row">
-
-                                        <table class="table">
-
-                                            <thead>
-
-                                                <tr>
-                                                    <th></th>
-                                                    <th>Producto</th>
-                                                    <th>Cantidad</th>
-                                                    <th>Total</th>
-                                                </tr>
-
-                                            </thead>
-
-                                            <tbody>
-
-                                                <tr>
-                                                    <td style="width: 0%">
-
-                                                        <div class="input-group">
-                                                            <button class="btn btn-danger" type="button">X</button>
-                                                        </div>
-
-                                                    </td>
-                                                    <td style="width: 60%">
-
-                                                        <div class="input-group">
-
-                                                            <input type="Text" class="form-control input-lg" min="Producto" id="nuevoImpuestoVenta" name="nuevoImpuestoVenta" placeholder="0" value="Tornillo" readonly required>
-                                                        </div>
-
-                                                    </td>
-
-                                                    <td style="width: 10%">
-
-                                                        <div class="input-group">
-                                                            <input type="Number" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" required>
-                                                        </div>
-
-                                                    </td>
-
-                                                    <td style="width: 40%">
-
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" readonly required>
-                                                            <input type="hidden" name="totalVenta" id="totalVenta">
-                                                        </div>
-
-                                                    </td>
-
-
-                                                </tr>
-
-                                            </tbody>
-
-                                        </table>
-
-                                    </div>
-
-                                </div>
-                                <!-=====================================
-                  ENTRADA IMPUESTOS Y TOTAL
-                  ======================================-
-                                <div class="row">
-
-                                    <div class="col-xs-8 pull-right card-body form-group row">
-
-                                        <table class="table">
-
-                                            <thead>
-
-                                                <tr>
-                                                    <th>Descuento</th>
-                                                    <th>Total</th>
-                                                </tr>
-
-                                            </thead>
-
-                                            <tbody>
-
-                                                <tr>
-
-                                                    <td style="width: 50%">
-
-                                                        <div class="input-group">
-                                                            <span class="input-group-text" id="addon-wrapping"><i class="fas fa-percentage"></i></span>
-                                                            <input type="number" class="form-control input-lg" min="0" id="nuevoImpuestoVenta" name="nuevoImpuestoVenta" placeholder="0" required>
-
-                                                            <input type="hidden" name="nuevoPrecioImpuesto" id="nuevoPrecioImpuesto" required>
-
-                                                            <input type="hidden" name="nuevoPrecioNeto" id="nuevoPrecioNeto" required>
-
-
-                                                        </div>
-
-                                                    </td>
-
-                                                    <td style="width: 50%">
-
-                                                        <div class="input-group">
-
-                                                            <span class="input-group-text" id="addon-wrapping"><i class="fas fa-dollar-sign"></i></span>
-
-                                                            <input type="text" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="00000" readonly required>
-
-                                                            <input type="hidden" name="totalVenta" id="totalVenta">
-
-
-                                                        </div>
-
-                                                    </td>
-
-                                                </tr>
-
-                                            </tbody>
-
-                                        </table>
-
-                                    </div>
-
-                                </div>
-
-
-                                <!-=====================================
-                ENTRADA MÉTODO DE PAGO
-                ======================================--
-
-                                <div class="card-body">
-
-                                    <div class="col-xs-6" style="padding-right:0px">
-
-                                        <div class="input-group">
-
-                                            <select class="form-control" id="nuevoMetodoPago" name="nuevoMetodoPago" required>
-                                                <option value="">Seleccione método de pago</option>
-                                                <option value="Efectivo">Efectivo</option>
-                                                <option value="TC">Tarjeta Crédito</option>
-                                                <option value="TD">Tarjeta Débito</option>
-                                            </select>
-
-                                        </div>
-
-                                    </div>
-
-                                    <div class="cajasMetodoPago"></div>
-
-                                    <input type="hidden" id="listaMetodoPago" name="listaMetodoPago">
-
-                                </div>
-
-                                <br>
-
-                            </div>
-
-                        </div>
-
-                        <div class="box-footer card-body">
-
-                            <button type="submit" class="btn btn-primary pull-right">Guardar venta</button>
-
-                        </div>
-
-                    </form>
-
-                </div>
-
-            </div>
-
-            <!-=====================================
-      LA TABLA DE PRODUCTOS
-      ======================================--
-
-            <div class="col-lg-7 hidden-md hidden-sm hidden-xs">
-
-                <div class="card">
-
-                    <div class="box-header with-border"></div>
-
-                    <div class="card-body">
-
-                        <table id="tbl" class="table table-light">
-                            <thead class="thead-light">
-                                <tr class="table table-dark">
-                                    <th>Código</th>
-                                    <th>Producto</th>
-                                    <th>Categoría</th>
-                                    <th>Marca</th>
-                                    <th>Stock</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                        </table>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </div>
-
-    </section>
-
-</div>
-
-
-
-</form>
-
-
-
-</div>
-
-</div>
-
-</div> -->
