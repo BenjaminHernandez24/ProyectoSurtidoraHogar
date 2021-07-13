@@ -195,72 +195,72 @@ formDatosProducto.addEventListener('submit', async function(e) {
         var respuesta = await peticion.json();
         console.log(respuesta);
         console.log("hola");
-        if (peticion.respuesta == "OK") {
+        if (respuesta == "OK") {
+            if (cantidad < 0 || precio < 0 || producto == "" || cantidad == "" || total == "") {
+                Error("Error Datos Erroneos");
+            } else {
+                $('#tblDetalleVenta').DataTable().destroy();
+                $('#tblDetalleVenta').find('tbody').append(`<tr id="">
+                    <td class="row-index">
+                     <p>${id_inventario}</p>
+                     </td>
+                     <td class="row-index">
+                     <p>${producto}</p>
+                     </td>
+                     <td class="row-index">
+                     <p>${cantidad}</p>
+                     </td>
+                     <td class="row-index">
+                     <p>${precio}</p>
+                     </td>
+                     <td class="row-index">
+                     <p>${total}</p>
+                     </td>
+                      <td class="">
+                      <button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button>
+                        </td>
+                      </tr>`);
+                $('#tblDetalleVenta').DataTable().draw();
 
+                if (document.getElementById('subtotal').value == "") {
+                    $("#total").val(total);
+                    $("#subtotal").val(total);
+                    document.getElementById('buscar_cliente').disabled = false;
+                    document.getElementById('descuento').disabled = false;
+                    document.getElementById('cobro').disabled = false;
+                } else {
+                    let subtotal = parseFloat(document.getElementById('subtotal').value);
+                    var suma_subtotal = total + subtotal;
+                    $("#subtotal").val(suma_subtotal);
+                    if (tipo_cliente == "") {
+                        $("#total").val(suma_subtotal);
+                    } else {
+                        let descuento_aplicado;
+                        let total;
+                        if (tipo_cliente == "Mayoreo") {
+                            let descuento_decimal = 12 / 100;
+                            descuento_aplicado = suma_subtotal * descuento_decimal;
+                            total = suma_subtotal - descuento_aplicado;
+                        } else if (tipo_cliente == "Tecnico") {
+                            let descuento_decimal = 8 / 100;
+                            descuento_aplicado = suma_subtotal * descuento_decimal;
+                            total = suma_subtotal - descuento_aplicado;
+                        } else {
+                            let descuento_decimal = 8 / 100;
+                            descuento_aplicado = suma_subtotal * descuento_decimal;
+                            total = suma_subtotal - descuento_aplicado;
+                        }
+                        $("#total").val(total);
+                    }
+                }
+                limpiarCampos("limpiartodo");
+            }
+        } else {
+            notificarError("Ocurrio un error");
         }
 
     } catch (error) {
         console.log(error);
-    }
-
-    if (cantidad < 0 || precio < 0 || producto == "" || cantidad == "" || total == "") {
-        Error("Error Datos Erroneos");
-    } else {
-        $('#tblDetalleVenta').DataTable().destroy();
-        $('#tblDetalleVenta').find('tbody').append(`<tr id="">
-            <td class="row-index">
-             <p>${id_inventario}</p>
-             </td>
-             <td class="row-index">
-             <p>${producto}</p>
-             </td>
-             <td class="row-index">
-             <p>${cantidad}</p>
-             </td>
-             <td class="row-index">
-             <p>${precio}</p>
-             </td>
-             <td class="row-index">
-             <p>${total}</p>
-             </td>
-              <td class="">
-              <button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button>
-                </td>
-              </tr>`);
-        $('#tblDetalleVenta').DataTable().draw();
-
-        if (document.getElementById('subtotal').value == "") {
-            $("#total").val(total);
-            $("#subtotal").val(total);
-            document.getElementById('buscar_cliente').disabled = false;
-            document.getElementById('descuento').disabled = false;
-            document.getElementById('cobro').disabled = false;
-        } else {
-            let subtotal = parseFloat(document.getElementById('subtotal').value);
-            var suma_subtotal = total + subtotal;
-            $("#subtotal").val(suma_subtotal);
-            if (tipo_cliente == "") {
-                $("#total").val(suma_subtotal);
-            } else {
-                let descuento_aplicado;
-                let total;
-                if (tipo_cliente == "Mayoreo") {
-                    let descuento_decimal = 12 / 100;
-                    descuento_aplicado = suma_subtotal * descuento_decimal;
-                    total = suma_subtotal - descuento_aplicado;
-                } else if (tipo_cliente == "Tecnico") {
-                    let descuento_decimal = 8 / 100;
-                    descuento_aplicado = suma_subtotal * descuento_decimal;
-                    total = suma_subtotal - descuento_aplicado;
-                } else {
-                    let descuento_decimal = 8 / 100;
-                    descuento_aplicado = suma_subtotal * descuento_decimal;
-                    total = suma_subtotal - descuento_aplicado;
-                }
-                $("#total").val(total);
-            }
-        }
-        limpiarCampos("limpiartodo");
     }
 })
 
