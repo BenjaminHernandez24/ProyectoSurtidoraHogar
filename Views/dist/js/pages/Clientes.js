@@ -43,15 +43,8 @@ async function init() {
 /* INICIALIZAMOS LA TABLA LLENA DE CLIENTES */
 init();
 
-//Actualiza la tabla Clientes cada 1 segundo.
-setInterval('refrescar()',1000);
-
-function refrescar(){
-    tablaClientes.ajax.reload(null,false);
-}
-
 /* DAR UN CLIENTE DE ALTA */
-frmClientes.addEventListener('submit', async (e) => {
+frmClientes.addEventListener('submit', async(e) => {
     e.preventDefault();
     try {
         datosClientes = new FormData(frmClientes);
@@ -96,7 +89,7 @@ $(document).on("click", ".btnEditar", function() {
 });
 
 /* OBTENEMOS FORMULARIO Y CREAMOS UN OBJETO */
-formEditCliente.addEventListener('submit', async (e) => {
+formEditCliente.addEventListener('submit', async(e) => {
     e.preventDefault();
     try {
         datosClientes = new FormData(formEditCliente);

@@ -9,8 +9,8 @@ class VentasModelo
     private static $SELECT_ALL = "SELECT p.nombre_producto FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto AND i.stock > 0";
     private static $SELECT_DATE_PRODUCTOS = "SELECT i.id_inventario, p.nombre_producto,i.stock,p.precio_publico FROM productos p INNER JOIN inventario i ON p.nombre_producto=? AND i.id_producto=p.id_producto ORDER BY (i.id_inventario) DESC LIMIT 1";
     private static $CLIENTES = "SELECT id_cli,nombre_cli,tipo,telefono FROM `clientes` WHERE Estatus = 1";
-    private static $RESTA_STOCK = "UPDATE `inventario` SET `stock`= stock-? WHERE id_inventario = ?";
-    private static $SUMA_STOCK = "UPDATE `inventario` SET `stock`= stock+? WHERE id_inventario = ?";
+    private static $RESTA_STOCK = "UPDATE inventario SET stock= (stock-?) WHERE id_inventario = ?";
+    private static $SUMA_STOCK = "UPDATE inventario SET stock= (stock+?) WHERE id_inventario = ?";
     private static $STOCK = "SELECT STOCK FROM inventario WHERE id_inventario = ?";
     /* ===========================
         FUNCION PARA AGREGAR DETALLE SALIDA VENTA
@@ -222,16 +222,29 @@ class VentasModelo
 
             if ($resultado == 1) {
                 //Si todo esta correcto insertamos.
-                $conn->commit();
+
+                $pst = $conn->prepare(self::$STOCK);
+                $pst->execute([$id]);
+
+                $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($stock_verificar[0]["STOCK"] < 0) {
+                    $msg = "ERROR";
+                    $conn->rollBack();
+                }else{
+                    $msg = "OK";
+                    $conn->commit();
+                }
             } else {
                 //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $msg = "ERROR";
                 $conn->rollBack();
             }
 
             $conn = null;
             $conexion->closeConexion();
 
-            return "OK";
+            return $msg;
         } catch (PDOException $e) {
             return $e->getMessage();
         }

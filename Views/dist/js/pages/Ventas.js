@@ -192,6 +192,13 @@ formDatosProducto.addEventListener('submit', async function(e) {
             method: 'POST',
             body: restarInventario
         });
+        var respuesta = await peticion.json();
+        console.log(respuesta);
+        console.log("hola");
+        if (peticion.respuesta == "OK") {
+
+        }
+
     } catch (error) {
         console.log(error);
     }
