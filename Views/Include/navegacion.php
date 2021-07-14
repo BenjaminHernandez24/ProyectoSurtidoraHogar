@@ -15,6 +15,23 @@ if (!isset($_SESSION['user']) ) {
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+
+        <!--AQUI INICIA LO DE NOTIFICACIONES-->
+         <div class="btn-group" role="group" style="color:black;" style="display:none;">
+            <div class="nav-link">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" type="button" onclick="apretarBotonNotificacion();">
+                      <i class="far fa-bell"></i>
+                      <span id="contador" name="contador" class="badge badge-danger navbar-badge count" style="border-radius:15px;"></span>
+                    </a>
+                    <div class="btnTodo" id="todo">
+                        <ul id="menu" name="menu" class="dropdown-menu dropdown-menu-lg dropdown-menu-right"></ul>
+                    </div>
+                </li>
+            </div>
+        </div>
+        <!--AQUI TERMINA-->
+
         <div class="btn-group" role="group" style="color:black;">
         <?php if ($_SESSION['user'] == "Empleado") { ?>
         <button style="color:white; font-size: 20px;" id="btnGroupDrop1" type="button" class="btn btn-block dropdown-toggle" data-toggle="dropdown">
@@ -38,6 +55,46 @@ if (!isset($_SESSION['user']) ) {
     </ul>
 </nav>
 <!-- /.navbar -->
+
+<!--Aqui Inicia Modal de Notificaciones-->
+    <div id="modalFrmNotificacion" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!--=====================================
+                HEADER DEL MODAL
+                ======================================-->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModal">Todas Las Notificaciones</h5> 
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <!--=====================================
+                CUERPO DEL MODAL
+                ====================================== -->
+                <div class="modal-body">
+                    <div class="card">
+                    <!-- TABLA CLIENTES -->
+                    <table id="tblNotificacion" class="table table-light text-justify">
+                        <thead class="thead-light">
+                           <tr class="table table-dark">
+                            <th >Titulo</th>
+                            <th >Descripcion</th>
+                            <th >Producto</th>
+                            <th >Recomendacion</th>
+                            </tr>
+                        </thead>
+                    </table>
+        <!-- /. TABLA CLIENTES -->
+                </div>
+            </div>
+                <!--=====================================
+                PIE DEL MODAL
+                ======================================-->
+            </div>
+        </div>
+    </div>
+<!--Aqui Termina -->
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #F29F05;">
@@ -159,51 +216,12 @@ if (!isset($_SESSION['user']) ) {
                         </li>
 
                         <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
+                            <a href="../Views/Reportes.php" class="nav-link">
                                 <i class="nav-icon fas fa-file-alt" style="color:white"></i>
                                 <p style="color:white; font-size: 25px;">
                                     Reportes
-                                    <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="pages/layout/top-nav.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Top Navigation</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/layout/boxed.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Boxed</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/layout/fixed-sidebar.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fixed Sidebar</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/layout/fixed-topnav.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fixed Navbar</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/layout/fixed-footer.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fixed Footer</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Collapsed Sidebar</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
 
                     <?php } ?>

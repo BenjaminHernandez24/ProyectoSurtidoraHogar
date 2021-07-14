@@ -17,3 +17,7 @@
 <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <!-- SweetAlert 2 -->
  <script src="plugins/sweetalert2/sweetalert2.all.js"></script>
+
+  <!--Notificaciones-->
+ <script src="dist/js/push.min.js"></script>
+ <script src="dist/js/pages/Notificacion.js"></script>
