@@ -99,6 +99,9 @@ if (!isset($_SESSION['user']) ) {
                     </div>
                 </div>
             </section>
+            <div class="row mb-2">
+                        <?php include('Graficas/FormatoGraficas.php'); ?>
+                    </div>
         </div>
 
         <!-- footer -->

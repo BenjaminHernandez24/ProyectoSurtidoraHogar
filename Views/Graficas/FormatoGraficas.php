@@ -1,6 +1,6 @@
- <!--Graficas-->
- <link href="dist/css/styles.css" rel="stylesheet"/>
-
+<!--Graficas-->
+ <link href="dist/css/styles.css">
+ 
 <div class="col-xl-6">
     <div class="card mb-4">
         <div class="card-header">
@@ -28,10 +28,9 @@
     </div>
 </div>
 
- <!-- Gráficas 
+<!-- Gráficas--> 
  <script src="plugins/chart.js/Chart.min.js"></script>
- <script crossorigin="anonymous" src="dist/js/all.min.js">
  <script src="dist/js/scripts.js"></script>
- <script crossorigin="anonymous" src="dist/js/simple-datatables@latest.js">
+ <script src="dist/js/simple-datatables@latest.js"></script>
  <script src="dist/js/datatables-simple-demo.js"></script>
-<script src="dist/js/pages/Graficas.js"></script>-->
+ <script src="dist/js/pages/Graficas.js"></script>
