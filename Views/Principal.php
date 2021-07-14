@@ -97,13 +97,8 @@ if (!isset($_SESSION['user']) ) {
                             </div>
                         </div>
                     </div>
-                    <!-- ./col -->
-                    <div class="row">
-                    <?php include('Graficas/FormatoGraficas.php'); ?>
-                    </div>
                 </div>
             </section>
-            <!-- /.content -->
         </div>
 
         <!-- footer -->

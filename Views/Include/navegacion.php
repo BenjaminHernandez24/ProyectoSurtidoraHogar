@@ -22,7 +22,7 @@ if (!isset($_SESSION['user']) ) {
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" type="button" onclick="apretarBotonNotificacion();">
                       <i class="far fa-bell"></i>
-                      <span id="contador" name="contador" class="badge badge-danger navbar-badge count" style="border-radius:15px;"></span>
+                      <span id="contador" name="contador" class="badge badge-danger navbar-badge count" style="border-radius:20px;font-size:12px;"></span>
                     </a>
                     <div class="btnTodo" id="todo">
                         <ul id="menu" name="menu" class="dropdown-menu dropdown-menu-lg dropdown-menu-right"></ul>
