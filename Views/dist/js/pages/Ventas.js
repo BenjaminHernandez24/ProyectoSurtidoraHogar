@@ -19,6 +19,7 @@ var stock_editar;
 var cantidad_editar;
 var fila_editar;
 
+
 /* ===========================
     FUNCIONES PARA INICIALIZAR
  =============================*/
@@ -130,7 +131,7 @@ $(document).on("click", ".btnAgregar", function(e) {
  =============================*/
 
 /* BUSQUEDA DE AUTOCOMPLETADO DE LOS PRODUCTOS */
-$(document).ready(async function() {
+$(document).ready(async function autocompletado() {
     try {
         var Productos = new FormData();
         Productos.append('obtenerProductos', 'OK');
@@ -193,8 +194,7 @@ formDatosProducto.addEventListener('submit', async function(e) {
             body: restarInventario
         });
         var respuesta = await peticion.json();
-        console.log(respuesta);
-        console.log("hola");
+
         if (respuesta == "OK") {
             if (cantidad < 0 || precio < 0 || producto == "" || cantidad == "" || total == "") {
                 Error("Error Datos Erroneos");
@@ -258,7 +258,6 @@ formDatosProducto.addEventListener('submit', async function(e) {
         } else {
             notificarError("Ocurrio un error");
         }
-
     } catch (error) {
         console.log(error);
     }

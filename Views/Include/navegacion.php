@@ -5,7 +5,7 @@ if (!isset($_SESSION['user']) ) {
 ?>
 
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: #F29F05;">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background-color: #F29D35;">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -97,7 +97,7 @@ if (!isset($_SESSION['user']) ) {
 <!--Aqui Termina -->
 
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #F29F05;">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #F29D35;">
     <!-- Brand Logo -->
      <!-- SECCIÓN DE LOGO DE EMPRESA Y NOMBRE: EMPLEADO. Parte superior izquierda. -->
     <?php if ($_SESSION['user'] == "Empleado") { ?>
