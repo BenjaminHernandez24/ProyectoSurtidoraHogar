@@ -1,3 +1,7 @@
+<?php
+    require_once "../Controllers/EstadisticaController.php";
+?>
+
 <!-- TABLA PROVEEDORES -->
 <div class="content-wrapper">
     <div class="container-fluid pt-4">
@@ -73,7 +77,7 @@
                     <form id="frmDatosVenta">
                         <div class="col">
                             <div class="card">
-                                <div class="card-header" style="background-color:#50D2DE; color:white; font-size: 20px;">
+                                <div class="card-header" style="background-color:#84b6f4; color:white; font-size: 20px;">
                                     <i class="fas fa-cart-plus"> Venta</i>
                                 </div>
                                 <div class="card-body">
@@ -98,7 +102,7 @@
                                     <label for="nom_empresa">Fecha</label>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" id="addon-wrapping"><i class="fas fa-calendar-alt"></i></span>
-                                        <input type="text" style="font-size: 20px;" value="<?php echo date("d") . "/" . date("m") . "/" . date("Y"); ?>" readonly required>
+                                        <input type="text" style="font-size: 20px;" value="<?php $ctr = new EstadisticasControlador(); $ctr->obtenerFecha(); ?>" readonly required>
                                     </div>
                                     <div class="row">
                                         <div class="col-8">

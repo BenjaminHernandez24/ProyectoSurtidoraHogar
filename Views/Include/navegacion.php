@@ -191,7 +191,7 @@ if (!isset($_SESSION['user']) ) {
                         <!-------//</li>-------> 
                         <li class="nav-item">
                             <a href="../Views/Inventario.php" class="nav-link">
-                                <i class="fas fa-dolly-flatbed" style="color:white"></i>
+                                <i class="nav-icon fas fa-dolly-flatbed" style="color:white"></i>
                                 <p style="color:white; font-size: 25px;">
                                     Inventario
                                 </p>

@@ -1,9 +1,13 @@
 <?php
 session_start();
-if (!isset($_SESSION['user']) ) {
-   header('Location: Login.php');
+if (!isset($_SESSION['user'])) {
+    header('Location: Login.php');
 }
-?>    
+
+require_once "../Controllers/EstadisticaController.php";
+
+$ctr = new EstadisticasControlador();
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -33,7 +37,7 @@ if (!isset($_SESSION['user']) ) {
                         <div class="col-lg-3 col-6" class="small-box-footer">
                             <div class="small-box bg-green">
                                 <div class="inner">
-                                    <h3>150</h3>
+                                    <h3><?php $ctr->printTotalProveedores(); ?></h3>
 
                                     <h1>Proveedores</h1>
                                 </div>
@@ -50,14 +54,14 @@ if (!isset($_SESSION['user']) ) {
                         <div class="col-lg-3 col-6" class="small-box-footer">
                             <div class="small-box bg-red">
                                 <div class="inner">
-                                    <h3>150</h3>
+                                    <h3><?php $ctr->printTotalInventario(); ?></h3>
 
-                                    <h1>Productos</h1>
+                                    <h1>Inventario</h1>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-box-open"></i>
                                 </div>
-                                <a href="../Views/Clientes.php" class="small-box-footer">
+                                <a href="../Views/Inventario.php" class="small-box-footer">
                                     Acceder <i class="fas fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -67,14 +71,14 @@ if (!isset($_SESSION['user']) ) {
                         <div class="col-lg-3 col-6" class="small-box-footer">
                             <div class="small-box bg-gradient-orange">
                                 <div class="inner">
-                                    <h3 style="color:white;">150</h3>
+                                    <h3 style="color:white;">4</h3>
 
-                                    <h1 style="color:white;">Clientes</h1>
+                                    <h1 style="color:white;">Reportes</h1>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-users"></i>
+                                    <i class="fas fa-file-alt"></i>
                                 </div>
-                                <a href="../Views/Clientes.php" class="small-box-footer">
+                                <a href="../Views/Reportes.php" class="small-box-footer">
                                     Acceder <i class="fas fa-arrow-circle-right" style="color:white;"></i>
                                 </a>
                             </div>
@@ -84,14 +88,14 @@ if (!isset($_SESSION['user']) ) {
                         <div class="col-lg-3 col-6" class="small-box-footer">
                             <div class="small-box bg-blue">
                                 <div class="inner">
-                                    <h3>150</h3>
+                                    <h3><?php $ctr->printTotalVentas(); ?></h3>
 
                                     <h1>Ventas</h1>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-cart-arrow-down"></i>
                                 </div>
-                                <a href="../Views/Clientes.php" class="small-box-footer">
+                                <a href="../Views/Venta.php" class="small-box-footer">
                                     Acceder <i class="fas fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -99,9 +103,12 @@ if (!isset($_SESSION['user']) ) {
                     </div>
                 </div>
             </section>
+
+            <?php include('FormulariosPrincipal/TablaVentasDia.php'); ?>
+
             <div class="row mb-2">
-                        <?php include('Graficas/FormatoGraficas.php'); ?>
-                    </div>
+                <?php include('FormulariosPrincipal/FormatoGraficas.php'); ?>
+            </div>
         </div>
 
         <!-- footer -->
@@ -110,6 +117,7 @@ if (!isset($_SESSION['user']) ) {
     <!-- ./wrapper -->
 
     <?php include('Include/scripts.php'); ?>
+    <script src="dist/js/pages/Estadistica.js"></script>
 </body>
 
 </html>

@@ -19,7 +19,6 @@ var stock_editar;
 var cantidad_editar;
 var fila_editar;
 
-
 /* ===========================
     FUNCIONES PARA INICIALIZAR
  =============================*/
@@ -76,7 +75,7 @@ frmClientes.addEventListener('submit', async(e) => {
         /* RECIBO RESPUESTA PARA PODER VALIDAR */
         resjson = await peticion.json();
         if (resjson.respuesta == "OK") {
-            notificacionExitosa('Cliente Registrado', 'nuevo_cliente');
+            notificacionExitosa('Cliente Registrado');
             tablaClientes.ajax.reload(null, false);
         } else if (resjson.respuesta == "existe") {
             notificarError('El Cliente ya ha sido registrado');
@@ -117,7 +116,7 @@ $(document).on("click", ".btnAgregar", function(e) {
         descuento_aplicado = subtotal * descuento_decimal;
         total = subtotal - descuento_aplicado;
     }
-    document.getElementById('total').value = total;
+    document.getElementById('total').value = total.toFixed(2);
     document.getElementById('descuento').disabled = true;
     document.getElementById('descuento').value = "";
     $("#nombre_cliente").val(data[1]);
@@ -125,10 +124,6 @@ $(document).on("click", ".btnAgregar", function(e) {
     $("#modalcliente").modal("hide");
 
 });
-
-/* ===========================
-    FUNCIONES AUTOCOMPLETADO
- =============================*/
 
 /* BUSQUEDA DE AUTOCOMPLETADO DE LOS PRODUCTOS */
 $(document).ready(async function autocompletado() {
@@ -140,9 +135,11 @@ $(document).ready(async function autocompletado() {
             method: 'POST',
             body: Productos
         });
+
         var data = await peticion.json();
 
         $('#buscar').autocomplete({
+
             source: data,
 
             select: async function(event, item) {
@@ -177,7 +174,6 @@ $(document).ready(async function autocompletado() {
 /* LLENADO DE TABLA DATOS DE VENTA AL PRESIONAR EL BOTON DE AGREGAR */
 formDatosProducto.addEventListener('submit', async function(e) {
     e.preventDefault();
-
     let producto = document.getElementById('nombre_producto').value;
     let cantidad = parseFloat(document.getElementById('cantidad').value);
     let precio = parseFloat(document.getElementById('precio').value);
@@ -250,7 +246,7 @@ formDatosProducto.addEventListener('submit', async function(e) {
                             descuento_aplicado = suma_subtotal * descuento_decimal;
                             total = suma_subtotal - descuento_aplicado;
                         }
-                        $("#total").val(total);
+                        $("#total").val(total.toFixed(2));
                     }
                 }
                 limpiarCampos("limpiartodo");
@@ -323,11 +319,12 @@ $('#tbody').on('click', '.btnBorrar', async function() {
                 descuento_aplicado = resta_subtotal * descuento_decimal;
                 total = resta_subtotal - descuento_aplicado;
             }
-            $("#total").val(total);
+            $("#total").val(total.toFixed(2));
         }
     }
 });
 
+/* FUNCION PARA HACER LAS OPERACIONES DE EDICION DE CANTIDAD DE PRODUCTOS A LLEVAR */
 formEditarDatosProducto.addEventListener('submit', async function(e) {
     e.preventDefault();
     var ID_inventario = fila_editar.getElementsByTagName("td")[0].getElementsByTagName("P")[0].innerHTML;
@@ -362,7 +359,7 @@ formEditarDatosProducto.addEventListener('submit', async function(e) {
                 descuento_aplicado = nuevo_subtotal * descuento_decimal;
                 total = nuevo_subtotal - descuento_aplicado;
             }
-            $("#total").val(total);
+            $("#total").val(total.toFixed(2));
         }
         try {
             var restarInventario = new FormData();
@@ -401,7 +398,7 @@ formEditarDatosProducto.addEventListener('submit', async function(e) {
                 descuento_aplicado = nuevo_subtotal * descuento_decimal;
                 total = nuevo_subtotal - descuento_aplicado;
             }
-            $("#total").val(total);
+            $("#total").val(total.toFixed(2));
         }
         try {
             var sumarInventario = new FormData();
@@ -425,6 +422,7 @@ formEditarDatosProducto.addEventListener('submit', async function(e) {
     $('#modalEditarCantidad').modal('hide');
 })
 
+/* FUNCION PARA ABRIR EL MODAL DE EDITAR*/
 $('#tbody').on("click", ".btnEditar", async function() {
     fila_editar = this.parentNode.parentNode;
     var ID_inventario = fila_editar.getElementsByTagName("td")[0].getElementsByTagName("P")[0].innerHTML;
@@ -451,6 +449,7 @@ $('#tbody').on("click", ".btnEditar", async function() {
     /* Hacemos visible el modal */
     $('#modalEditarCantidad').modal('show');
 });
+
 
 /* ===========================
     FUNCIONES PARA LA CREACION DE VENTA
@@ -636,7 +635,7 @@ document.getElementById('cobro').addEventListener('keydown', () => {
                     Error("Error");
                 } else {
                     let cambio = cobro - total;
-                    document.getElementById('cambio').value = cambio;
+                    document.getElementById('cambio').value = cambio.toFixed(2);
                 }
             }
         } else {
@@ -715,6 +714,7 @@ function notificacionExitosa(mensaje) {
     Swal.fire(mensaje, '', 'success').then(result => {
         frmClientes.reset();
         $("#modalnuevocliente").modal("hide");
+        document.getElementById('closeCerrar').click();
     });
 }
 

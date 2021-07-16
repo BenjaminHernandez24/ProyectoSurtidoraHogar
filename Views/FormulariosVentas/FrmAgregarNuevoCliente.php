@@ -8,7 +8,7 @@
                         <!--=====================================
                         HEADER DEL MODAL
                         ======================================-->
-                        <div class="modal-header" style="background-color:#F7EC5B;">
+                        <div class="modal-header" style="background-color:#77dd77;">
                             <h5 class="modal-title" id="exampleModalLabel">Nuevo Cliente</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
