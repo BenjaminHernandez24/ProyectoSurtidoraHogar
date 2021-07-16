@@ -74,7 +74,7 @@ async function notificacionesNuevas() //¿Ya dió click anteriormente?
            //
         ciclo = setInterval(function(){ 
           comprobarCambios();
-         }, 2500);
+         }, 3000);
     }
    }
   });

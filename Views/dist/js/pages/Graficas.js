@@ -1,5 +1,5 @@
 
-(async () => {
+async function grafica_1(){
 
     let formato = new FormData();
     formato.append('frecuenciaClientes', 'OK');
@@ -10,7 +10,12 @@
     });
 
     let respuesta = await peticion.json();
+    if(respuesta.parametros !== "F"){
+        grafica_1_Resguardo(respuesta);
+    }
+}
 
+function grafica_1_Resguardo(respuesta){
     const $grafica = document.querySelector("#frecuenciaDelCliente");
     const parametros = respuesta.parametros;
 
@@ -55,11 +60,12 @@
             },
         }
     });
-})();
+}
+
+grafica_1();
 
 
-
-(async () => {
+async function grafica_2(){
 
     let formato = new FormData();
     formato.append('ventasTotalesPorMes', 'OK');
@@ -70,7 +76,12 @@
     });
 
     let respuesta = await peticion.json();
+    if(respuesta.parametros !== "F"){
+        grafica_2_Resguardo(respuesta);
+    }
+}
 
+function grafica_2_Resguardo(respuesta){
     const $grafica = document.querySelector("#ventasTotalesPorMes");
     const parametros = respuesta.parametros; 
 
@@ -114,4 +125,6 @@
             },
         }
     });
-})();
+}
+
+grafica_2();

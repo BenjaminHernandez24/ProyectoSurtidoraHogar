@@ -33,13 +33,13 @@ if (!isset($_SESSION['user']) ) {
                         <div class="col-lg-3 col-6" class="small-box-footer">
                             <div class="small-box bg-green">
                                 <div class="inner">
-                                    <h1>Proveedores</h1>
+                                    <h1>Compras en General</h1>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fas fa-truck"></i>
                                 </div>
-                                <a href="../Views/proveedores.php" class="small-box-footer">
-                                    Acceder <i class="fas fa-arrow-circle-right"></i>
+                                <a class="small-box-footer" id="reporteGeneral" type="button">
+                                    Generar Reporte <i class="fas fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -49,13 +49,13 @@ if (!isset($_SESSION['user']) ) {
                             <div class="small-box bg-red">
                                 <div class="inner">
 
-                                    <h1>Productos</h1>
+                                    <h1>Compras Específicas</h1>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-box-open"></i>
+                                    <i class="fas fa-users"></i>
                                 </div>
-                                <a href="../Views/Clientes.php" class="small-box-footer">
-                                    Acceder <i class="fas fa-arrow-circle-right"></i>
+                                <a class="small-box-footer" id="reporteGeneralPorProveedor" type="button">
+                                    Generar Reporte <i class="fas fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -64,13 +64,13 @@ if (!isset($_SESSION['user']) ) {
                         <div class="col-lg-3 col-6" class="small-box-footer">
                             <div class="small-box bg-gradient-orange">
                                 <div class="inner">
-                                    <h1 style="color:white;">Clientes</h1>
+                                    <h1 style="color:white;">Generar Ventas Totales</h1>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-users"></i>
+                                    <i class="fas fa-money-bill-wave"></i>
                                 </div>
-                                <a href="../Views/Clientes.php" class="small-box-footer">
-                                    Acceder <i class="fas fa-arrow-circle-right" style="color:white;"></i>
+                                <a class="small-box-footer">
+                                    Generar Reporte <i class="fas fa-arrow-circle-right" style="color:white;"></i>
                                 </a>
                             </div>
                         </div>
@@ -79,20 +79,20 @@ if (!isset($_SESSION['user']) ) {
                         <div class="col-lg-3 col-6" class="small-box-footer">
                             <div class="small-box bg-blue">
                                 <div class="inner">
-                                    <h1>Ventas</h1>
+                                    <h1>Indeciso</h1>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-cart-arrow-down"></i>
                                 </div>
-                                <a href="../Views/Clientes.php" class="small-box-footer">
-                                    Acceder <i class="fas fa-arrow-circle-right"></i>
+                                <a class="small-box-footer">
+                                    Generar Reporte <i class="fas fa-arrow-circle-right"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
                     <!-- ./col -->
                     <div class="row">
-                    <?php include('Graficas/FormatoGraficas.php'); ?>
+                    <?php include('reportesGraficas/reportesGraficas.php'); ?>
                     </div>
                 </div>
             </section>
@@ -105,6 +105,14 @@ if (!isset($_SESSION['user']) ) {
     <!-- ./wrapper -->
 
     <?php include('Include/scripts.php'); ?>
+     <script src="dist/js/jspdf.min.js"></script>
+    <script src="dist/js/jspdf.plugin.autotable.min.js"></script>
+    <!-- Gráficas--> 
+ <script src="plugins/chart.js/Chart.min.js"></script>
+ <script src="dist/js/scripts.js"></script>
+ <script src="dist/js/simple-datatables@latest.js"></script>
+ <script src="dist/js/datatables-simple-demo.js"></script>
+ <script src="dist/js/pages/reporteGraficas.js"></script>
 </body>
 
 </html>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-07-2021 a las 04:04:48
+-- Tiempo de generación: 16-07-2021 a las 02:27:41
 -- Versión del servidor: 10.4.19-MariaDB
 -- Versión de PHP: 8.0.7
 
@@ -56,7 +56,6 @@ CREATE TABLE `detalle_salida_venta` (
   `id_detalle_salida_venta` int(11) NOT NULL,
   `cliente` varchar(100) NOT NULL,
   `metodo_pago` varchar(50) NOT NULL,
-  `iva` decimal(10,0) NOT NULL,
   `total` decimal(10,0) NOT NULL,
   `pago` decimal(10,0) NOT NULL,
   `cambio` decimal(10,0) NOT NULL,
@@ -105,6 +104,90 @@ CREATE TABLE `marcas_producto` (
   `id_marca` int(11) NOT NULL,
   `descripcion_marca` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `marcas_producto`
+--
+
+INSERT INTO `marcas_producto` (`id_marca`, `descripcion_marca`) VALUES
+(1, 'Whirpool'),
+(2, 'VARIAS'),
+(3, 'VARIOS USOS'),
+(4, 'BRI'),
+(5, 'VARIAS MARCAS'),
+(6, 'PHILIPS'),
+(7, 'ACROS'),
+(8, 'WHIRLPOOL'),
+(9, 'FRAGA'),
+(10, 'KELVINATOR'),
+(11, 'KOBLENZ'),
+(12, 'MABE'),
+(13, 'SUPERMATIC'),
+(14, 'TURMIX'),
+(15, 'ACROS'),
+(16, 'CINSA'),
+(17, 'DAEWOO'),
+(18, 'EASY 2 TINA'),
+(19, 'EASY AUTOMATICAS'),
+(20, 'GENERAL ELECTRIC'),
+(21, 'LG'),
+(22, 'MAYTAG'),
+(23, 'SAMSUMG'),
+(24, 'WHITE WESTINGHOUSE'),
+(25, 'BLACK & DECKER'),
+(26, 'HAMILTON BEACH'),
+(27, 'KITCHEN AID'),
+(28, 'LAMEX'),
+(29, 'LASCO'),
+(30, 'MAN'),
+(31, 'MOULINEX'),
+(32, 'NUTRIBULLET'),
+(33, 'OSTER'),
+(34, 'TAURUS'),
+(35, 'DIAFRAGMAS ECONOMICOS'),
+(36, 'MAGAFESA'),
+(37, 'ONEIDA'),
+(38, 'PRESTO'),
+(39, 'SUNBEAN'),
+(40, 'EASY '),
+(41, 'GE'),
+(42, 'KENMORE'),
+(43, 'BOSCH'),
+(44, 'MYTEC'),
+(45, 'NAVIA'),
+(46, 'SANYO'),
+(47, 'OLLAS EKCO'),
+(48, 'LICUADORAS HAMILTON'),
+(49, 'LICUADORAS MAN'),
+(50, 'LICUADORAS TAURUS'),
+(51, 'LICUADORAS MOULINEX'),
+(52, 'LICUADORAS B&D'),
+(53, 'LICUADORAS OSTER'),
+(54, 'LICUADORAS PHILIPS'),
+(55, 'OLLAS PRESTO'),
+(56, 'ESTUFAS ACROS'),
+(57, 'ESTUFAS KELVINATOR'),
+(58, 'ESTUFAS FRAGA'),
+(59, 'ESTUFAS IEM'),
+(60, 'ESTUFAS VARIAS MARCAS');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `notificaciones`
+--
+
+CREATE TABLE `notificaciones` (
+  `boton` int(1) NOT NULL,
+  `total` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `notificaciones`
+--
+
+INSERT INTO `notificaciones` (`boton`, `total`) VALUES
+(1, 0);
 
 -- --------------------------------------------------------
 
@@ -194,6 +277,72 @@ CREATE TABLE `tipo_producto` (
   `id_tipo` int(11) NOT NULL,
   `descripcion_tipo` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `tipo_producto`
+--
+
+INSERT INTO `tipo_producto` (`id_tipo`, `descripcion_tipo`) VALUES
+(1, 'Lavadora'),
+(2, 'VARIAS'),
+(3, 'VARIOS USOS'),
+(4, 'BRI'),
+(5, 'VARIAS MARCAS'),
+(6, 'PHILIPS'),
+(7, 'ACROS'),
+(8, 'WHIRLPOOL'),
+(9, 'FRAGA'),
+(10, 'KELVINATOR'),
+(11, 'KOBLENZ'),
+(12, 'MABE'),
+(13, 'SUPERMATIC'),
+(14, 'TURMIX'),
+(15, 'ACROS'),
+(16, 'CINSA'),
+(17, 'DAEWOO'),
+(18, 'EASY 2 TINA'),
+(19, 'EASY AUTOMATICAS'),
+(20, 'GENERAL ELECTRIC'),
+(21, 'LG'),
+(22, 'MAYTAG'),
+(23, 'SAMSUMG'),
+(24, 'WHITE WESTINGHOUSE'),
+(25, 'BLACK & DECKER'),
+(26, 'HAMILTON BEACH'),
+(27, 'KITCHEN AID'),
+(28, 'LAMEX'),
+(29, 'LASCO'),
+(30, 'MAN'),
+(31, 'MOULINEX'),
+(32, 'NUTRIBULLET'),
+(33, 'OSTER'),
+(34, 'TAURUS'),
+(35, 'DIAFRAGMAS ECONOMICOS'),
+(36, 'MAGAFESA'),
+(37, 'ONEIDA'),
+(38, 'PRESTO'),
+(39, 'SUNBEAN'),
+(40, 'EASY '),
+(41, 'GE'),
+(42, 'KENMORE'),
+(43, 'BOSCH'),
+(44, 'MYTEC'),
+(45, 'NAVIA'),
+(46, 'SANYO'),
+(47, 'OLLAS EKCO'),
+(48, 'LICUADORAS HAMILTON'),
+(49, 'LICUADORAS MAN'),
+(50, 'LICUADORAS TAURUS'),
+(51, 'LICUADORAS MOULINEX'),
+(52, 'LICUADORAS B&D'),
+(53, 'LICUADORAS OSTER'),
+(54, 'LICUADORAS PHILIPS'),
+(55, 'OLLAS PRESTO'),
+(56, 'ESTUFAS ACROS'),
+(57, 'ESTUFAS KELVINATOR'),
+(58, 'ESTUFAS FRAGA'),
+(59, 'ESTUFAS IEM'),
+(60, 'ESTUFAS VARIAS MARCAS');
 
 --
 -- Índices para tablas volcadas
@@ -312,7 +461,7 @@ ALTER TABLE `inventario`
 -- AUTO_INCREMENT de la tabla `marcas_producto`
 --
 ALTER TABLE `marcas_producto`
-  MODIFY `id_marca` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_marca` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -348,7 +497,7 @@ ALTER TABLE `salida_venta`
 -- AUTO_INCREMENT de la tabla `tipo_producto`
 --
 ALTER TABLE `tipo_producto`
-  MODIFY `id_tipo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tipo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- Restricciones para tablas volcadas
