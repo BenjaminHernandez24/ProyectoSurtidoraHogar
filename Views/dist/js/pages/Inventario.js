@@ -24,7 +24,6 @@ async function inventario() {
             {"data": "estatus_alerta"},
             {"data": "stock"},
            
-            
             {
                 "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div> "
                

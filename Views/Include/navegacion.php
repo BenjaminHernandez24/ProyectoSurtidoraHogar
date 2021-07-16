@@ -198,6 +198,14 @@ if (!isset($_SESSION['user']) ) {
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="../Views/Compras.php" class="nav-link">
+                                <i class="fas fa-shopping-bag" style="color:white"></i>
+                                <p style="color:white; font-size: 25px;">
+                                    Compras
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="../Views/proveedores.php" class="nav-link">
                                 <i class="nav-icon fas fa-truck" style="color:white"></i>
                                 <p style="color:white; font-size: 25px;">

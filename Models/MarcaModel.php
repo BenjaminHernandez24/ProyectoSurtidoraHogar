@@ -14,26 +14,35 @@ class MarcaModelo
         try {
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
-
+            //Se abre la transacción.
+            $conn->beginTransaction();
             //-------- Se verifica si ya existe la marca de producto -------//
             $pst = $conn->prepare(self::$VALIDAR_MARCA_EXISTENTE);
-            $pst->execute([$marca ['descripcion_marca']]);
+           $pst->execute([$marca ['descripcion_marca']]);
             $validar = $pst->fetchAll();
 
             if (empty($validar)) {
                 $pst = $conn->prepare(self::$INSERTAR_MARCA);
-                $pst->execute([$marca ['descripcion_marca']]);
+                $resultado =$pst->execute([$marca ['descripcion_marca']]);
+                if ($resultado == 1) {
+                    $msg = "OK";
+                    //Si todo está correcto se inserta.
+                    $conn->commit();
+                } else {
+                    $msg = "Falló al insertar";
+                    //Si algo falla, reestablece la bd a como estaba en un inicio.
+                    $conn->rollBack();
+                }
 
                 $conn = null;
                 $conexion->closeConexion();
-
-                return $msg="OK";
+                return $msg;
             } else {
                 return $msg="EXISTE";
             }
             $conn = null;
             $conexion->closeConexion();
-
+           
         } catch (PDOException $e) {
             return $e->getMessage();
         }
@@ -46,15 +55,24 @@ class MarcaModelo
  
              $conexion = new Conexion();
              $conn = $conexion->getConexion();
+             //Se abre la transacción.
+            $conn->beginTransaction();
  
              $pst = $conn->prepare(self::$EDITAR_MARCA);
- 
-             $pst->execute([$marca['descripcion_marca'], $marca['id_marca']]);
- 
+             $resultado =$pst->execute([$marca['descripcion_marca'], $marca['id_marca']]);
+             if ($resultado == 1) {
+                $msg = "OK";
+                //Si todo está correcto se inserta.
+                $conn->commit();
+            } else {
+                $msg = "Falló al editar";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
+            }
              $conn = null;
              $conexion->closeConexion();
  
-             return "OK";
+             return $msg;
          } catch (PDOException $e) {
              return $e->getMessage();
          }
@@ -67,15 +85,25 @@ class MarcaModelo
  
              $conexion = new Conexion();
              $conn = $conexion->getConexion();
+              //Se abre la transacción.
+            $conn->beginTransaction();
+ 
  
              $pst = $conn->prepare(self::$BORRAR_MARCA);
+             $resultado =$pst->execute([$id]);
  
-             $pst->execute([$id]);
- 
+             if ($resultado == 1) {
+                $msg = "OK";
+                //Si todo está correcto se inserta.
+                $conn->commit();
+            } else {
+                $msg = "Falló al editar";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
+            }
              $conn = null;
              $conexion->closeConexion();
- 
-             return "OK";
+             return $msg;
          } catch (PDOException $e) {
              return $e->getMessage();
          }
