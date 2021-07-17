@@ -4,37 +4,40 @@
 <div class="col-xl-6">
     <div class="card mb-4">
         <div class="card-header">
+            <font style="font-size: 140%">
             <i class="fas fa-chart-area me-1">
             </i>
             Top 5 Productos Mas Vendidos.
+        </font>
         </div>
         <div class="card-body">
-            <canvas height="40" id="top5Productos" width="100%">
+            <canvas class="linear" height="60" id="top5Productos" width="100%">
             </canvas>
         </div>
     </div>
 </div>
 <div class="col-xl-6">
-    <div class="card mb-4">
-        <div class="card-header text-center" fon>
-            ¿Quién me vendió mas barato el producto?
+    <div class="card header">
+        <div class="card-header text-center">
+            <font style="font-size: 140%">
+            <i class="nav-icon fas fa-file-invoice-dollar"></i> ¿Quién me vendió mas barato el producto?
+        </font>
     </div>
     <div class="card-body">
-        <label>Buscar Producto</label>
+        <label><font size=5% FACE="roman">Buscar Producto</font></label>
         <div class="input-group mb-3">
             <input id="buscar" name="buscar" type="text" class="form-control" placeholder="Nombre del Producto" aria-label="Recipient's username" aria-describedby="button-addon2">
         </div>
-        <div class="modal-body">
+        
                 <div class="card">
                 <!-- TABLA CLIENTES -->
-                <table id="tblReportesGraficasProductos" class="table table-light text-justify">
-                    <thead class="thead-light">
+                <table id="tblReportesGraficasProductos" class="table table-light text-center">
+                    <thead class="thead-light" >
                        <tr class="table table-dark">
                         <th >Proveedor</th>
                         <th >Producto</th>
                         <th >Precio</th>
                         <th >Fecha</th>
-                        <th >Hora</th>
                         </tr>
                     </thead>
                     <tbody id="tbody">

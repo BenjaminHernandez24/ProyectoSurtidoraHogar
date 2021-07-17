@@ -19,9 +19,9 @@ if (isset($_POST['view'])) {
         //Añadimos el primer item a la lista.
         $cuerpoLista .= '
                 <span class="dropdown-item text-center" style="text-align: center;" face="times new roman">
-                         <b size=4>Tienes '.
+                         <b size=4><i class="nav-icon fas fa-bell"> Tienes '.
                         $longitud.$cadenaNotificacion.
-                      '</b>
+                      '</i></b>
                 </span>
                 <div class="dropdown-divider"></div>';
 

@@ -8,23 +8,27 @@
                 <div class="row vertical-divider" style="margin-top: 30px">
                 <div class="col-xl-6">
                     <div class="card-header">
-                        <i class="fas fa-chart-area me-1">
-                        </i>
-                        Los 3 Clientes Mas Frecuentes Del Mes
+                        <font style="font-size: 140%">
+                            <i class="fas fa-chart-area me-1">
+                            </i>
+                                Los 4 Clientes Mas Frecuentes Del Mes
+                        </font>
                     </div>
                     <div class="card-body">
-                        <canvas height="40" id="frecuenciaDelCliente" width="100%">
+                        <canvas class="linear" height="65" id="frecuenciaDelCliente" width="100%" >
                         </canvas>
                     </div>
                 </div>
                 <div class="col-xl-6">
                     <div class="card-header">
-                        <i class="fas fa-chart-bar me-1">
-                        </i>
-                        Ventas Totales Por Mes.
+                        <font style="font-size: 140%">
+                            <i class="fas fa-chart-bar me-1">
+                            </i>
+                            Ventas Totales Por Mes.
+                        </font>
                     </div>
                     <div class="card-body">
-                        <canvas height="40" id="ventasTotalesPorMes" width="100%">
+                        <canvas class="linear" height="65" id="ventasTotalesPorMes" width="100%">
                         </canvas>
                     </div>
                 </div>

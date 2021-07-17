@@ -92,13 +92,17 @@ class NotificacionModel{
             $conexion = new Conexion();
             $conn     = $conexion->getConexion();
 
+            $conn -> beginTransaction();
+
             $pst = $conn->prepare(self::$enviar);
             $resultado = $pst->execute([$total['total']]);
 
             if($resultado == true){
                 $msg = "OK";
+                $conn->commit();
             }else{
                 $msg = "fallo";
+                $conn->rollback();
             }
 
             $conn = null;

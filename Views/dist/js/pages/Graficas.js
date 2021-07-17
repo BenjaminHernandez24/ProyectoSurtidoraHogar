@@ -38,23 +38,39 @@ function grafica_1_Resguardo(respuesta){
             ]
         },
         options: {
+            legend: { 
+                display: true,
+                position: 'top',
+                labels: {
+                    fontSize: 15,
+                    fontColor: "#000000",
+                }
+            },
             scales: {
               xAxes:[{
+                ticks: {
+                    fontSize: 14,
+                    fontColor: "#000000",
+                },
                 scaleLabel:{
                     display: true,
                     labelString: 'Clientes',
-                    fontColor: "#041072"
+                    fontColor: "#000000",
+                    fontSize: 15,
                   }
               }],
               yAxes: [{
                   ticks: {
                       beginAtZero: true,
-                      stepSize : 1
+                      fontSize: 14,
+                      fontColor: "#000000",
+                      stepSize : 2,
                   },
                   scaleLabel:{
                     display: true,
-                    labelString: 'Visitas',
-                    fontColor: "#546372"
+                    labelString: 'Número De Visitas',
+                    fontColor: "#000000",
+                    fontSize: 15,
                   }
               }],
             },
@@ -103,23 +119,39 @@ function grafica_2_Resguardo(respuesta){
             ]
         },
         options: {
+            legend: { 
+                display: true,
+                position: 'top',
+                labels: {
+                    fontSize: 15,
+                    fontColor: "#000000",
+                }
+            },
             scales: {
               xAxes:[{
+                ticks:{
+                    fontSize: 14,
+                    fontColor: "#000000",
+                },
                 scaleLabel:{
                     display: true,
                     labelString: 'Meses',
-                    fontColor: "#546372"
+                    fontSize: 14,
+                    fontColor: "#000000",
                   }
               }],
               yAxes: [{
                   ticks: {
                       beginAtZero: true,
-                      stepSize : 50
+                      stepSize : 250,
+                      fontSize: 14,
+                    fontColor: "#000000",
                   },
                   scaleLabel:{
                     display: true,
                     labelString: 'Ventas',
-                    fontColor: "#546372"
+                    fontSize: 15,
+                    fontColor: "#000000",
                   }
               }],
             },

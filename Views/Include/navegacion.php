@@ -63,12 +63,14 @@ if (!isset($_SESSION['user']) ) {
                 <!--=====================================
                 HEADER DEL MODAL
                 ======================================-->
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tituloModal">Todas Las Notificaciones</h5> 
+                <div class="modal-header" id="tituloModal">
+                           <i class="nav-icon fas fa-bell" style="color:#F29F05; font-size: 30px;"> Notificaciones</i>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                </div>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+
+                        </div>
                 <!--=====================================
                 CUERPO DEL MODAL
                 ====================================== -->

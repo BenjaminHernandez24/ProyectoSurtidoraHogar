@@ -39,23 +39,39 @@ async function inicializarGraficasProducto() {
                 ]
             },
             options: {
+              legend: { 
+                display: true,
+                position: 'top',
+                labels: {
+                    fontSize: 15,
+                    fontColor: "#000000",
+                }
+              },
                 scales: {
                   xAxes:[{
+                    ticks:{
+                      fontSize: 14,
+                      fontColor: "#000000",
+                    },
                     scaleLabel:{
                         display: true,
                         labelString: 'Productos',
-                        fontColor: "#041072"
+                        fontSize: 14,
+                        fontColor: "#000000",
                       }
                   }],
                   yAxes: [{
                       ticks: {
                           beginAtZero: true,
-                          stepSize : 1
+                          stepSize : 10,
+                          fontSize: 14,
+                          fontColor: "#000000",
                       },
                       scaleLabel:{
                         display: true,
                         labelString: 'Piezas',
-                        fontColor: "#546372"
+                        fontSize: 15,
+                        fontColor: "#000000",
                       }
                   }],
                 },
@@ -104,7 +120,7 @@ function reporteComprasGeneral(datos,fechas){
           for(var j = i; j < data.length; j++){
             if(fecha === data[j]["fecha"]){
               contador++;
-              lista.push([data[j]["proveedor"],data[j]["producto"],data[j]["piezas"],data[j]["precio_unitario"],data[j]["subtotal"],data[j]["fecha"],data[j]["hora"]]);
+              lista.push([data[j]["proveedor"],data[j]["producto"],data[j]["piezas"],"$ " + data[j]["precio_unitario"],"$ " + data[j]["subtotal"],data[j]["fecha"],data[j]["hora"]]);
             }
           }
 
@@ -166,7 +182,7 @@ function reporteComprasEspecifico(datos,fechas){
           for(var j = i; j < data.length; j++){
             if(fecha === data[j]["fecha"]){
               contador++;
-              lista.push([data[j]["producto"],data[j]["piezas"],data[j]["precio_unitario"],data[j]["subtotal"],data[j]["fecha"],data[j]["hora"]]);
+              lista.push([data[j]["producto"],data[j]["piezas"],"$ " + data[j]["precio_unitario"],"$ " + data[j]["subtotal"],data[j]["fecha"],data[j]["hora"]]);
             }
           }
 
@@ -292,20 +308,20 @@ function reporteVentas(datos,fechas){
               for(var n = 0; n < variable.length; n++){
                 if(n == 0){
                   if(variable.length < 2){
-                    lista3.push([variable[n]["cliente"],variable[n]["producto"],variable[n]["piezas"],variable[n]["precio"],variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"],variable[n]["total"]]);
+                    lista3.push([variable[n]["cliente"],variable[n]["producto"],variable[n]["piezas"],"$ " + variable[n]["precio"],"$ " + variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"],"$ " + variable[n]["total"]]);
                     contadorSumaTotales = contadorSumaTotales + parseFloat(variable[n]["total"]);
                     contadorSumaDia = contadorSumaDia + parseFloat(variable[n]["total"]);
                     break;
                   }else{
-                    lista3.push([variable[n]["cliente"],variable[n]["producto"],variable[n]["piezas"],variable[n]["precio"],variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"]]);
+                    lista3.push([variable[n]["cliente"],variable[n]["producto"],variable[n]["piezas"],"$ " + variable[n]["precio"],"$ " + variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"]]);
                   }
                 }else{
                   if(n == variable.length-1){
-                    lista3.push(["",variable[n]["producto"],variable[n]["piezas"],variable[n]["precio"],variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"],variable[n]["total"]]);
+                    lista3.push(["",variable[n]["producto"],variable[n]["piezas"],"$ " + variable[n]["precio"],"$ " + variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"],"$ " + variable[n]["total"]]);
                     contadorSumaTotales = contadorSumaTotales + parseFloat(variable[n]["total"]);
                     contadorSumaDia = contadorSumaDia + parseFloat(variable[n]["total"]);
                   }else{
-                    lista3.push(["",variable[n]["producto"],variable[n]["piezas"],variable[n]["precio"],variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"]]);
+                    lista3.push(["",variable[n]["producto"],variable[n]["piezas"],"$ " + variable[n]["precio"],"$ " + variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"]]);
                   }
                 }
               }
@@ -562,21 +578,18 @@ $(document).ready(async function() {
                   $("#tblReportesGraficasProductos").DataTable().destroy();
                   if(data.length != 0){
                       $('#tblReportesGraficasProductos').find('tbody').append(`
-                       <tr id="">
+                       <tr id="" height="58">
                            <td class="row-index">
                            <p>${data[0]["proveedor"]}</p>
                            </td>
                            <td class="row-index">
                            <p>${item.item.value}</p>
                            </td>
-                           <td class="row-index">
+                           <td class="row-index text-center" width="10%">
                            <p>${data[0]["precio"]}</p>
                            </td>
-                           <td class="row-index">
+                           <td class="row-index text-center" width="25%">
                            <p>${data[0]["fecha"]}</p>
-                           </td>
-                           <td class="row-index">
-                           <p>${data[0]["hora"]}</p>
                            </td>
                         </tr>`);
                     }else{
@@ -787,6 +800,10 @@ $("#Generar_Ventas").click(function(){
 });
 
 function limpiarVariables(){
+  document.querySelector("#seleccion_Ventas").value = "1";
+  document.getElementById("buscarProveedor").value = "";
+  document.querySelector("#seleccionReporte2").value = "1";
+  document.querySelector("#seleccion").value = "1";
   document.getElementById("fecha_unica").value = "";
   document.getElementById("fechas").value = "";
   document.getElementById("inicio").value = "";

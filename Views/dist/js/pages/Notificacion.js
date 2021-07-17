@@ -69,12 +69,8 @@ async function notificacionesNuevas() //¿Ya dió click anteriormente?
    {
     if(data.valor == 0){ //Si no a dado click, muestrame el numerito. 
         numeroNotificaciones();
-    }else{ //De lo contrario, vamos a revisar si las notificaciones son iguales
-           //A la que estan en la bd notificaciones.
-           //
-        ciclo = setInterval(function(){ 
-          comprobarCambios();
-         }, 3000);
+    }else{ 
+        comprobarCambios();
     }
    }
   });
@@ -98,7 +94,6 @@ async function comprobarCambios()
            success:function(data)//Dame la notificacion que tenías con anterioridad.
            {
                 if(dataUno == data.total){
-                    console.log("NO HAY CAMBIOS");
                }else{ //Si son diferentes, hubo cambios.
                     condicion = 0;
                     numeroNotificaciones();
@@ -135,7 +130,6 @@ function apretarBotonNotificacion() {
        data:'cambiarUno',
        dataType:"json"
     });
-    clearInterval(ciclo);
     enviarNumeroNotificacion();//Insertamos el nuevo numero de notificacion.
     notificacionesNuevas();//Reiniciamos...
 }
@@ -158,7 +152,6 @@ async function enviarNumeroNotificacion(){
  $(document).on("click", ".btnVer", function() {
         $("#tblNotificacion").DataTable().clear().draw();
         $("#tblNotificacion").DataTable().destroy();
-        $("#tituloModal").html('Ver Todas Las Notificaciones');
         tablaNotificaciones();
 
         $('#modalFrmNotificacion').modal('show');
@@ -177,7 +170,6 @@ function prueba(pocision){
        dataType:"json",
        success:function(data)
        {
-        $("#tituloModal").html('Notificaciones');
         $('#tblNotificacion').find('tbody').append(`
          <tr id="">
              <td class="row-index">

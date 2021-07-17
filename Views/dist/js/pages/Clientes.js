@@ -55,14 +55,17 @@ frmClientes.addEventListener('submit', async(e) => {
         });
         /* RECIBO RESPUESTA PARA PODER VALIDAR */
         resjson = await peticion.json();
+        console.log(resjson.respuesta);
         if (resjson.respuesta == "OK") {
             notificacionExitosa('Cliente Registrado', 'nuevo_cliente');
-            tablaClientes.ajax.reload(null, false);
         } else if (resjson.respuesta == "existe") {
             notificarError('El Cliente ya ha sido registrado');
-        } else {
+        } else if (resjson.respuesta == "caracteres"){
+            notificarError('Se encontró un caracter desconocido');
+        }else{
             notificarError('No se pudo registrar');
         }
+        tablaClientes.ajax.reload(null, false);
     } catch (error) {
         console.log(error);
     }
@@ -103,12 +106,14 @@ formEditCliente.addEventListener('submit', async(e) => {
         resjson = await peticion.json();
         if (resjson.respuesta == "OK") {
             notificacionExitosa('Cliente Modificado', 'modalEditarCliente');
-            tablaClientes.ajax.reload(null, false);
         } else if (resjson.respuesta == "existe") {
             notificarError('Ya existe un cliente con el mismo nombre');
-        } else {
+        } else if (resjson.respuesta == "caracteres"){
+            notificarError('Se encontró un caracter desconocido');
+        }else {
             notificarError(resjson.respuesta);
         }
+        tablaClientes.ajax.reload(null, false);
     } catch (error) {
         console.log(error);
     }
@@ -144,10 +149,10 @@ $(document).on('click', ".btnBorrar", async function() {
             resjson = await peticion.json();
             if (resjson.respuesta == "OK") {
                 notificacionExitosa('¡Cliente eliminado correctamente!', 'nuevo_cliente');
-                tablaClientes.ajax.reload(null, false);
             } else {
                 notificarError(resjson.respuesta);
             }
+            tablaClientes.ajax.reload(null, false);
         } catch (error) {
             console.log(error);
         }
@@ -170,11 +175,10 @@ $(document).on('click', ".activar", async function() {
             body: datos
         });
         resjson = await peticion.json();
-        if (resjson.respuesta == "OK") {
-            tablaClientes.ajax.reload(null, false);
-        } else {
+        if (resjson.respuesta != "OK") {
             notificarError(resjson.respuesta);
         }
+        tablaClientes.ajax.reload(null, false);
     } catch (error) {
         console.log(error)
     }
@@ -196,11 +200,10 @@ $(document).on('click', ".desactivar", async function() {
             body: datos
         });
         resjson = await peticion.json();
-        if (resjson.respuesta == "OK") {
-            tablaClientes.ajax.reload(null, false);
-        } else {
+        if (resjson.respuesta != "OK") {
             notificarError(resjson.respuesta);
         }
+        tablaClientes.ajax.reload(null, false);
     } catch (error) {
         console.log(error)
     }

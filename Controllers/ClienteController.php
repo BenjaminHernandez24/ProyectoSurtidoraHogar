@@ -1,7 +1,7 @@
 <?php
 require_once "../Models/ClientesModel.php";
 require_once "../Models/ValidacionesClientes/ValidacionCliente.php";
-//pruebaaa//
+
 /* REDIRECCIÓN AL MÉTODO getClientes() */
 if (isset($_POST['getClientes'])) {
 
@@ -11,48 +11,54 @@ if (isset($_POST['getClientes'])) {
 
 /* REDIRECCIÓN AL MÉTODO AgregarClientes() */
 if (isset($_POST['AgregarCliente'])) {
+    if(preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\(\) ]+$/', $_POST['nombre'])){
+        $Cliente = array(
+            "nombre_cli" => $_POST['nombre'],
+            "tipo"       => $_POST['tipo'],
+            "telefono"   => $_POST['telefono'],
+        );
 
-    $Cliente = array(
-        "nombre_cli" => $_POST['nombre'],
-        "tipo"       => $_POST['tipo'],
-        "telefono"   => $_POST['telefono'],
-    );
+        $respuesta = ValidacionCliente::ValidarClienteNombre($Cliente);
 
-    $respuesta = ValidacionCliente::ValidarClienteNombre($Cliente);
+        if ($respuesta == false) {
+            $respuesta = ClientesModel::AgregarCliente($Cliente);
+        } else {
+            $respuesta = "existe";
+        }
 
-    if ($respuesta == false) {
-        $respuesta = ClientesModel::AgregarCliente($Cliente);
-    } else {
-        $respuesta = "existe";
+        echo json_encode(['respuesta' => $respuesta]);
+    }else{
+        echo json_encode(['respuesta' => 'caracteres']);
     }
-
-    echo json_encode(['respuesta' => $respuesta]);
 }
 
 /* REDIRECCIÓN AL MÉTODO EditarClientes() */
 if (isset($_POST['editarCliente'])) {
+    if(preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\(\) ]+$/', $_POST['nombre'])){
+        $Cliente = array(
+            "id_cli"     => $_POST['idCliente'],
+            "nombre_cli" => $_POST['nombre'],
+            "tipo"       => $_POST['tipo'],
+            "telefono"   => $_POST['telefono'],
+        );
 
-    $Cliente = array(
-        "id_cli"     => $_POST['idCliente'],
-        "nombre_cli" => $_POST['nombre'],
-        "tipo"       => $_POST['tipo'],
-        "telefono"   => $_POST['telefono'],
-    );
+        $respuesta = ValidacionCliente::ValidarClienteEditar($Cliente);
 
-    $respuesta = ValidacionCliente::ValidarClienteEditar($Cliente);
-
-    if ($respuesta == true) {
-        $respuesta = ValidacionCliente::ValidarClienteNombre($Cliente);
         if ($respuesta == true) {
-            $respuesta = "existe";
+            $respuesta = ValidacionCliente::ValidarClienteNombre($Cliente);
+            if ($respuesta == true) {
+                $respuesta = "existe";
+            } else {
+                $respuesta = ClientesModel::EditarCliente($Cliente);
+            }
         } else {
             $respuesta = ClientesModel::EditarCliente($Cliente);
         }
-    } else {
-        $respuesta = ClientesModel::EditarCliente($Cliente);
-    }
 
-    echo json_encode(['respuesta' => $respuesta]);
+        echo json_encode(['respuesta' => $respuesta]);
+    }else{
+        echo json_encode(['respuesta' => 'caracteres']);
+    }
 }
 
 /* REDIRECCIÓN AL MÉTODO EliminarClientes() */
