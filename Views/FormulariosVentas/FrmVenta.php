@@ -142,7 +142,7 @@
 
                                     <div class="row" id="fila_cobro">
                                         <div class="col">
-                                            <label>Cobro</label>
+                                            <label>Pago</label>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-dollar-sign"></i></span>
                                                 <input id="cobro" type="number" class="form-control input-lg" name="cobro" total="" placeholder="0" disabled="">

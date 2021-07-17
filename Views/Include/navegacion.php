@@ -43,7 +43,7 @@ if (!isset($_SESSION['user']) ) {
             </button>
             <?php } ?>
             <ul class="dropdown-menu" style="font-size: 20px;">
-                <li><a class="dropdown-item nav-link" href="#"><i class="nav-icon fas fa-sliders-h" style="color:#F29F05;"> Ajustes</i></a></li>
+                <li><a class="dropdown-item nav-link" href="../Views/Ajustes.php"><i class="nav-icon fas fa-sliders-h" style="color:#F29F05;"> Ajustes</i></a></li>
                 <li><a class="dropdown-item nav-link" href="../Views/Ayuda.php" style="color:white" target="_blank"><i class="nav-icon fas fa-question-circle" style="color:#F29F05;"> Ayuda</i></a></li>
                 <li><a class="dropdown-item nav-link" href="#" style="color:white"><i class="nav-icon fas fa-info-circle" style="color:#F29F05;"> Acerca De</i></a></li>
                 <li>
@@ -199,7 +199,7 @@ if (!isset($_SESSION['user']) ) {
                         </li>
                         <li class="nav-item">
                             <a href="../Views/Compras.php" class="nav-link">
-                                <i class="fas fa-shopping-bag" style="color:white"></i>
+                                <i class="nav-icon fas fa-shopping-bag" style="color:white"></i>
                                 <p style="color:white; font-size: 25px;">
                                     Compras
                                 </p>
