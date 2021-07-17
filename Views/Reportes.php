@@ -69,7 +69,7 @@ if (!isset($_SESSION['user']) ) {
                                 <div class="icon">
                                     <i class="fas fa-money-bill-wave"></i>
                                 </div>
-                                <a class="small-box-footer">
+                                <a class="small-box-footer" id="reporteGeneralVentas" type="button">
                                     Generar Reporte <i class="fas fa-arrow-circle-right" style="color:white;"></i>
                                 </a>
                             </div>

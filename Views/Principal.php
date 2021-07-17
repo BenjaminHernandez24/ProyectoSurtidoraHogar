@@ -106,9 +106,7 @@ $ctr = new EstadisticasControlador();
 
             <?php include('FormulariosPrincipal/TablaVentasDia.php'); ?>
 
-            <div class="row mb-2">
                 <?php include('FormulariosPrincipal/FormatoGraficas.php'); ?>
-            </div>
         </div>
 
         <!-- footer -->

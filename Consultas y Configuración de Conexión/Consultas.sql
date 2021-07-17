@@ -55,4 +55,9 @@
 	INNER JOIN productos p ON p.id_producto = i.id_producto
 	AND ec.fecha >= "2021-03-20" AND ec.fecha<= "2021-07-12" AND prov.nom_prov="Tacua"
 	ORDER BY ec.fecha, ec.hora ASC;
+
+	SELECT dsv.cliente,p.nombre_producto,sv.num_piezas,sv.precio_a_vender,sv.subtotal,dsv.fecha,dsv.hora FROM salida_venta sv 
+	INNER JOIN detalle_salida_venta dsv ON dsv.fecha >= '2021-07-16' AND sv.id_detalle_salida_venta=dsv.id_detalle_salida_venta
+	INNER JOIN inventario i ON i.id_inventario=sv.id_inventario
+	INNER JOIN productos p ON p.id_producto = i.id_producto;
 	#====================================================================================#

@@ -53,3 +53,6 @@
 
 <!-- Modal Reporte 2 -->
 <?php include("FrmReporteComprasPorProveedor.php"); ?>
+
+<!-- Modal Reporte 3 -->
+<?php include("FrmReporteVentasTotales.php"); ?>

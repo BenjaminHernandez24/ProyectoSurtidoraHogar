@@ -91,3 +91,20 @@ if (isset($_POST['getComprasEspecificoUnico'])) {
     $data = reportesGraficasModel::getComprasEspecificaUnicas($arreglo);
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
 }
+
+if (isset($_POST['getVentasRango'])) {
+    $arreglo = array(
+        "fecha_inicio" => $_POST['fecha_inicial'],
+        "fecha_final" => $_POST['fecha_final']
+    );
+    $data = reportesGraficasModel::reporteVentasRango($arreglo);
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
+
+if (isset($_POST['getVentasUnicas'])) {
+    $arreglo = array(
+        "fecha" => $_POST['fecha']
+    );
+    $data = reportesGraficasModel::reporteVentasUnicas($arreglo);
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    }
