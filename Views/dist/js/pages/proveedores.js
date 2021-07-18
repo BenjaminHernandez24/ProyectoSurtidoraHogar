@@ -80,6 +80,7 @@ formaddProveedor.addEventListener('submit', async(e) => {
 
         } else if (resjson.respuesta == "EXISTE") {
             notificarError('El Proveedor ya ha sido registrado');
+            tablaProveedores.ajax.reload(null, false);
         } else {
             notificarError('Ocurrio un Error');
         }

@@ -39,7 +39,7 @@ class Conexion
 	{
 		
 		$fecha = date("d-m-Y");
-		$ruta = "../BaseDatos/SurtidoraHogar"."backups_{$fecha}.sql";
+		$ruta = "C:\Users\benja\OneDrive\Escritorio\Surtidora"."backups_{$fecha}.sql";
 		$nombre_backups = "backups_{$fecha}.sql";
 
 		$return = '';
@@ -104,8 +104,8 @@ class Conexion
 	}
 
 	public function backup_remove($ruta){
-		if(file_exists("../BaseDatos/SurtidoraHogar".$ruta)){
-			unlink("../BaseDatos/SurtidoraHogar".$ruta);
+		if(file_exists("C:\Users\benja\OneDrive\Escritorio\Surtidora".$ruta)){
+			unlink("C:\Users\benja\OneDrive\Escritorio\Surtidora".$ruta);
 			return "ELIMINADO";
 		}else{
 			return "NO EXISTE";

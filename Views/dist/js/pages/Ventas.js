@@ -143,23 +143,32 @@ $(document).ready(async function autocompletado() {
             source: data,
 
             select: async function(event, item) {
-                var DatosProductos = new FormData();
-                DatosProductos.append('obtenerDatosProductos', 'OK');
-                DatosProductos.append('valor', item.item.value);
+                try {
+                    var DatosProductos = new FormData();
+                    DatosProductos.append('obtenerDatosProductos', 'OK');
+                    DatosProductos.append('valor', item.item.value);
 
-                var peticionDatos = await fetch('../Controllers/VentasController.php', {
-                    method: 'POST',
-                    body: DatosProductos
-                });
+                    var peticionDatos = await fetch('../Controllers/VentasController.php', {
+                        method: 'POST',
+                        body: DatosProductos
+                    });
 
-                var datos = await peticionDatos.json();
-                stock_inicial = datos.stock;
-                id_inventario = datos.inventario;
-                $("#nombre_producto").val(datos.productos);
-                $("#stock").val(datos.stock);
-                $("#precio").val(datos.precio);
-                document.getElementById('precio').disabled = false;
-                document.getElementById('cantidad').disabled = false;
+                    var datos = await peticionDatos.json();
+                    stock_inicial = datos.stock;
+                    if (datos.stock == 0) {
+                        notificarError("El Producto No Tiene Stock");
+                        $("#buscar").val("");
+                    } else {
+                        id_inventario = datos.inventario;
+                        $("#nombre_producto").val(datos.productos);
+                        $("#stock").val(datos.stock);
+                        $("#precio").val(datos.precio);
+                        document.getElementById('precio').disabled = false;
+                        document.getElementById('cantidad').disabled = false;
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
             }
         });
     } catch (error) {
@@ -255,7 +264,7 @@ formDatosProducto.addEventListener('submit', async function(e) {
             notificarError("Ocurrio un error");
         }
     } catch (error) {
-        console.log(error);
+        notificarError("No Se Puede Agregar El Producto");
     }
 })
 

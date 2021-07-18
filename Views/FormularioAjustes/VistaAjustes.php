@@ -1,4 +1,9 @@
-<!-- TABLA PROVEEDORES -->
+<?php
+if (!isset($_SESSION['user'])) {
+    session_start();
+}
+?>
+
 <div class="content-wrapper">
     <div class="container-fluid pt-4">
         <div class="row">
@@ -32,14 +37,7 @@
                                             <label for="">Usuario</label>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-user"></i></span>
-                                                <input id="usuario" name="usuario" type="text" class="form-control input-lg" placeholder="Usuario" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <label for="nom_empresa">Contraseña</label>
-                                            <div class="input-group mb-3">
-                                                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-lock"></i></span>
-                                                <input id="password" type="text" class="form-control input-lg" name="password" placeholder="Contraseña" readonly>
+                                                <input id="usuario" name="usuario" value="<?php echo $_SESSION['user'] ?>" type="text" class="form-control input-lg" placeholder="Usuario" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -49,14 +47,14 @@
                                             <label for="">Nueva Contraseña</label>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-key"></i></span>
-                                                <input id="newpassword" name="newpassword" type="text" class="form-control input-lg" placeholder="Nueva Contraseña" required>
+                                                <input id="newpassword" name="newpassword" type="password" class="form-control input-lg" placeholder="Nueva Contraseña" required>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <label for="nom_empresa">Repetir Contraseña</label>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-key"></i></span>
-                                                <input id="repetirpassword" type="text" class="form-control input-lg" name="repetirpassword" placeholder="Repetir Contraseña" required>
+                                                <input id="repetirpassword" name="repetirpassword" type="password" class="form-control input-lg" name="repetirpassword" placeholder="Repetir Contraseña" required>
                                             </div>
                                         </div>
                                     </div>
