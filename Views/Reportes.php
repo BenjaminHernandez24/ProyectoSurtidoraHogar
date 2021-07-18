@@ -79,7 +79,7 @@ if (!isset($_SESSION['user']) ) {
                         <div class="col-lg-3 col-6" class="small-box-footer">
                             <div class="small-box bg-blue">
                                 <div class="inner">
-                                    <h1>Indeciso</h1>
+                                    <h1>Boton Fuera De Servicio</h1>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-cart-arrow-down"></i>

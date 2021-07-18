@@ -50,7 +50,7 @@ async function inicializarGraficasProducto() {
                 scales: {
                   xAxes:[{
                     ticks:{
-                      fontSize: 14,
+                      fontSize: 13,
                       fontColor: "#000000",
                     },
                     scaleLabel:{
@@ -578,7 +578,7 @@ $(document).ready(async function() {
                   $("#tblReportesGraficasProductos").DataTable().destroy();
                   if(data.length != 0){
                       $('#tblReportesGraficasProductos').find('tbody').append(`
-                       <tr id="" height="58">
+                       <tr id="" height="75%">
                            <td class="row-index">
                            <p>${data[0]["proveedor"]}</p>
                            </td>

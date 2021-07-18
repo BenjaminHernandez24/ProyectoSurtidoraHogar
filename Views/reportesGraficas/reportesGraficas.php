@@ -30,6 +30,7 @@
         </div>
         
                 <div class="card">
+                    <br>
                 <!-- TABLA CLIENTES -->
                 <table id="tblReportesGraficasProductos" class="table table-light text-center">
                     <thead class="thead-light" >

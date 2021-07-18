@@ -8,5 +8,5 @@ if (!isset($_SESSION['user'])) {
 
 header("Content-type: application/pdf");
 header("Content-Disposition: inline; filename= ManualSurtidoraHogar.pdf");
-readfile("Ayuda_Pdf/LaSurtidoraAyuda.pdf");
+readfile("Ayuda_Pdf/LaSurtidoraAyuda_1.pdf");
 ?>

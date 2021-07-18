@@ -49,7 +49,7 @@ function grafica_1_Resguardo(respuesta){
             scales: {
               xAxes:[{
                 ticks: {
-                    fontSize: 14,
+                    fontSize: 11.3,
                     fontColor: "#000000",
                 },
                 scaleLabel:{
@@ -130,7 +130,7 @@ function grafica_2_Resguardo(respuesta){
             scales: {
               xAxes:[{
                 ticks:{
-                    fontSize: 14,
+                    fontSize: 13,
                     fontColor: "#000000",
                 },
                 scaleLabel:{
