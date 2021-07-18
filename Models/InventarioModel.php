@@ -12,6 +12,7 @@ private static $EDITAR_PRODUCTO_INVENTARIO = "UPDATE inventario set id_producto 
 private static $BORRAR_PRODUCTO_INVENTARIO = "DELETE FROM inventario WHERE id_inventario = ?";
 private static $OBTENER_ESTATUS_COMPARAR ="SELECT STOCK, ESTATUS_ACEPTABLE, ESTATUS_ALERTA from inventario WHERE id_producto = ?";
 private static $INSERTAR_ESTATUS ="UPDATE inventario set  estatus=? WHERE id_producto=?";
+private static $VALIDAR_EDITAR = "SELECT DISTINCT id_producto=? FROM inventario";
 //-------- FUNCIÓN PARA OBTENER  PRODUCTOS EN INVENTARIO -------//
  public static function obtener_inventario_producto()
  {
@@ -39,9 +40,9 @@ private static $INSERTAR_ESTATUS ="UPDATE inventario set  estatus=? WHERE id_pro
      try {
          $conexion = new Conexion();
          $conn = $conexion->getConexion();
-          //Se abre la transacción.
-          $conn->beginTransaction();
-
+         //Se abre la transacción.
+        $conn->beginTransaction();
+         
          //-------- Se verifica si ya existe el producto en inventario-------//
          $pst = $conn->prepare(self::$VALIDAR_PRODUCTO_EXISTENTE);
          $pst->execute([$producto_inv ['id_producto']]);
@@ -49,26 +50,29 @@ private static $INSERTAR_ESTATUS ="UPDATE inventario set  estatus=? WHERE id_pro
 
          if (empty($validar)) {
              $pst = $conn->prepare(self::$INSERTAR_PRODUCTO_INVENTARIO);
-             $resultado = $pst->execute([$producto_inv ['id_producto'],$producto_inv ['estatus_aceptable'],$producto_inv['estatus_alerta'],$producto_inv ['stock'],]);
-             
+             $resultado  = $pst->execute([$producto_inv ['id_producto'],$producto_inv ['estatus_aceptable'],$producto_inv['estatus_alerta'],$producto_inv ['stock'],]);
 
              if ($resultado == 1) {
+                
                 $msg = "OK";
+                
                 //Si todo está correcto se inserta.
                 $conn->commit();
+                
             } else {
                 $msg = "Falló al insertar";
-                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                //Si algo falla, se reestablece la bd a como estaba en un inicio.
                 $conn->rollBack();
             }
-             $conn = null;
-             $conexion->closeConexion();
+            //-------- Se verifica el estatus -------//
+        
+         } else {
+            return $msg="EXISTE";
+        }
 
-             return $msg;
-         } 
          $conn = null;
          $conexion->closeConexion();
-
+         return $msg;
      } catch (PDOException $e) {
          return $e->getMessage();
      }
@@ -103,6 +107,12 @@ public static function editar_productos_inventario($producto_edi)
         $conn = $conexion->getConexion();
         //Se abre la transacción.
         $conn->beginTransaction();
+        //-------- Se verifica si ya existe el producto en inventario-------//
+        $pst = $conn->prepare(self::$VALIDAR_EDITAR);
+        $pst->execute([$producto_edi ['id_producto']]);
+        $validar = $pst->fetchAll();
+
+        if (!empty($validar)) {
        
         $pst = $conn->prepare(self::$EDITAR_PRODUCTO_INVENTARIO);
 
@@ -118,6 +128,10 @@ public static function editar_productos_inventario($producto_edi)
             //Si algo falla, se reestablece la bd a como estaba en un inicio.
             $conn->rollBack();
         }
+
+    } else {
+        return $msg="NO";
+    }
         $conn = null;
         $conexion->closeConexion();
         return $msg;

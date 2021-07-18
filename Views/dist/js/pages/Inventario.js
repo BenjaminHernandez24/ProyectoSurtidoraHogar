@@ -3,6 +3,7 @@ const form_editar_productoInv = document.getElementById('frm_editar_productoInv'
 
 var tabla_inventario;
 var id_inventario;
+var producto_reg;
 // Llenar Tabla de Inventario //
 async function inventario() {
     tabla_inventario = $("#tab_inventario").DataTable({
@@ -23,6 +24,8 @@ async function inventario() {
             {"data": "estatus_aceptable"},
             {"data": "estatus_alerta"},
             {"data": "stock"},
+            { "defaultContent": "<button class='btn btn-success btn-sm '>Ver</button>"},
+            
            
             {
                 "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div> "
@@ -126,9 +129,14 @@ form_editar_productoInv.addEventListener('submit', async (e) => {
             if(resjson.respuesta == "OK"){
                 notificacionExitosa('Producto Actualizado');
                 tabla_inventario.ajax.reload(null,false);
-            }else{
+            } else if (resjson.respuesta == "NO") {
+
+                notificarError('Elige el producto correcto');
+    
+            } else {
                 notificarError(resjson.respuesta);
             }
+        
             
         } catch (error) {
             console.log(error);
@@ -137,7 +145,7 @@ form_editar_productoInv.addEventListener('submit', async (e) => {
 });
 //---------- Al dar click en el botón Editar un Producto se muestra el modal ---------//
 $(document).on('click', '.btnEditar', async function(){
-   
+    
     if(tabla_inventario.row(this).child.isShown()){
         var data = tabla_inventario.row(this).data();
     }else{
@@ -200,6 +208,15 @@ $(document).on('click', ".btnBorrar", async function() {
     }
 
 })
+$(document).on('click', '.btnVer', async function(){
+    
+    if(tabla_inventario.row(this).child.isShown()){
+        var data = tabla_inventario.row(this).data();
+    }else{
+        var data = tabla_inventario.row($(this).parents("tr")).data();
+    }
+     
+});  
 //---------- Fin Borrar un Producto de Inventario ---------//
 function notificarError(mensaje) {
     Swal.fire({

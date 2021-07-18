@@ -102,8 +102,9 @@ public static function agregar_compras($compras)
             $sum_stock= $res['stock'] + $compras['num_piezas'];
             //--------Actualizamos el stock en inventario de la compra e insertamos los datos de Compra -------//
             $pst = $conn->prepare(self::$ACTUALIZAR_STOCK_INSERTAR_ENTRADA_COMPRA );
-             $pst->execute([$sum_stock ,$compras ['id_producto'],$compras['id_prov'],$validar['id_inventario'],$compras['num_piezas'],$compras['precio_unitario'],$sub]);
-
+            $resultado = $pst->execute([$sum_stock ,$compras ['id_producto'],$compras['id_prov'],$validar['id_inventario'],$compras['num_piezas'],$compras['precio_unitario'],$sub]);
+             
+           
             
             $conn = null;
             $conexion->closeConexion();
@@ -123,6 +124,7 @@ public static function editar_compras($Compras_editar)
         
         $conexion = new Conexion();
         $conn = $conexion->getConexion();
+         
         //-------- Se verifica si existe el producto seleccionado con un ID de inventario-------//
         $pst = $conn->prepare(self::$SELECT_ID_INVENTARIO_PRODUCTO);
         $pst->execute([$Compras_editar ['id_producto']]);
@@ -144,8 +146,9 @@ public static function editar_compras($Compras_editar)
      
        //--------Actualizamos el stock en inventario de la compra e insertamos los datos de Compra que se editó -------//
        $pst = $conn->prepare(self::$ACTUALIZAR_STOCK_ACTUALIZAR_ENTRADA_COMPRA );
-       $pst->execute([$Compras_editar['num_piezas'],$res['id_inventario'],$Compras_editar['id_prov'],$res['id_inventario'],$Compras_editar['num_piezas'],$Compras_editar['precio_unitario'],$subt, $Compras_editar['id_entrada_compra']]);
+       $resultado = $pst->execute([$Compras_editar['num_piezas'],$res['id_inventario'],$Compras_editar['id_prov'],$res['id_inventario'],$Compras_editar['num_piezas'],$Compras_editar['precio_unitario'],$subt, $Compras_editar['id_entrada_compra']]);
 
+      
         $conn = null;
         $conexion->closeConexion();
         return $msg="OK";
