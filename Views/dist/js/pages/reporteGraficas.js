@@ -135,10 +135,10 @@ function reporteComprasGeneral(datos,fechas){
         pdf.save('ReporteComprasGeneral.pdf');
         reporteCreado("Reporte Generado Con Éxito");
         $('#modalFrmReportesComprasGenerales').modal('hide');
+        limpiarVariables();
       }else{
           notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna compra');
       }
-      limpiarVariables();
     }
   });
 }
@@ -201,10 +201,10 @@ function reporteComprasEspecifico(datos,fechas){
         }
         reporteCreado("Reporte Generado Con Éxito");
         $('#modalFrmReportesComprasEspecificas').modal('hide');
+        limpiarVariables();
       }else{
         notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna venta');
       }
-      limpiarVariables();
     }
   });
 }
@@ -344,10 +344,10 @@ function reporteVentas(datos,fechas){
           pdf.save('ReporteVentasTotales.pdf');
           reporteCreado("Reporte Generado Con Éxito");
         $('#modalFrmReportesVentas').modal('hide');
+        limpiarVariables();
         }else{
         notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna compra');
         }
-        limpiarVariables();
     }
   });
 }
@@ -800,20 +800,22 @@ $("#Generar_Ventas").click(function(){
 });
 
 function limpiarVariables(){
-  document.querySelector("#seleccion_Ventas").value = "1";
-  document.getElementById("buscarProveedor").value = "";
-  document.querySelector("#seleccionReporte2").value = "1";
   document.querySelector("#seleccion").value = "1";
   document.getElementById("fecha_unica").value = "";
   document.getElementById("fechas").value = "";
   document.getElementById("inicio").value = "";
   document.getElementById("final").value = "";
   document.getElementById("unique").value = "";
+
+  document.getElementById("buscarProveedor").value = "";
+  document.querySelector("#seleccionReporte2").value = "1";
   document.getElementById("fecha_unica_Prov").value = "";
   document.getElementById("fechas_Prov").value = "";
   document.getElementById("inicioProv").value = "";
   document.getElementById("finalProv").value = "";
   document.getElementById("uniqueProv").value = "";
+
+  document.querySelector("#seleccion_Ventas").value = "1";
   document.getElementById("fecha_unica_Ventas").value = "";
   document.getElementById("final_Ventas").value = "";
   document.getElementById("unique_Ventas").value = "";

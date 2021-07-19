@@ -86,7 +86,9 @@ async function llenar_Marca_Producto(){
             optionM1.text = item.descripcion_marca;
             selectMarcaProducto.appendChild(optionM1);
 
-            optionM2.value = item.id_marca;
+        /*En vez de pasarle como value el id_marca, le pasamos la descripcion*/
+        /*OJO ESTO SOLO SE HACE CON EDITAR QUE ES LO QUE NECESITAMOS*/
+            optionM2.value = item.descripcion_marca;
             optionM2.text = item.descripcion_marca;
             selectMarcaProductoEdi.appendChild(optionM2);
         }
@@ -152,7 +154,7 @@ form_editar_producto.addEventListener('submit', async (e) => {
         notificarError('Seleccione una marca de producto');
     }else{
         try {
-            
+            console.log(document.getElementById('frm_editar_producto'));
             var datosProducto = new FormData(form_editar_producto);
             datosProducto.append('editar_producto', 'OK');
             datosProducto.append('id_producto', id_producto);
@@ -184,12 +186,13 @@ $(document).on('click', '.btnEditar', async function(){
         var data = tabla_productos.row($(this).parents("tr")).data();
     }
      
+    console.log(data);
     id_producto = data[0];
     $("#nom_producto_editar").val(data[1]);
     $("#precio_pub_editar").val(data[2]);
-    //$("#tipo_producto_editar").val(data[3]);
-    //var selectTipoProducto = document.getElementById('tipo_producto');
-    $("#default").val(data[3]);
+    /*Le decimos al combo que se pocisione por predeterminado donde el valor
+      sea igual a lo que se está obteniendo en el data de la tabla*/
+    document.querySelector("#marca_producto_editar").value = data[4];
     // -----Mostramos el modal -----//
     $('#editar_producto').modal('show');
 
