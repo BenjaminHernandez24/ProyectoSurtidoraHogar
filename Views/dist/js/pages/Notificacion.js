@@ -1,7 +1,5 @@
  var j = 0;
  var dataUno = 0;
- var ciclo;
- var condicion = 1;
  var contador = 0;
 
 async function verNotificaciones(view = '')
@@ -93,12 +91,10 @@ async function comprobarCambios()
            dataType:"json",
            success:function(data)//Dame la notificacion que tenías con anterioridad.
            {
-                if(dataUno == data.total){
-               }else{ //Si son diferentes, hubo cambios.
-                    condicion = 0;
+                if(dataUno != data.total){
                     numeroNotificaciones();
                     verNotificaciones();
-                    LlamarNotificacion(0);
+                    LlamarNotificacion();
                }
             }
           });
@@ -106,16 +102,12 @@ async function comprobarCambios()
   });
  }
 
-function LlamarNotificacion(numero) {
-    contador++;
-    if(numero === 0 && contador===1){
+function LlamarNotificacion() {
+    
         Push.create("USTED TIENE UN MENSAJE NUEVO",{
         body: "VERIFIQUE EL CONTENIDO DE SUS NOTIFICACIONES",
         icon: "dist/img/surtidora.png",
         timeout: 10000});
-    }else if(numero ===1){
-        contador = 0;
-    }
 }
 
 

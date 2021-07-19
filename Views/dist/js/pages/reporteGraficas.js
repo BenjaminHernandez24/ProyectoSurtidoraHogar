@@ -260,6 +260,7 @@ function reporteVentas(datos,fechas){
             for(var j = i; j < data.length; j++){
               if(fecha === data[j]["fecha"]){
                 lista[j] = { 
+                  "venta": data[j]["venta"],
                   "cliente": data[j]["cliente"],
                   "producto": data[j]["producto"],
                   "piezas": data[j]["piezas"],
@@ -279,10 +280,10 @@ function reporteVentas(datos,fechas){
             nueva_lista = Object.values(lista);
             for(var k = 0; k < nueva_lista.length; k++){
               lista2.splice(0, lista2.length);
-              cliente = nueva_lista[k]["cliente"];
+              cliente = nueva_lista[k]["venta"];
               
               for(var m = k; m < nueva_lista.length; m++){
-                if(cliente == nueva_lista[m]["cliente"]){
+                if(cliente == nueva_lista[m]["venta"]){
                   lista2[m] = { 
                   "cliente": nueva_lista[m]["cliente"],
                   "producto": nueva_lista[m]["producto"],
@@ -452,7 +453,7 @@ function sumaTotalPaginaVentas(data,pocision,clientes,total){
     for(var j = i; j < data.length; j++){
       if(fecha === data[j]["fecha"]){
         lista[j] = { 
-          "cliente": data[j]["cliente"],
+          "venta": data[j]["venta"],
           "total": data[j]["total"]
         };
         contador++;
@@ -465,12 +466,11 @@ function sumaTotalPaginaVentas(data,pocision,clientes,total){
     nueva_lista = Object.values(lista);
     for(var k = 0; k < nueva_lista.length; k++){
       lista2.splice(0, lista2.length);
-      cliente = nueva_lista[k]["cliente"];
+      cliente = nueva_lista[k]["venta"];
       
       for(var m = k; m < nueva_lista.length; m++){
-        if(cliente == nueva_lista[m]["cliente"]){
+        if(cliente == nueva_lista[m]["venta"]){
           lista2[m] = { 
-          "cliente": nueva_lista[m]["cliente"],
           "total": nueva_lista[m]["total"]
           };
           contador2++;
