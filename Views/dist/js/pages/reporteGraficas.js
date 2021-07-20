@@ -49,8 +49,13 @@ async function inicializarGraficasProducto() {
               },
                 scales: {
                   xAxes:[{
+                    display:true,
                     ticks:{
-                      fontSize: 13,
+                      autoSkip: false,
+                      maxRotation: 0,
+                      minRotation: 0,
+                      maxTicksLimit: 200,
+                      fontSize: 12,
                       fontColor: "#000000",
                     },
                     scaleLabel:{
@@ -278,6 +283,7 @@ function reporteVentas(datos,fechas){
             cliente = "";
             nueva_lista = [];
             nueva_lista = Object.values(lista);
+
             for(var k = 0; k < nueva_lista.length; k++){
               lista2.splice(0, lista2.length);
               cliente = nueva_lista[k]["venta"];
@@ -343,8 +349,8 @@ function reporteVentas(datos,fechas){
           pieDePagina();
           pdf.save('ReporteVentasTotales.pdf');
           reporteCreado("Reporte Generado Con Éxito");
-        $('#modalFrmReportesVentas').modal('hide');
-        limpiarVariables();
+          $('#modalFrmReportesVentas').modal('hide');
+          limpiarVariables();
         }else{
         notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna compra');
         }
@@ -489,20 +495,17 @@ function sumaTotalPaginaVentas(data,pocision,clientes,total){
         if(n == 0){
           if(variable.length < 2){
             contadorSumaTotales = contadorSumaTotales + parseFloat(variable[n]["total"]);
-            contadorSumaDia = contadorSumaDia + parseFloat(variable[n]["total"]);
             break;
           }
         }else{
           if(n == variable.length-1){
             contadorSumaTotales = contadorSumaTotales + parseFloat(variable[n]["total"]);
-            contadorSumaDia = contadorSumaDia + parseFloat(variable[n]["total"]);
           }
         }
       }
         k = k + (contador2-1);
         contador2 = 0;
-    } 
-      contadorSumaDia = 0;
+    }
       i = i + (contador-1);
       contador = 0;
   }
@@ -609,6 +612,7 @@ $(document).ready(async function() {
 
 /*Al abrir el modal, escondemos las dos fechas*/
 $("#reporteGeneral").click(function(){
+  limpiarVariables();
   $('#modalFrmReportesComprasGenerales').modal('show');
   document.getElementById("fecha_unica").style.display='block';
   document.getElementById("fechas").style.display = 'none';
@@ -685,6 +689,7 @@ $(document).ready(async function() {
 });
 
 $("#reporteGeneralPorProveedor").click(function(){
+  limpiarVariables();
   $('#modalFrmReportesComprasEspecificas').modal('show');
   document.getElementById("fecha_unica_Prov").style.display='block';
   document.getElementById("fechas_Prov").style.display = 'none';
@@ -748,6 +753,7 @@ $("#GenerarReporte2").click(function(){
                 REPORTE 3
    ======================================*/
 $("#reporteGeneralVentas").click(function(){
+  limpiarVariables();
   $('#modalFrmReportesVentas').modal('show');
   document.getElementById("fecha_unica_Ventas").style.display='block';
   document.getElementById("fechas_Ventas").style.display = 'none';
@@ -817,6 +823,8 @@ function limpiarVariables(){
 
   document.querySelector("#seleccion_Ventas").value = "1";
   document.getElementById("fecha_unica_Ventas").value = "";
+  document.getElementById("fechas_Ventas").value = "";
+  document.getElementById("inicio_Ventas").value = "";
   document.getElementById("final_Ventas").value = "";
   document.getElementById("unique_Ventas").value = "";
 }
@@ -827,7 +835,7 @@ function notificacionNoEncontrado(mensaje) {
         icon: 'warning',
         title: mensaje,
         showConfirmButton: false,
-        timer: 5000
+        timer: 2000
     })
 }
 
@@ -837,6 +845,6 @@ function reporteCreado(mensaje) {
         icon: 'success',
         title: mensaje,
         showConfirmButton: false,
-        timer: 5000
+        timer: 2000
     })
 }

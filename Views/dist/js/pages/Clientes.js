@@ -53,7 +53,7 @@ frmClientes.addEventListener('submit', async(e) => {
             method: 'POST',
             body: datosClientes
         });
-        /* RECIBO RESPUESTA PARA PODER VALIDAR */
+        
         resjson = await peticion.json();
         console.log(resjson.respuesta);
         if (resjson.respuesta == "OK") {
@@ -67,7 +67,7 @@ frmClientes.addEventListener('submit', async(e) => {
         }
         tablaClientes.ajax.reload(null, false);
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 })
 
@@ -115,7 +115,7 @@ formEditCliente.addEventListener('submit', async(e) => {
         }
         tablaClientes.ajax.reload(null, false);
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 })
 
@@ -154,7 +154,7 @@ $(document).on('click', ".btnBorrar", async function() {
             }
             tablaClientes.ajax.reload(null, false);
         } catch (error) {
-            console.log(error);
+            notificarError(error);
         }
     }
 })
@@ -180,7 +180,7 @@ $(document).on('click', ".activar", async function() {
         }
         tablaClientes.ajax.reload(null, false);
     } catch (error) {
-        console.log(error)
+        notificarError(error);
     }
 })
 
@@ -205,7 +205,7 @@ $(document).on('click', ".desactivar", async function() {
         }
         tablaClientes.ajax.reload(null, false);
     } catch (error) {
-        console.log(error)
+        notificarError(error);
     }
 })
 

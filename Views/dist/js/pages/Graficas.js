@@ -25,7 +25,7 @@ function grafica_1_Resguardo(respuesta){
         fill: false,
         backgroundColor: 'rgb(153, 102, 255)',
         borderColor: 'rgb(54, 162, 235)',
-        borderWidth: 2,
+        borderWidth: 2.5,
         tension: 0.1,
     };
 
@@ -49,7 +49,10 @@ function grafica_1_Resguardo(respuesta){
             scales: {
               xAxes:[{
                 ticks: {
-                    fontSize: 11.3,
+                    autoSkip: false,
+                    maxRotation: 0,
+                    minRotation: 0,
+                    fontSize: 14,
                     fontColor: "#000000",
                 },
                 scaleLabel:{
@@ -130,7 +133,7 @@ function grafica_2_Resguardo(respuesta){
             scales: {
               xAxes:[{
                 ticks:{
-                    fontSize: 13,
+                    fontSize: 12,
                     fontColor: "#000000",
                 },
                 scaleLabel:{
@@ -143,7 +146,7 @@ function grafica_2_Resguardo(respuesta){
               yAxes: [{
                   ticks: {
                       beginAtZero: true,
-                      stepSize : 250,
+                      stepSize : 300,
                       fontSize: 14,
                     fontColor: "#000000",
                   },
