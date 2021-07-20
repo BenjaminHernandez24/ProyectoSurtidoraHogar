@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-07-2021 a las 20:07:21
+-- Tiempo de generación: 20-07-2021 a las 22:21:16
 -- Versión del servidor: 10.4.19-MariaDB
 -- Versión de PHP: 8.0.7
 
@@ -56,9 +56,9 @@ CREATE TABLE `detalle_salida_venta` (
   `id_detalle_salida_venta` int(11) NOT NULL,
   `cliente` varchar(200) NOT NULL,
   `metodo_pago` varchar(50) NOT NULL,
-  `total` decimal(10,0) NOT NULL,
-  `pago` decimal(10,0) NOT NULL,
-  `cambio` decimal(10,0) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `pago` decimal(10,2) NOT NULL,
+  `cambio` decimal(10,2) NOT NULL,
   `fecha` date NOT NULL,
   `hora` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -74,8 +74,8 @@ CREATE TABLE `entrada_compra` (
   `id_prov` int(11) NOT NULL,
   `id_inventario` int(11) NOT NULL,
   `num_piezas` int(11) NOT NULL,
-  `precio_unitario` decimal(10,0) NOT NULL,
-  `subtotal` decimal(10,0) NOT NULL,
+  `precio_unitario` decimal(10,2) NOT NULL,
+  `subtotal` decimal(10,2) NOT NULL,
   `fecha` date NOT NULL,
   `hora` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -187,7 +187,7 @@ CREATE TABLE `notificaciones` (
 --
 
 INSERT INTO `notificaciones` (`boton`, `total`) VALUES
-(1, 1);
+(1, 0);
 
 -- --------------------------------------------------------
 
@@ -200,7 +200,7 @@ CREATE TABLE `productos` (
   `nombre_producto` varchar(300) NOT NULL,
   `id_tipo` int(11) NOT NULL,
   `id_marca` int(11) NOT NULL,
-  `precio_publico` decimal(10,0) NOT NULL
+  `precio_publico` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -247,7 +247,7 @@ CREATE TABLE `salida_merma` (
   `id_inventario` int(11) NOT NULL,
   `descripcion` varchar(200) NOT NULL,
   `num_piezas` int(11) NOT NULL,
-  `subtotal` decimal(10,0) NOT NULL,
+  `subtotal` decimal(10,2) NOT NULL,
   `fecha` date NOT NULL,
   `hora` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -262,8 +262,8 @@ CREATE TABLE `salida_venta` (
   `id_salida_venta` int(11) NOT NULL,
   `id_inventario` int(11) NOT NULL,
   `num_piezas` int(11) NOT NULL,
-  `precio_a_vender` decimal(10,0) NOT NULL,
-  `subtotal` decimal(10,0) NOT NULL,
+  `precio_a_vender` decimal(10,2) NOT NULL,
+  `subtotal` decimal(10,2) NOT NULL,
   `id_detalle_salida_venta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
