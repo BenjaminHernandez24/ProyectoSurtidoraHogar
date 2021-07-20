@@ -59,8 +59,9 @@ async function llenar_Proveedor(){
             option.value = item.id_prov;
             option.text = item.nom_empresa;
             selectProveedor.appendChild(option);
+
             let option1 = document.createElement('option');
-            option1.value = item.id_prov;
+            option1.value = item.nom_empresa;
             option1.text = item.nom_empresa;
             selectProveedorEdi.appendChild(option1);
         }
@@ -91,7 +92,7 @@ async function llenar_Producto(){
             option.text = item.nombre_producto;
             selectProducto.appendChild(option);
             let option1 = document.createElement('option');
-            option1.value = item.id_producto;
+            option1.value = item.nombre_producto;
             option1.text = item.nombre_producto;
             selectProductoEdi.appendChild(option1);
         }
@@ -126,7 +127,8 @@ form_agregar_compra.addEventListener('submit', async(e) => {
         if (resjson.respuesta == "OK") {
             notificacionExitosa('Stock actualizado y Compra registrada');
             tabla_compras.ajax.reload(null, false);
-        
+        }else  if (resjson.respuesta == "OK"){
+            notificarError('Ese producto no existe en Inventario');
         } else {
             notificarError(resjson.respuesta);
         }
@@ -184,8 +186,8 @@ $(document).on('click', '.btnEditar', async function(){
     }
      // Cargamos datos de la tabla de la compra elegida //
     id_entrada_compra = data[0];
-    //$("#producto_editar")
-    //$("#producto_editar").val(selected);
+    document.querySelector("#proveedor_editar").value = data[3];
+    document.querySelector("#producto_editar").value = data[4];
     $("#piezas_editar").val(data[1]);
     $("#precio_unit_editar").val(data[2]);
     // -----Mostramos el modal -----//

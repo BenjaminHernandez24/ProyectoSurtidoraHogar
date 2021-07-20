@@ -47,15 +47,15 @@ async function llenar_Tipo_Producto(){
         var selectTipoProducto = document.getElementById('tipo_producto');
         var selectTipoProductoEdi = document.getElementById('tipo_producto_editar');
         for(item of resjson){
-            let option = document.createElement('option');
-            option.value = item.id_tipo;
-            option.text = item.descripcion_tipo;
-            selectTipoProducto.appendChild(option);
+            let option_r = document.createElement('option');
+            option_r.value = item.id_tipo;
+            option_r.text = item.descripcion_tipo;
+            selectTipoProducto.appendChild(option_r);
 
-            let option1 = document.createElement('option');
-            option1.value = item.id_tipo;
-            option1.text = item.descripcion_tipo;
-            selectTipoProductoEdi.appendChild(option1);
+            let option_e = document.createElement('option');
+            option_e.value = item.descripcion_tipo;
+            option_e.text = item.descripcion_tipo;
+            selectTipoProductoEdi.appendChild(option_e);
         }
         
     } catch (error) {
@@ -192,6 +192,7 @@ $(document).on('click', '.btnEditar', async function(){
     $("#precio_pub_editar").val(data[2]);
     /*Le decimos al combo que se pocisione por predeterminado donde el valor
       sea igual a lo que se está obteniendo en el data de la tabla*/
+    document.querySelector("#tipo_producto_editar").value = data[3];
     document.querySelector("#marca_producto_editar").value = data[4];
     // -----Mostramos el modal -----//
     $('#editar_producto').modal('show');
