@@ -14,6 +14,7 @@ if (isset($_POST['AgregarDetalleSalidaVenta'])) {
         "total"   => $_POST['total'],
         "cobro"       => $_POST['cobro'],
         "cambio"   => $_POST['cambio'],
+        "impresion"   => $_POST['impresion'],
     );
     $respuesta = VentasModelo::AgregarDetalleSalidaVenta($venta);
     echo json_encode(['respuesta' => $respuesta]);

@@ -28,6 +28,7 @@ if (!isset($_SESSION['user'])) {
 
     <?php include("Include/scripts.php"); ?>
     <script src="dist/js/pages/Ventas.js"></script>
+    <script src="dist/js/pages/Venta_Impresiones.js"></script>
 
 </body>
 
