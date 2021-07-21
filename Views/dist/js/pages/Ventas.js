@@ -58,6 +58,7 @@ async function init() {
 /* INICIALIZAMOS LA FUNCION*/
 init();
 
+
 /* ===========================
     FUNCIONES DE CLIENTES
  =============================*/
@@ -87,7 +88,7 @@ frmClientes.addEventListener('submit', async(e) => {
     }
 })
 
-/* CUANDO SE PRESIONA EL BOTON AGREGAR CLIENTE EN LA TABLA DE CLIENTES*/
+/* CUANDO SE PRESIONA EL BOTON AGREGAR CLIENTE EN LA TABLA DE CLIENTES PARA AGREGARLO A LA VENTA*/
 $(document).on("click", ".btnAgregar", function(e) {
     e.preventDefault();
     if (tablaClientes.row(this).child.isShown()) {
@@ -101,22 +102,10 @@ $(document).on("click", ".btnAgregar", function(e) {
     tipo_cliente = data[2];
 
     let subtotal = parseFloat(document.getElementById('subtotal').value);
-    let descuento_aplicado;
-    let total;
-    if (tipo_cliente == "Mayoreo") {
-        let descuento_decimal = 12 / 100;
-        descuento_aplicado = subtotal * descuento_decimal;
-        total = subtotal - descuento_aplicado;
-    } else if (tipo_cliente == "Tecnico") {
-        let descuento_decimal = 8 / 100;
-        descuento_aplicado = subtotal * descuento_decimal;
-        total = subtotal - descuento_aplicado;
-    } else {
-        let descuento_decimal = 8 / 100;
-        descuento_aplicado = subtotal * descuento_decimal;
-        total = subtotal - descuento_aplicado;
-    }
-    document.getElementById('total').value = total.toFixed(2);
+    let valor_pago = document.getElementById("nuevoMetodoPago").value;
+
+    descuento_cliente_tarjeta(valor_pago, tipo_cliente, subtotal);
+
     document.getElementById('descuento').disabled = true;
     document.getElementById('descuento').value = "";
     $("#nombre_cliente").val(data[1]);
@@ -124,6 +113,39 @@ $(document).on("click", ".btnAgregar", function(e) {
     $("#modalcliente").modal("hide");
 
 });
+
+/* FUNCION PARA LA OPERACION DE DESCUENTO AL PRESIONAR EL BOTON DE AGREGAR CLIENTE A LA VENTA*/
+function descuento_cliente_tarjeta(valor_pago, tipo_cliente, subtotal) {
+    let descuento_aplicado;
+    let total;
+    let descuento_decimal;
+    if (tipo_cliente == "Mayoreo") {
+        if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+            descuento_decimal = 9.5 / 100;
+            descuento_aplicado = subtotal * descuento_decimal;
+            total = subtotal - descuento_aplicado;
+        } else {
+            descuento_decimal = 12 / 100;
+            descuento_aplicado = subtotal * descuento_decimal;
+            total = subtotal - descuento_aplicado;
+        }
+    } else if (tipo_cliente == "Tecnico" || tipo_cliente == "Empresa") {
+        if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+            descuento_decimal = 5.5 / 100;
+            descuento_aplicado = subtotal * descuento_decimal;
+            total = subtotal - descuento_aplicado;
+        } else {
+            descuento_decimal = 8 / 100;
+            descuento_aplicado = subtotal * descuento_decimal;
+            total = subtotal - descuento_aplicado;
+        }
+    }
+    document.getElementById('total').value = total.toFixed(2);
+}
+
+/* ===========================
+    FUNCIONES DE AUTOCOMPLETADO
+ =============================*/
 
 /* BUSQUEDA DE AUTOCOMPLETADO DE LOS PRODUCTOS */
 $(document).ready(async function autocompletado() {
@@ -231,29 +253,40 @@ formDatosProducto.addEventListener('submit', async function(e) {
                     $("#total").val(total);
                     $("#subtotal").val(total);
                     document.getElementById('buscar_cliente').disabled = false;
-                    document.getElementById('descuento').disabled = false;
                     document.getElementById('cobro').disabled = false;
+                    document.getElementById('nuevoMetodoPago').disabled = false;
+                    document.getElementById('generar').disabled = false;
                 } else {
                     let subtotal = parseFloat(document.getElementById('subtotal').value);
-                    var suma_subtotal = total + subtotal;
+                    let suma_subtotal = total + subtotal;
                     $("#subtotal").val(suma_subtotal);
                     if (tipo_cliente == "") {
                         $("#total").val(suma_subtotal);
                     } else {
+                        let valor_pago = document.getElementById("nuevoMetodoPago").value;
                         let descuento_aplicado;
                         let total;
+                        let descuento_decimal;
                         if (tipo_cliente == "Mayoreo") {
-                            let descuento_decimal = 12 / 100;
-                            descuento_aplicado = suma_subtotal * descuento_decimal;
-                            total = suma_subtotal - descuento_aplicado;
-                        } else if (tipo_cliente == "Tecnico") {
-                            let descuento_decimal = 8 / 100;
-                            descuento_aplicado = suma_subtotal * descuento_decimal;
-                            total = suma_subtotal - descuento_aplicado;
-                        } else {
-                            let descuento_decimal = 8 / 100;
-                            descuento_aplicado = suma_subtotal * descuento_decimal;
-                            total = suma_subtotal - descuento_aplicado;
+                            if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                                descuento_decimal = 9.5 / 100;
+                                descuento_aplicado = suma_subtotal * descuento_decimal;
+                                total = suma_subtotal - descuento_aplicado;
+                            } else {
+                                descuento_decimal = 12 / 100;
+                                descuento_aplicado = suma_subtotal * descuento_decimal;
+                                total = suma_subtotal - descuento_aplicado;
+                            }
+                        } else if (tipo_cliente == "Tecnico" || tipo_cliente == "Empresa") {
+                            if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                                descuento_decimal = 5.5 / 100;
+                                descuento_aplicado = suma_subtotal * descuento_decimal;
+                                total = suma_subtotal - descuento_aplicado;
+                            } else {
+                                descuento_decimal = 8 / 100;
+                                descuento_aplicado = suma_subtotal * descuento_decimal;
+                                total = suma_subtotal - descuento_aplicado;
+                            }
                         }
                         $("#total").val(total.toFixed(2));
                     }
@@ -302,31 +335,44 @@ $('#tbody').on('click', '.btnBorrar', async function() {
         $("#subtotal").val("");
         $("#total").val("");
         document.getElementById('buscar_cliente').disabled = true;
-        document.getElementById('descuento').disabled = true;
         document.getElementById('cobro').disabled = true;
+        document.getElementById('nuevoMetodoPago').disabled = true;
+        document.getElementById('generar').disabled = true;
+        $("#generar").val("Ticket");
+        $("#nuevoMetodoPago").val("Efectivo");
+        $("#fila_cobro").slideDown();
         document.getElementById('cobro').value = "";
         document.getElementById('cambio').value = "";
-        document.getElementById('descuento').value = "";
         document.getElementById('nombre_cliente').value = "";
     } else {
         $("#subtotal").val(resta_subtotal);
         if (tipo_cliente == "") {
             $("#total").val(resta_subtotal);
         } else {
+            let valor_pago = document.getElementById("nuevoMetodoPago").value;
             let descuento_aplicado;
             let total;
+            let descuento_decimal;
             if (tipo_cliente == "Mayoreo") {
-                let descuento_decimal = 12 / 100;
-                descuento_aplicado = resta_subtotal * descuento_decimal;
-                total = resta_subtotal - descuento_aplicado;
-            } else if (tipo_cliente == "Tecnico") {
-                let descuento_decimal = 8 / 100;
-                descuento_aplicado = resta_subtotal * descuento_decimal;
-                total = resta_subtotal - descuento_aplicado;
-            } else {
-                let descuento_decimal = 8 / 100;
-                descuento_aplicado = resta_subtotal * descuento_decimal;
-                total = resta_subtotal - descuento_aplicado;
+                if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                    descuento_decimal = 9.5 / 100;
+                    descuento_aplicado = resta_subtotal * descuento_decimal;
+                    total = resta_subtotal - descuento_aplicado;
+                } else {
+                    descuento_decimal = 12 / 100;
+                    descuento_aplicado = resta_subtotal * descuento_decimal;
+                    total = resta_subtotal - descuento_aplicado;
+                }
+            } else if (tipo_cliente == "Tecnico" || tipo_cliente == "Empresa") {
+                if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                    descuento_decimal = 5.5 / 100;
+                    descuento_aplicado = resta_subtotal * descuento_decimal;
+                    total = resta_subtotal - descuento_aplicado;
+                } else {
+                    let descuento_decimal = 8 / 100;
+                    descuento_aplicado = resta_subtotal * descuento_decimal;
+                    total = resta_subtotal - descuento_aplicado;
+                }
             }
             $("#total").val(total.toFixed(2));
         }
@@ -344,6 +390,7 @@ formEditarDatosProducto.addEventListener('submit', async function(e) {
     var nuevo_subtotal;
     total_editado = cantidad * precio;
     var cantidad_a_enviar;
+    let valor_pago = document.getElementById("nuevoMetodoPago").value;
 
     if (cantidad > cantidad_editar) {
         /*COMO SE AÑADE MAS, SE RESTA AL INVENTARIO*/
@@ -355,18 +402,27 @@ formEditarDatosProducto.addEventListener('submit', async function(e) {
         } else {
             let descuento_aplicado;
             let total;
+            let descuento_decimal
             if (tipo_cliente == "Mayoreo") {
-                let descuento_decimal = 12 / 100;
-                descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                total = nuevo_subtotal - descuento_aplicado;
-            } else if (tipo_cliente == "Tecnico") {
-                let descuento_decimal = 8 / 100;
-                descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                total = nuevo_subtotal - descuento_aplicado;
-            } else {
-                let descuento_decimal = 8 / 100;
-                descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                total = nuevo_subtotal - descuento_aplicado;
+                if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                    descuento_decimal = 9.5 / 100;
+                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                    total = nuevo_subtotal - descuento_aplicado;
+                } else {
+                    descuento_decimal = 12 / 100;
+                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                    total = nuevo_subtotal - descuento_aplicado;
+                }
+            } else if (tipo_cliente == "Tecnico" || tipo_cliente == "Empresa") {
+                if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                    descuento_decimal = 5.5 / 100;
+                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                    total = nuevo_subtotal - descuento_aplicado;
+                } else {
+                    descuento_decimal = 8 / 100;
+                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                    total = nuevo_subtotal - descuento_aplicado;
+                }
             }
             $("#total").val(total.toFixed(2));
         }
@@ -381,7 +437,7 @@ formEditarDatosProducto.addEventListener('submit', async function(e) {
                 body: restarInventario
             });
         } catch (error) {
-            console.log(error);
+            notificarError("Ocurrio un Error");
         }
 
     } else if (cantidad < cantidad_editar) {
@@ -394,18 +450,27 @@ formEditarDatosProducto.addEventListener('submit', async function(e) {
         } else {
             let descuento_aplicado;
             let total;
+            let descuento_decimal
             if (tipo_cliente == "Mayoreo") {
-                let descuento_decimal = 12 / 100;
-                descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                total = nuevo_subtotal - descuento_aplicado;
-            } else if (tipo_cliente == "Tecnico") {
-                let descuento_decimal = 8 / 100;
-                descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                total = nuevo_subtotal - descuento_aplicado;
-            } else {
-                let descuento_decimal = 8 / 100;
-                descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                total = nuevo_subtotal - descuento_aplicado;
+                if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                    descuento_decimal = 9.5 / 100;
+                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                    total = nuevo_subtotal - descuento_aplicado;
+                } else {
+                    descuento_decimal = 12 / 100;
+                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                    total = nuevo_subtotal - descuento_aplicado;
+                }
+            } else if (tipo_cliente == "Tecnico" || tipo_cliente == "Empresa") {
+                if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                    descuento_decimal = 5.5 / 100;
+                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                    total = nuevo_subtotal - descuento_aplicado;
+                } else {
+                    descuento_decimal = 8 / 100;
+                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                    total = nuevo_subtotal - descuento_aplicado;
+                }
             }
             $("#total").val(total.toFixed(2));
         }
@@ -420,10 +485,10 @@ formEditarDatosProducto.addEventListener('submit', async function(e) {
                 body: sumarInventario
             });
         } catch (error) {
-            console.log(error);
+            notificarError("Ocurrio un Error");
         }
     } else {
-        console.log("es la misma cantidad");
+        notificarError("Ocurrio un Error");
     }
 
     fila_editar.getElementsByTagName("td")[2].getElementsByTagName("P")[0].innerHTML = cantidad;
@@ -497,7 +562,6 @@ formDatosVenta.addEventListener('submit', async function(e) {
             if (Descuento_venta < 0) {
                 notificarError("Campos Erroneos");
             } else {
-                console.log("entra aqui?");
                 insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla);
             }
         }
@@ -601,15 +665,65 @@ document.getElementById('buscar_cliente').addEventListener('click', () => {
 /* FUNCION PARA ELEGIR OPCION EN EL COMBO DE PAGO */
 document.getElementById('nuevoMetodoPago').addEventListener('change', () => {
     var valor = document.getElementById("nuevoMetodoPago").value;
+    var valor_cliente = document.getElementById("nombre_cliente").value;
+
     if (valor == "Efectivo") {
+        let subtotal = parseFloat(document.getElementById('subtotal').value);
+
+        if (tipo_cliente == "") {
+            $("#total").val(subtotal);
+        } else {
+            let descuento_aplicado;
+            let total;
+            let descuento_decimal;
+            if (tipo_cliente == "Mayoreo") {
+                descuento_decimal = 12 / 100;
+                descuento_aplicado = subtotal * descuento_decimal;
+                total = subtotal - descuento_aplicado;
+            } else if (tipo_cliente == "Tecnico" || tipo_cliente == "Empresa") {
+                descuento_decimal = 8 / 100;
+                descuento_aplicado = subtotal * descuento_decimal;
+                total = subtotal - descuento_aplicado;
+            }
+            $("#total").val(total);
+        }
         document.getElementById('cobro').value = "";
         document.getElementById('cambio').value = "";
         $("#fila_cobro").slideDown();
-    } else {
+    } else if (valor == "Tarjeta Crédito") {
         $("#fila_cobro").slideUp();
+        descuento_tarjetas(valor_cliente, valor, tipo_cliente);
+    } else if (valor == "Tarjeta Débito") {
+        $("#fila_cobro").slideUp();
+        descuento_tarjetas(valor_cliente, valor, tipo_cliente);
     }
 })
 
+/* FUNCION PARA EL DESCUENTO AL SELECCIONAR UN METODO DE PAGO*/
+function descuento_tarjetas(valor_cliente, tipo_tarjeta, tipo_cliente) {
+    let subtotal = parseFloat(document.getElementById('subtotal').value);
+    let descuento_aplicado;
+    let total;
+    let descuento_decimal
+
+    if (valor_cliente == "") {
+        /* NO SE SELECCIONO CLIENTE*/
+    } else {
+        /* SE SELECCIONO CLIENTE*/
+        if (tipo_tarjeta == "Tarjeta Crédito" || tipo_tarjeta == "Tarjeta Débito") {
+            if (tipo_cliente == "Mayoreo") {
+                descuento_decimal = 9.5 / 100;
+                descuento_aplicado = subtotal * descuento_decimal;
+                total = subtotal - descuento_aplicado;
+            } else if (tipo_cliente == "Tecnico" || tipo_cliente == "Empresa") {
+                descuento_decimal = 5.5 / 100;
+                descuento_aplicado = subtotal * descuento_decimal;
+                total = subtotal - descuento_aplicado;
+            }
+        }
+        document.getElementById('total').value = total.toFixed(2);
+    }
+}
 /* FUNCION PARA BORRAR DATOS CUANDO NO SE ESTE ESCRIBIBIENDO EN EL INPUT DE BUSCAR PRODUCTO */
 document.getElementById('buscar').addEventListener('keyup', () => {
 
@@ -695,25 +809,6 @@ document.getElementById('cantidadEditar').addEventListener('keyup', () => {
     }
 })
 
-/* FUNCION PARA IR APLICANDO DESCUENTO AL TOTAL DE LA VENTA*/
-document.getElementById('descuento').addEventListener('keyup', () => {
-    if (!document.getElementById('descuento').value == "") {
-        let descuento = parseFloat(document.getElementById('descuento').value);
-        let subtotal = parseFloat(document.getElementById('subtotal').value);
-        if (descuento < 0) {
-            Error("No Puede Ingresar Números Negativos");
-        } else {
-            if (!subtotal == "") {
-                let descuento_decimal = descuento / 100;
-                let descuento_aplicado = subtotal * descuento_decimal;
-                let total = subtotal - descuento_aplicado;
-                document.getElementById('total').value = total;
-            }
-        }
-    } else {
-        document.getElementById('total').value = document.getElementById('subtotal').value;
-    }
-})
 
 /* ===========================
     FUNCIONES PARA NOTIFICACIONES ERROR/SUCCESS/WARNING
@@ -763,6 +858,10 @@ function limpiarCampos(mensaje) {
         document.getElementById('buscar_cliente').disabled = true;
         document.getElementById('cobro').disabled = true;
         document.getElementById('descuento').disabled = true;
+
+        document.getElementById('nuevoMetodoPago').disabled = true;
+        $("#nuevoMetodoPago").val("Efectivo");
+        $("#fila_cobro").slideDown();
 
         $("#tblDetalleVenta").DataTable().clear().draw();
         $("#tblDetalleVenta").DataTable().destroy();

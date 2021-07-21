@@ -1,5 +1,5 @@
 <?php
-    require_once "../Controllers/EstadisticaController.php";
+require_once "../Controllers/EstadisticaController.php";
 ?>
 
 <!-- TABLA PROVEEDORES -->
@@ -43,14 +43,14 @@
                                             <label for="">Precio de Venta</label>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-dollar-sign"></i></span>
-                                                <input id="precio" name="precio" type="number" class="form-control input-lg" total="" placeholder="0" disabled="" required>
+                                                <input id="precio" name="precio" type="number" step="any" class="form-control input-lg" total="" placeholder="0" disabled="" required>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <label for="nom_empresa">Stock</label>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-clipboard"></i></span>
-                                                <input id="stock" type="text" class="form-control input-lg" name="stock" total="" placeholder="0" readonly required>
+                                                <input id="stock" type="number" class="form-control input-lg" name="stock" total="" placeholder="0" readonly required>
                                             </div>
                                         </div>
                                     </div>
@@ -86,14 +86,14 @@
                                             <label for="nom_empresa">Subtotal</label>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="addon-wrapping"><i style="font-size: 20px;" class="fas fa-dollar-sign"></i></span>
-                                                <input id="subtotal" name="subtotal" style="font-size: 40px;" type="text" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" readonly required>
+                                                <input id="subtotal" name="subtotal" style="font-size: 40px;" type="number" step="any" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" readonly required>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <label for="nom_empresa">Total</label>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="addon-wrapping"><i style="font-size: 20px;" class="fas fa-dollar-sign"></i></span>
-                                                <input id="total" name="total" style="font-size: 40px;" type="text" class="form-control input-lg" total="" placeholder="0" readonly required>
+                                                <input id="total" name="total" style="font-size: 40px;" type="number" step="any" class="form-control input-lg" total="" placeholder="0" readonly required>
                                             </div>
                                         </div>
 
@@ -102,7 +102,8 @@
                                     <label for="nom_empresa">Fecha</label>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text" id="addon-wrapping"><i class="fas fa-calendar-alt"></i></span>
-                                        <input type="text" style="font-size: 20px;" value="<?php $ctr = new EstadisticasControlador(); $ctr->obtenerFecha(); ?>" readonly required>
+                                        <input type="text" style="font-size: 20px;" value="<?php $ctr = new EstadisticasControlador();
+                                                                                            $ctr->obtenerFecha(); ?>" readonly required>
                                     </div>
                                     <div class="row">
                                         <div class="col-8">
@@ -124,7 +125,7 @@
                                     <div class="row">
                                         <div class="col">
                                             <label for="nom_empresa">Seleccione método de pago</label>
-                                            <select class="form-control mb-3" id="nuevoMetodoPago" name="nuevoMetodoPago" required>
+                                            <select class="form-control mb-3" id="nuevoMetodoPago" name="nuevoMetodoPago" disabled="" required>
                                                 <option value="Efectivo">Efectivo</option>
                                                 <option value="Tarjeta Crédito">Tarjeta Crédito</option>
                                                 <option value="Tarjeta Débito">Tarjeta Débito</option>
@@ -132,11 +133,13 @@
                                         </div>
 
                                         <div class="col">
-                                            <label for="nom_empresa">Descuento</label>
-                                            <div class="input-group mb-3">
-                                                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-percentage"></i></span>
-                                                <input id="descuento" type="number" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" disabled="">
-                                            </div>
+                                            <label for="nom_empresa">Seleccione una opción</label>
+                                            <select class="form-control mb-3" id="generar" name="generar" disabled="" required>
+                                                <option value="Ticket">Ticket</option>
+                                                <option value="Factura">Factura</option>
+                                                <option value="Ambos">Ambos</option>
+                                                <option value="Ninguno">Ninguno</option>
+                                            </select>
                                         </div>
                                     </div>
 
@@ -145,7 +148,7 @@
                                             <label>Pago</label>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-dollar-sign"></i></span>
-                                                <input id="cobro" type="number" class="form-control input-lg" name="cobro" total="" placeholder="0" disabled="">
+                                                <input id="cobro" type="number" step="any" class="form-control input-lg" name="cobro" total="" placeholder="0" disabled="">
                                             </div>
                                         </div>
 

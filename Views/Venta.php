@@ -1,12 +1,12 @@
 <?php
 session_start();
-if (!isset($_SESSION['user']) ) {
+if (!isset($_SESSION['user'])) {
     header('Location: Login.php');
 }
 
-?> 
+?>
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <?php include("include/cabezera.php"); ?>
@@ -15,7 +15,6 @@ if (!isset($_SESSION['user']) ) {
 <body class="hold-transition sidebar-mini layout-fixed">
 
     <div class="wrapper">
-
         <?php include("include/navegacion.php"); ?>
 
         <!--Estructura modelo venta -->
@@ -24,7 +23,6 @@ if (!isset($_SESSION['user']) ) {
         <?php include("FormulariosVentas/FrmAgregarNuevoCliente.php"); ?>
         <?php include("FormulariosVentas/FrmEditarVenta.php"); ?>
         <?php include("Include/footer.php") ?>
-
     </div>
     <!-- ./wrapper -->
 

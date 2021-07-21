@@ -1,5 +1,5 @@
 <?php
-if (!isset($_SESSION['user']) ) {
+if (!isset($_SESSION['user'])) {
     session_start();
 }
 ?>
@@ -17,12 +17,12 @@ if (!isset($_SESSION['user']) ) {
     <ul class="navbar-nav ml-auto">
 
         <!--AQUI INICIA LO DE NOTIFICACIONES-->
-         <div class="btn-group" role="group" style="color:black;" style="display:none;">
+        <div class="btn-group" role="group" style="color:black;" style="display:none;">
             <div class="nav-link">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" type="button" onclick="apretarBotonNotificacion();">
-                      <i class="far fa-bell"></i>
-                      <span id="contador" name="contador" class="badge badge-danger navbar-badge count" style="border-radius:20px;font-size:12px;"></span>
+                        <i class="far fa-bell"></i>
+                        <span id="contador" name="contador" class="badge badge-danger navbar-badge count" style="border-radius:20px;font-size:12px;"></span>
                     </a>
                     <div class="btnTodo" id="todo">
                         <ul id="menu" name="menu" class="dropdown-menu dropdown-menu-lg dropdown-menu-right"></ul>
@@ -33,14 +33,14 @@ if (!isset($_SESSION['user']) ) {
         <!--AQUI TERMINA-->
 
         <div class="btn-group" role="group" style="color:black;">
-        <?php if ($_SESSION['user'] == "Empleado") { ?>
-        <button style="color:white; font-size: 20px;" id="btnGroupDrop1" type="button" class="btn btn-block dropdown-toggle" data-toggle="dropdown">
-                Empleado
-            </button>
-        <?php } else if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
-            <button style="color:white; font-size: 20px;" id="btnGroupDrop1" type="button" class="btn btn-block dropdown-toggle" data-toggle="dropdown">
-                Administrador
-            </button>
+            <?php if ($_SESSION['user'] == "Empleado") { ?>
+                <button style="color:white; font-size: 20px;" id="btnGroupDrop1" type="button" class="btn btn-block dropdown-toggle" data-toggle="dropdown">
+                    Empleado
+                </button>
+            <?php } else if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
+                <button style="color:white; font-size: 20px;" id="btnGroupDrop1" type="button" class="btn btn-block dropdown-toggle" data-toggle="dropdown">
+                    Administrador
+                </button>
             <?php } ?>
             <ul class="dropdown-menu" style="font-size: 20px;">
                 <li><a class="dropdown-item nav-link" href="../Views/Ajustes.php"><i class="nav-icon fas fa-sliders-h" style="color:#F29F05;"> Ajustes</i></a></li>
@@ -57,51 +57,51 @@ if (!isset($_SESSION['user']) ) {
 <!-- /.navbar -->
 
 <!--Aqui Inicia Modal de Notificaciones-->
-    <div id="modalFrmNotificacion" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <!--=====================================
+<div id="modalFrmNotificacion" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!--=====================================
                 HEADER DEL MODAL
                 ======================================-->
-                <div class="modal-header" id="tituloModal">
-                           <i class="nav-icon fas fa-bell" style="color:#F29F05; font-size: 30px;"> Notificaciones</i>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <div class="modal-header" id="tituloModal">
+                <i class="nav-icon fas fa-bell" style="color:#F29F05; font-size: 30px;"> Notificaciones</i>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
 
-                        </div>
-                <!--=====================================
+            </div>
+            <!--=====================================
                 CUERPO DEL MODAL
                 ====================================== -->
-                <div class="modal-body">
-                    <div class="card">
+            <div class="modal-body">
+                <div class="card">
                     <!-- TABLA CLIENTES -->
                     <table id="tblNotificacion" class="table table-light text-justify">
                         <thead class="thead-light">
-                           <tr class="table table-dark">
-                            <th >Titulo</th>
-                            <th >Descripcion</th>
-                            <th >Producto</th>
-                            <th >Recomendacion</th>
+                            <tr class="table table-dark">
+                                <th>Titulo</th>
+                                <th>Descripcion</th>
+                                <th>Producto</th>
+                                <th>Recomendacion</th>
                             </tr>
                         </thead>
                     </table>
-        <!-- /. TABLA CLIENTES -->
+                    <!-- /. TABLA CLIENTES -->
                 </div>
             </div>
-                <!--=====================================
+            <!--=====================================
                 PIE DEL MODAL
                 ======================================-->
-            </div>
         </div>
     </div>
+</div>
 <!--Aqui Termina -->
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #F29D35;">
     <!-- Brand Logo -->
-     <!-- SECCIÓN DE LOGO DE EMPRESA Y NOMBRE: EMPLEADO. Parte superior izquierda. -->
+    <!-- SECCIÓN DE LOGO DE EMPRESA Y NOMBRE: EMPLEADO. Parte superior izquierda. -->
     <?php if ($_SESSION['user'] == "Empleado") { ?>
         <a href="../Views/Principal.php" class="brand-link">
             <img src="dist/img/surtidora.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -121,7 +121,7 @@ if (!isset($_SESSION['user']) ) {
                 <div class="info">
                     <a href="../Views/Principal.php" class="d-block">Empleado</a>
                 </div>
-             <!-- SECCIÓN DE LOGO DE EMPRESA Y NOMBRE: USUARIO. Parte superior izquierda. -->
+                <!-- SECCIÓN DE LOGO DE EMPRESA Y NOMBRE: USUARIO. Parte superior izquierda. -->
             <?php } else if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
 
                 <a href="../Views/Principal.php" class="brand-link">
@@ -142,8 +142,8 @@ if (!isset($_SESSION['user']) ) {
                         </div>
                     <?php } ?>
                     </div>
-                        <!--------------------------------Menú de Empleado --------------------------------->
-                         <!-- Sidebar Menu -->
+                    <!--------------------------------Menú de Empleado --------------------------------->
+                    <!-- Sidebar Menu -->
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                             <!-- Add icons to the links using the .nav-icon class
@@ -157,8 +157,9 @@ if (!isset($_SESSION['user']) ) {
                                     </p>
                                 </a>
                             </li>
+
                             <!-------------------------------Menú de Administrador ------------------------------>
-                            <?php if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2" ) { ?>
+                            <?php if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
 
                                 <li class="nav-item has-treeview">
                                     <a href="#" class="nav-link">
@@ -190,7 +191,7 @@ if (!isset($_SESSION['user']) ) {
                                 </li>
                         </ul>
                         </li>
-                        <!-------//</li>-------> 
+                        <!-------//</li>------->
                         <li class="nav-item">
                             <a href="../Views/Inventario.php" class="nav-link">
                                 <i class="nav-icon fas fa-dolly-flatbed" style="color:white"></i>
@@ -230,6 +231,15 @@ if (!isset($_SESSION['user']) ) {
                                 <i class="nav-icon fas fa-file-alt" style="color:white"></i>
                                 <p style="color:white; font-size: 25px;">
                                     Reportes
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item has-treeview">
+                            <a href="" id="boton_factura" class="nav-link">
+                                <i class="nav-icon fas fa-clipboard-list" style="color:white"></i>
+                                <p style="color:white; font-size: 25px;">
+                                    Ticket/Factura
                                 </p>
                             </a>
                         </li>
