@@ -79,12 +79,12 @@ if (!isset($_SESSION['user']) ) {
                         <div class="col-lg-3 col-6" class="small-box-footer">
                             <div class="small-box bg-blue">
                                 <div class="inner">
-                                    <h1>Boton Fuera De Servicio</h1>
+                                    <h1>Reportes Tickets y Facturas</h1>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-cart-arrow-down"></i>
                                 </div>
-                                <a class="small-box-footer">
+                                <a class="small-box-footer" id="reporteGeneralImpresion" type="button">
                                     Generar Reporte <i class="fas fa-arrow-circle-right"></i>
                                 </a>
                             </div>

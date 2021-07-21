@@ -90,11 +90,11 @@ async function inicializarGraficasProducto() {
 
 inicializarGraficasProducto();
 
-function reporteComprasGeneral(datos,fechas){
+function reporteComprasGeneral(datos,fechas,imagen){
   pdf = new jsPDF();
   pdf.setFontSize(18);
   pdf.text(7,12,"Reporte De Compras General");
-  propiedadImagen();
+  propiedadImagen(imagen);
 
   $.ajax({
     url:"../Controllers/reportesGraficasController.php",
@@ -148,11 +148,11 @@ function reporteComprasGeneral(datos,fechas){
   });
 }
 
-function reporteComprasEspecifico(datos,fechas){
+function reporteComprasEspecifico(datos,fechas,imagen){
   pdf = new jsPDF();
   pdf.setFontSize(18);
   pdf.text(7,12,"Reporte De Compras Específico");
-  propiedadImagen();
+  propiedadImagen(imagen);
 
   $.ajax({
     url:"../Controllers/reportesGraficasController.php",
@@ -214,11 +214,11 @@ function reporteComprasEspecifico(datos,fechas){
   });
 }
 
-function reporteVentas(datos,fechas){
+function reporteVentas(datos,fechas,imagen){
   pdf = new jsPDF();
   pdf.setFontSize(18);
   pdf.text(7,12,"Reporte De Ventas Totales");
-  propiedadImagen();
+  propiedadImagen(imagen);
 
   $.ajax({
     url:"../Controllers/reportesGraficasController.php",
@@ -352,21 +352,129 @@ function reporteVentas(datos,fechas){
           $('#modalFrmReportesVentas').modal('hide');
           limpiarVariables();
         }else{
-        notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna compra');
+        notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna venta');
         }
     }
   });
 }
 
-function propiedadImagen(){
+function reporteImpresiones(datos,fechas,imagen){
+  pdf = new jsPDF();
+  pdf.setFontSize(18);
+  pdf.text(7,12,"Reporte De Ventas Totales");
+
+  var tipo = "";
+  switch(datos["impresion"]){
+    case 1:
+      pdf.text(7,12,"Reporte De Ventas Por Ticket");
+      tipo = " Ticket";
+    break;
+    case 2:
+      pdf.text(7,12,"Reporte De Ventas Por Factura");
+      tipo = " Factura";
+    break;
+    case 3:
+      pdf.text(7,12,"Reporte De Ventas Por Factura Y Ticket");
+      tipo = " Factura Y Ticket";
+    break;
+    case 4:
+    pdf.text(7,12,"Reporte De Ventas Sin Ticket o Factura");
+      tipo = " Sin FacturaYTicket";
+    break;
+  }
+  propiedadImagen(imagen);
+  $.ajax({
+    url:"../Controllers/reportesGraficasController.php",
+    method:"POST",
+    data:datos,
+    dataType:"json",
+    success:function(data)
+    { 
+      if(data.length != 0){ //¿Está vacío?
+        var lista = new Array();
+        var lista2 = new Array();
+        var lista3 = new Array();
+        var cliente = "";
+        var nueva_lista = [];
+        let variable = [];
+        var contador2 = 0;
+        var contadorCliente= 0;
+        var contadorSumaDia = 0;
+        var contadorSumaTotales = 0;
+
+        if(fechas.length == 2){ //¿Es de rango o unico?
+            pdf.setFontSize(12);
+            pdf.text(7,22,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
+            pdf.setFontSize(12);
+            pdf.text(7,30,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
+            sumaTotalPaginaVentas(data,38,contadorCliente,contadorSumaTotales);
+        }else{
+            pdf.setFontSize(12);
+            pdf.text(7,22,"Fecha: " + fechas + "."); //Fecha seleccionada.
+            pdf.setFontSize(12);
+            sumaTotalPaginaVentas(data,30,contadorCliente,contadorSumaTotales);
+        }
+
+          espacioFilas(5);
+          for(var i = 0; i < data.length; i++){
+            lista.splice(0, data.length);
+            contadorSumaDia = 0;
+            fecha = data[i]["fecha"];
+
+            cabeceraFecha(data[i]["fecha"]);
+            columns = ["Cliente", "Fecha", "Hora", "Total"];
+            
+            //Separamos Ventas Por Dìas...
+            for(var j = i; j < data.length; j++){
+              if(fecha === data[j]["fecha"]){
+                lista[j] = { 
+                  "cliente": data[j]["cliente"],
+                  "fecha": data[j]["fecha"],
+                  "hora": data[j]["hora"],
+                  "total": data[j]["total"]
+                };
+                contador++;
+              }
+            }
+
+            for(var n = 0; n < lista.length; n++){
+              lista2.push([lista[n]["cliente"],lista[n]["fecha"],lista[n]["hora"],lista[n]["total"]]);
+              contadorSumaDia += lista[n]["total"];
+            }
+
+            lista2.push("","","Total Venta Día: ",contadorSumaDia);
+            contadorSumaDia = 0;
+            guardarDatoDeFila(columns, lista);
+            i = i + (contador-1);
+            contador = 0;
+          }
+          pieDePagina();
+          pdf.save('ReporteVentasTotales.pdf');
+        }else{
+        notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna venta');
+        }
+    }
+  });
+}
+
+function getBase64Image(img) {
+  var canvas = document.createElement("canvas");
+  canvas.width = img.width;
+  canvas.height = img.height;
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(img, 0, 0);
+  var dataURL = canvas.toDataURL();
+  return dataURL;
+}
+
+function propiedadImagen(imagen){
   //Definimos Linea Horizontal debajo
   pdf.setLineWidth(0.6);
   pdf.line(5, 15, 113, 15);
 
   //Imagen La Surtidora Del Hogar
-  var logo = new Image();
-  logo.src = 'dist/img/surtidora.png';
-  pdf.addImage(logo, 'JPEG', 157, 5.5,42,27);
+  var base64 = getBase64Image(imagen);
+  pdf.addImage(base64, 'PNG', 157, 5.5,42,27);
 
   pdf.setFontSize(10);
   pdf.text(160,37,"Avenida Central Norte"); 
@@ -614,6 +722,7 @@ $(document).ready(async function() {
 $("#reporteGeneral").click(function(){
   limpiarVariables();
   $('#modalFrmReportesComprasGenerales').modal('show');
+  document.getElementById("img1").style.display='none';
   document.getElementById("fecha_unica").style.display='block';
   document.getElementById("fechas").style.display = 'none';
 });
@@ -633,6 +742,7 @@ function esconder_Mostrar_Fechas(){
 
 /*Si apreta el boton de generar reporte*/
 $("#Generar").click(function(){
+  var imagen = document.getElementById("img1");
   var SeleccionDeFechas = document.querySelector("#seleccion").value;
   if(SeleccionDeFechas == 2){
     var fecha_inicio = document.getElementById("inicio").value;
@@ -648,7 +758,7 @@ $("#Generar").click(function(){
       };
 
       var fechas = [fecha_inicio,fecha_final];
-      reporteComprasGeneral(datosReportes, fechas);
+      reporteComprasGeneral(datosReportes, fechas, imagen);
     }
   }else{
     var fecha = document.getElementById("unique").value;
@@ -659,7 +769,7 @@ $("#Generar").click(function(){
       'getComprasGeneralesUnicas': 'OK',
       'fecha': fecha,
       };
-      reporteComprasGeneral(datosReportes, fecha);
+      reporteComprasGeneral(datosReportes, fecha, imagen);
     }
   }
 });
@@ -691,6 +801,7 @@ $(document).ready(async function() {
 $("#reporteGeneralPorProveedor").click(function(){
   limpiarVariables();
   $('#modalFrmReportesComprasEspecificas').modal('show');
+  document.getElementById("img2").style.display='none';
   document.getElementById("fecha_unica_Prov").style.display='block';
   document.getElementById("fechas_Prov").style.display = 'none';
 });
@@ -711,6 +822,7 @@ function capturarValorReporte2(){
 
 
 $("#GenerarReporte2").click(function(){
+  var imagen = document.getElementById("img2");
   var SeleccionDeFechas = document.querySelector("#seleccionReporte2").value;
   if($('#buscarProveedor').val() === ""){
     notificacionNoEncontrado('Por favor, Seleccione un proveedor');
@@ -730,7 +842,7 @@ $("#GenerarReporte2").click(function(){
           };
 
           var fecha = [fecha_inicial,fecha_final,$('#buscarProveedor').val()];
-          reporteComprasEspecifico(datosProveedor,fecha);
+          reporteComprasEspecifico(datosProveedor,fecha,imagen);
         }
     }else{
       var fecha = document.getElementById("uniqueProv").value;
@@ -743,7 +855,7 @@ $("#GenerarReporte2").click(function(){
         'proveedor' : $('#buscarProveedor').val()
         };
         var enviar = [fecha,$('#buscarProveedor').val()];
-        reporteComprasEspecifico(datosProveedor, enviar);
+        reporteComprasEspecifico(datosProveedor, enviar, imagen);
       }
     }
   }
@@ -755,6 +867,7 @@ $("#GenerarReporte2").click(function(){
 $("#reporteGeneralVentas").click(function(){
   limpiarVariables();
   $('#modalFrmReportesVentas').modal('show');
+  document.getElementById("img3").style.display="none";
   document.getElementById("fecha_unica_Ventas").style.display='block';
   document.getElementById("fechas_Ventas").style.display = 'none';
 });
@@ -774,6 +887,7 @@ function capturarReporteVentas(){
 
 /*Si apreta el boton de generar reporte*/
 $("#Generar_Ventas").click(function(){
+  var imagen = document.getElementById("img3");
   var SeleccionDeFechas = document.querySelector("#seleccion_Ventas").value;
   if(SeleccionDeFechas == 2){
     var fecha_inicio = document.getElementById("inicio_Ventas").value;
@@ -789,7 +903,7 @@ $("#Generar_Ventas").click(function(){
       };
 
       var fechas = [fecha_inicio,fecha_final];
-      reporteVentas(datosReportes, fechas);
+      reporteVentas(datosReportes, fechas,imagen);
     }
   }else{
     var fecha = document.getElementById("unique_Ventas").value;
@@ -800,7 +914,70 @@ $("#Generar_Ventas").click(function(){
       'getVentasUnicas': 'OK',
       'fecha': fecha,
       };
-      reporteVentas(datosReportes, fecha);
+      reporteVentas(datosReportes, fecha, imagen);
+    }
+  }
+});
+
+/* ======================================
+                REPORTE 4
+   ======================================*/
+$("#reporteGeneralImpresion").click(function(){
+  limpiarVariables();
+  $('#modalFrmReportesImpresiones').modal('show');
+  document.getElementById("img4").style.display = 'none';
+  document.getElementById("fecha_unica_Imp").style.display='block';
+  document.getElementById("fechas_Imp").style.display = 'none';
+}); 
+
+document.querySelector("#seleccionImpresionFecha").addEventListener('change', capturarReporteImpresion);
+
+function capturarReporteImpresion(){
+  var SeleccionDeImpresion = document.querySelector("#seleccionImpresionFecha").value;
+  if(SeleccionDeImpresion == 2){
+    document.getElementById("fechas_Imp").style.display = 'block';
+    document.getElementById("fecha_unica_Imp").style.display='none';
+  }else{
+    document.getElementById("fecha_unica_Imp").style.display = 'block';
+    document.getElementById("fechas_Imp").style.display = 'none';
+  }
+}  
+
+/*Si apreta el boton de generar reporte*/
+$("#GenerarImp").click(function(){
+  var imagen = document.getElementById("img4");
+  var SeleccionImpresion = document.querySelector("#seleccionImpresion").value;
+  var SeleccionDeFechasImp = document.querySelector("#seleccionImpresionFecha").value;
+
+  if(SeleccionDeFechasImp == 2){
+    var fecha_inicio = document.getElementById("inicioImp").value;
+    var fecha_final = document.getElementById("finalImp").value;
+
+    if(fecha_inicio === "" || fecha_final === ""){
+      notificacionNoEncontrado("Seleccione fechas en ambas casillas");
+    }else{
+      var datosReportes = {
+      'getImpresionesRango': 'OK',
+      'fecha_inicial': fecha_inicio,
+      'fecha_final' : fecha_final,
+      'impresion' : SeleccionImpresion
+      };
+
+      var fechas = [fecha_inicio,fecha_final];
+      reporteImpresiones(datosReportes,fechas,imagen);
+    }
+  }else{
+    var fecha = document.getElementById("uniqueImp").value;
+    if(fecha === ""){
+      notificacionNoEncontrado("Seleccione una fecha");
+    }else{
+      var datosReportes = {
+      'getImpresionesUnicas': 'OK',
+      'fecha': fecha,
+      'impresion' : SeleccionImpresion
+      };
+
+      reporteImpresiones(datosReportes,fecha,imagen);
     }
   }
 });
@@ -827,6 +1004,14 @@ function limpiarVariables(){
   document.getElementById("inicio_Ventas").value = "";
   document.getElementById("final_Ventas").value = "";
   document.getElementById("unique_Ventas").value = "";
+
+  document.querySelector("#seleccionImpresion").value = "1";
+  document.querySelector("#seleccionImpresionFecha").value = "1";
+  document.getElementById("fecha_unica_Imp").value = "";
+  document.getElementById("fechas_Imp").value = "";
+  document.getElementById("inicioImp").value = "";
+  document.getElementById("finalImp").value = "";
+  document.getElementById("uniqueImp").value = "";
 }
 
 function notificacionNoEncontrado(mensaje) {

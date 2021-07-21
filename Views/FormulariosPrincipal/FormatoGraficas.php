@@ -15,7 +15,7 @@
                         </font>
                     </div>
                     <div class="card-body">
-                        <canvas class="linear" height="65" id="frecuenciaDelCliente" width="100%" >
+                        <canvas class="linear" height="77" id="frecuenciaDelCliente" width="100%" >
                         </canvas>
                     </div>
                 </div>

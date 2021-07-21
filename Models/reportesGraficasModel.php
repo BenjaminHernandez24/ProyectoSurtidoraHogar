@@ -68,6 +68,10 @@ class reportesGraficasModel
     INNER JOIN detalle_salida_venta dsv ON dsv.fecha >=? AND dsv.fecha <= ? AND sv.id_detalle_salida_venta=dsv.id_detalle_salida_venta
     INNER JOIN inventario i ON i.id_inventario=sv.id_inventario
     INNER JOIN productos p ON p.id_producto = i.id_producto ORDER BY dsv.fecha,dsv.hora ASC";
+
+    private static $impresionesFacturasUnicas = "SELECT id_detalle_salida_venta as venta, cliente as cliente, fecha as fecha, hora as hora, total as total FROM detalle_salida_venta WHERE fecha = ? AND impresiones=? ORDER BY fecha,hora ASC";
+
+    private static $impresionesFacturasRango = "SELECT id_detalle_salida_venta as venta, cliente as cliente, fecha as fecha, hora as hora, total as total FROM detalle_salida_venta WHERE fecha >= ? AND fecha <= ? AND impresiones=? ORDER BY fecha,hora ASC";
     /*==============================================================================*/
 
     public static function top5ProductosModel()
@@ -119,11 +123,11 @@ class reportesGraficasModel
             $pst = $conn->prepare(self::$obtenerProveedor);
             $pst->execute([$datos['valor']]);
 
-            $productos = $pst->fetchAll(PDO::FETCH_ASSOC);
+            $proveedor = $pst->fetchAll(PDO::FETCH_ASSOC);
             $conn = null;
             $conexion->closeConexion();
 
-            return $productos;
+            return $proveedor;
         } catch (PDOException $e) {
             return $e->getMessage();
         }
@@ -244,12 +248,12 @@ class reportesGraficasModel
             $pst = $conn->prepare(self::$ventasTotalesRango);
             $pst->execute([$datos['fecha_inicio'],$datos['fecha_final']]);
 
-            $compras = $pst->fetchAll(PDO::FETCH_ASSOC);
+            $ventas = $pst->fetchAll(PDO::FETCH_ASSOC);
 
             $conn = null;
             $conexion->closeConexion();
 
-            return $compras;
+            return $ventas;
 
         } catch (PDOException $e) {
             return $e->getMessage();
@@ -265,12 +269,54 @@ class reportesGraficasModel
             $pst = $conn->prepare(self::$ventasTotalesUnicas);
             $pst->execute([$datos['fecha']]);
 
-            $compras = $pst->fetchAll(PDO::FETCH_ASSOC);
+            $ventas = $pst->fetchAll(PDO::FETCH_ASSOC);
 
             $conn = null;
             $conexion->closeConexion();
 
-            return $compras;
+            return $ventas;
+
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public static function reporteImpresionesRango($datos)
+    {
+        try {
+            $conexion = new Conexion();
+            $conn     = $conexion->getConexion();
+
+            $pst = $conn->prepare(self::$impresionesFacturasRango);
+            $pst->execute([$datos['fecha_inicio'],$datos['fecha_final'],$datos['impresiones']]);
+
+            $impresiones = $pst->fetchAll(PDO::FETCH_ASSOC);
+
+            $conn = null;
+            $conexion->closeConexion();
+
+            return $impresiones;
+
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public static function reporteImpresionesUnicas($datos)
+    {
+        try {
+            $conexion = new Conexion();
+            $conn     = $conexion->getConexion();
+
+            $pst = $conn->prepare(self::$impresionesFacturasUnicas);
+            $pst->execute([$datos['fecha'],$datos['impresiones']]);
+
+            $impresiones = $pst->fetchAll(PDO::FETCH_ASSOC);
+
+            $conn = null;
+            $conexion->closeConexion();
+
+            return $impresiones;
 
         } catch (PDOException $e) {
             return $e->getMessage();

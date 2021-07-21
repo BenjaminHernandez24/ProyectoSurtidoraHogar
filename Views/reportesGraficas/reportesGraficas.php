@@ -55,3 +55,6 @@
 
 <!-- Modal Reporte 3 -->
 <?php include("FrmReporteVentasTotales.php"); ?>
+
+<!-- Modal Reporte 3 -->
+<?php include("FrmImpresiones.php"); ?>

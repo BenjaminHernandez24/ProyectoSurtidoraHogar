@@ -91,7 +91,7 @@ if (isset($_POST['getComprasGeneralesRango'])) {
     );
     $data = reportesGraficasModel::getComprasGenerales($arreglo);
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
-    }
+}
 
 if (isset($_POST['getComprasGeneralesUnicas'])) {
     $arreglo = array(
@@ -99,7 +99,7 @@ if (isset($_POST['getComprasGeneralesUnicas'])) {
     );
     $data = reportesGraficasModel::getComprasGeneralesUnicas($arreglo);
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
-    }
+}
 
 if (isset($_POST['obtenerProveedor'])) {
     $data = reportesGraficasModel::obtenerTodosProveedores();
@@ -121,7 +121,7 @@ if (isset($_POST['getComprasEspecificoRango'])) {
     );
     $data = reportesGraficasModel::getComprasEspecificoRango($arreglo);
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
-    }
+}
 
 if (isset($_POST['getComprasEspecificoUnico'])) {
     $arreglo = array(
@@ -139,7 +139,7 @@ if (isset($_POST['getVentasRango'])) {
     );
     $data = reportesGraficasModel::reporteVentasRango($arreglo);
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
-    }
+}
 
 if (isset($_POST['getVentasUnicas'])) {
     $arreglo = array(
@@ -147,4 +147,23 @@ if (isset($_POST['getVentasUnicas'])) {
     );
     $data = reportesGraficasModel::reporteVentasUnicas($arreglo);
     echo json_encode($data, JSON_UNESCAPED_UNICODE);
-    }
+}
+
+if (isset($_POST['getImpresionesRango'])) {
+    $arreglo = array(
+        "fecha_inicio" => $_POST['fecha_inicial'],
+        "fecha_final" => $_POST['fecha_final'],
+        "impresiones" => $_POST['impresion']
+    );
+    $data = reportesGraficasModel::reporteImpresionesRango($arreglo);
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+}
+
+if (isset($_POST['getImpresionesUnicas'])) {
+    $arreglo = array(
+        "fecha" => $_POST['fecha'],
+        "impresiones" => $_POST['impresion']
+    );
+    $data = reportesGraficasModel::reporteImpresionesUnicas($arreglo);
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+}

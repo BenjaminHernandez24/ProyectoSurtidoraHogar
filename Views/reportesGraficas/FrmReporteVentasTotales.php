@@ -7,6 +7,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <img id="img3" src="dist/img/surtidora.png">
             </div>
 
             <div class="modal-body">
