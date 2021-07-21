@@ -45,7 +45,7 @@ if (!isset($_SESSION['user'])) {
             <ul class="dropdown-menu" style="font-size: 20px;">
                 <li><a class="dropdown-item nav-link" href="../Views/Ajustes.php"><i class="nav-icon fas fa-sliders-h" style="color:#F29F05;"> Ajustes</i></a></li>
                 <li><a class="dropdown-item nav-link" href="../Views/Ayuda.php" style="color:white" target="_blank"><i class="nav-icon fas fa-question-circle" style="color:#F29F05;"> Ayuda</i></a></li>
-                <li><a class="dropdown-item nav-link" href="#" style="color:white"><i class="nav-icon fas fa-info-circle" style="color:#F29F05;"> Acerca De</i></a></li>
+                
                 <li>
                     <hr class="dropdown-divider">
                 </li>

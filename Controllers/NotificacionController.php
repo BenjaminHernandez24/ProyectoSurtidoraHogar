@@ -27,17 +27,26 @@ if (isset($_POST['view'])) {
 
         //Creamos de manera dinamica el cuerpo de los items siguientes...
         for ($i = 0; $i < sizeof($productosVacios); $i++) {
-
+            if($productosVacios[$i]["stock"] == 0){
+                $cabecera = "Stock Vacío";
+                $stock = "0 piezas.";
+            }else if($productosVacios[$i]["stock"] == 1){
+                $cabecera = "Stock Alerta";
+                $stock = "alerta con ".$productosVacios[$i]["stock"]." pieza.";
+            }else{
+                $cabecera = "Stock Alerta";
+                $stock = "alerta con ".$productosVacios[$i]["stock"]." piezas.";
+            }
             //Muestro solo los primeros 4 notificaciones
             if($i < 3){
-                $mensaje = 'El stock del producto "'.$productosVacios[$i]["nombre"].'" se encuentra en 0.';
+                $mensaje = 'El stock del producto "'.$productosVacios[$i]["nombre"].'" se encuentra en '.$stock;
 
                 $cuerpoLista .= '
                     <li id="mensaje'.$i.'">
-                        <a class="dropdown list-group-item" type="button" onclick="prueba('.$i.');">
-                            <font style="text-align: justify;" face="times new roman" size=4>
+                        <a class="dropdown list-group-item text-justify" type="button" onclick="prueba('.$i.');">
+                            <font face="times new roman" size=4>
                                 <i class="nav-icon fas fa-dolly"></i>
-                                <font size=4><b>Stock Vacío</b></font><br>  
+                                <font size=4><b>'.$cabecera.'</b></font><br>  
                                 <font size=4>'.$mensaje.'</font>
                             </font>
                         </a>
@@ -87,8 +96,18 @@ if (isset($_POST['getNotificacion'])) {
    $productosVacios = NotificacionModel::productosConStockVacio();
     $longitud = sizeof($productosVacios);
     for ($i = 0; $i < sizeof($productosVacios); $i++) {
-        $data[$i]["titulo"] = 'Stock Vacío';
-        $data[$i]["descripcion"] = 'El stock del producto se encuentra en 0.';
+        if($productosVacios[$i]["stock"] == 0){
+                $cabecera = "Stock Vacío";
+                $stock = "0 piezas.";
+            }else if($productosVacios[$i]["stock"] == 1){
+                $cabecera = "Stock Alerta";
+                $stock = $productosVacios[$i]["stock"]." pieza.";
+            }else{
+                $cabecera = "Stock Alerta";
+                $stock = $productosVacios[$i]["stock"]." piezas.";
+            }
+        $data[$i]["titulo"] = $cabecera;
+        $data[$i]["descripcion"] = 'El stock del producto se encuentra con '.$stock;
         $data[$i]["producto"] = $productosVacios[$i]["nombre"];
         $data[$i]["recomendacion"] = "Llene el stock de inmediato";
         

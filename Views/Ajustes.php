@@ -5,7 +5,8 @@ if (!isset($_SESSION['user'])) {
 }
 if (
     $_SESSION['user'] != "Administrador1" &&
-    $_SESSION['user'] != "Administrador2" )  {
+    $_SESSION['user'] != "Administrador2" &&
+    $_SESSION['user'] != "Empleado" )  {
     header('Location: Login.php');
   }
 ?> 

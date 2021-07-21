@@ -29,10 +29,10 @@ $ctr = new EstadisticasControlador();
             <!-- Main content -->
             <section class="content-header">
                 <div class="container-fluid">
-
+                <?php if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
                     <!-- Small boxes (Stat box) -->
                     <div class="row mb-2">
-
+                     
                         <!-- PROVEEDORES -->
                         <div class="col-lg-3 col-6" class="small-box-footer">
                             <div class="small-box bg-green">
@@ -100,6 +100,24 @@ $ctr = new EstadisticasControlador();
                                 </a>
                             </div>
                         </div>
+                        <?php } else if ($_SESSION['user'] == "Empleado") { ?>
+                             <!-- VENTAS -->
+                        <div class="col-lg-3 col-6" class="small-box-footer">
+                            <div class="small-box bg-blue">
+                                <div class="inner">
+                                    <h3><?php $ctr->printTotalVentas(); ?></h3>
+
+                                    <h1>Ventas</h1>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-cart-arrow-down"></i>
+                                </div>
+                                <a href="../Views/Venta.php" class="small-box-footer">
+                                    Acceder <i class="fas fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <?php } ?>
                     </div>
                 </div>
             </section>

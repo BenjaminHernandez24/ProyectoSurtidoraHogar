@@ -49,14 +49,19 @@ async function inicializarGraficasProducto() {
               },
                 scales: {
                   xAxes:[{
+                    display:true,
                     ticks:{
-                      fontSize: 13,
+                      autoSkip: false,
+                      maxRotation: 0,
+                      minRotation: 0,
+                      maxTicksLimit: 200,
+                      fontSize: 11.5,
                       fontColor: "#000000",
                     },
                     scaleLabel:{
                         display: true,
                         labelString: 'Productos',
-                        fontSize: 14,
+                        fontSize: 15,
                         fontColor: "#000000",
                       }
                   }],
@@ -64,7 +69,7 @@ async function inicializarGraficasProducto() {
                       ticks: {
                           beginAtZero: true,
                           stepSize : 10,
-                          fontSize: 14,
+                          fontSize: 13,
                           fontColor: "#000000",
                       },
                       scaleLabel:{
@@ -135,10 +140,10 @@ function reporteComprasGeneral(datos,fechas){
         pdf.save('ReporteComprasGeneral.pdf');
         reporteCreado("Reporte Generado Con Éxito");
         $('#modalFrmReportesComprasGenerales').modal('hide');
+        limpiarVariables();
       }else{
           notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna compra');
       }
-      limpiarVariables();
     }
   });
 }
@@ -201,10 +206,10 @@ function reporteComprasEspecifico(datos,fechas){
         }
         reporteCreado("Reporte Generado Con Éxito");
         $('#modalFrmReportesComprasEspecificas').modal('hide');
+        limpiarVariables();
       }else{
         notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna venta');
       }
-      limpiarVariables();
     }
   });
 }
@@ -260,6 +265,7 @@ function reporteVentas(datos,fechas){
             for(var j = i; j < data.length; j++){
               if(fecha === data[j]["fecha"]){
                 lista[j] = { 
+                  "venta": data[j]["venta"],
                   "cliente": data[j]["cliente"],
                   "producto": data[j]["producto"],
                   "piezas": data[j]["piezas"],
@@ -277,12 +283,13 @@ function reporteVentas(datos,fechas){
             cliente = "";
             nueva_lista = [];
             nueva_lista = Object.values(lista);
+
             for(var k = 0; k < nueva_lista.length; k++){
               lista2.splice(0, lista2.length);
-              cliente = nueva_lista[k]["cliente"];
+              cliente = nueva_lista[k]["venta"];
               
               for(var m = k; m < nueva_lista.length; m++){
-                if(cliente == nueva_lista[m]["cliente"]){
+                if(cliente == nueva_lista[m]["venta"]){
                   lista2[m] = { 
                   "cliente": nueva_lista[m]["cliente"],
                   "producto": nueva_lista[m]["producto"],
@@ -342,11 +349,11 @@ function reporteVentas(datos,fechas){
           pieDePagina();
           pdf.save('ReporteVentasTotales.pdf');
           reporteCreado("Reporte Generado Con Éxito");
-        $('#modalFrmReportesVentas').modal('hide');
+          $('#modalFrmReportesVentas').modal('hide');
+          limpiarVariables();
         }else{
         notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna compra');
         }
-        limpiarVariables();
     }
   });
 }
@@ -409,10 +416,10 @@ function guardarDatoDeFila(columns,lista){
   pdf.autoTable(columns,lista,
   {
     margin:{ top: 25 },
-    styles: {overflow: 'linebreak', cellWidth: '100', fontSize: 11.3, cellPadding: 1, overflowColumns: 'linebreak'},
+    styles: {cellWidth: '100', fontSize: 11.3, cellPadding: 1},
     headStyles: {fontSize: 11.3, valign: 'middle',halign: 'center',fillColor : [ 255 ,  127 ,  0] },
     bodyStyles: {minCellHeight: 10.2, fontSize: 11.3, valign: 'middle', halign: 'center',textColor : [ 0 ,  0 ,  0]},
-    margin: {horizontal: 12},
+    margin: {horizontal: 12, top:10, bottom:20},
     columnStyles: { 
       0: { halign: 'center',cellWidth:32} ,
       1: { halign: 'center',cellWidth:32},
@@ -452,7 +459,7 @@ function sumaTotalPaginaVentas(data,pocision,clientes,total){
     for(var j = i; j < data.length; j++){
       if(fecha === data[j]["fecha"]){
         lista[j] = { 
-          "cliente": data[j]["cliente"],
+          "venta": data[j]["venta"],
           "total": data[j]["total"]
         };
         contador++;
@@ -465,12 +472,11 @@ function sumaTotalPaginaVentas(data,pocision,clientes,total){
     nueva_lista = Object.values(lista);
     for(var k = 0; k < nueva_lista.length; k++){
       lista2.splice(0, lista2.length);
-      cliente = nueva_lista[k]["cliente"];
+      cliente = nueva_lista[k]["venta"];
       
       for(var m = k; m < nueva_lista.length; m++){
-        if(cliente == nueva_lista[m]["cliente"]){
+        if(cliente == nueva_lista[m]["venta"]){
           lista2[m] = { 
-          "cliente": nueva_lista[m]["cliente"],
           "total": nueva_lista[m]["total"]
           };
           contador2++;
@@ -489,20 +495,17 @@ function sumaTotalPaginaVentas(data,pocision,clientes,total){
         if(n == 0){
           if(variable.length < 2){
             contadorSumaTotales = contadorSumaTotales + parseFloat(variable[n]["total"]);
-            contadorSumaDia = contadorSumaDia + parseFloat(variable[n]["total"]);
             break;
           }
         }else{
           if(n == variable.length-1){
             contadorSumaTotales = contadorSumaTotales + parseFloat(variable[n]["total"]);
-            contadorSumaDia = contadorSumaDia + parseFloat(variable[n]["total"]);
           }
         }
       }
         k = k + (contador2-1);
         contador2 = 0;
-    } 
-      contadorSumaDia = 0;
+    }
       i = i + (contador-1);
       contador = 0;
   }
@@ -609,6 +612,7 @@ $(document).ready(async function() {
 
 /*Al abrir el modal, escondemos las dos fechas*/
 $("#reporteGeneral").click(function(){
+  limpiarVariables();
   $('#modalFrmReportesComprasGenerales').modal('show');
   document.getElementById("fecha_unica").style.display='block';
   document.getElementById("fechas").style.display = 'none';
@@ -685,6 +689,7 @@ $(document).ready(async function() {
 });
 
 $("#reporteGeneralPorProveedor").click(function(){
+  limpiarVariables();
   $('#modalFrmReportesComprasEspecificas').modal('show');
   document.getElementById("fecha_unica_Prov").style.display='block';
   document.getElementById("fechas_Prov").style.display = 'none';
@@ -748,6 +753,7 @@ $("#GenerarReporte2").click(function(){
                 REPORTE 3
    ======================================*/
 $("#reporteGeneralVentas").click(function(){
+  limpiarVariables();
   $('#modalFrmReportesVentas').modal('show');
   document.getElementById("fecha_unica_Ventas").style.display='block';
   document.getElementById("fechas_Ventas").style.display = 'none';
@@ -800,21 +806,25 @@ $("#Generar_Ventas").click(function(){
 });
 
 function limpiarVariables(){
-  document.querySelector("#seleccion_Ventas").value = "1";
-  document.getElementById("buscarProveedor").value = "";
-  document.querySelector("#seleccionReporte2").value = "1";
   document.querySelector("#seleccion").value = "1";
   document.getElementById("fecha_unica").value = "";
   document.getElementById("fechas").value = "";
   document.getElementById("inicio").value = "";
   document.getElementById("final").value = "";
   document.getElementById("unique").value = "";
+
+  document.getElementById("buscarProveedor").value = "";
+  document.querySelector("#seleccionReporte2").value = "1";
   document.getElementById("fecha_unica_Prov").value = "";
   document.getElementById("fechas_Prov").value = "";
   document.getElementById("inicioProv").value = "";
   document.getElementById("finalProv").value = "";
   document.getElementById("uniqueProv").value = "";
+
+  document.querySelector("#seleccion_Ventas").value = "1";
   document.getElementById("fecha_unica_Ventas").value = "";
+  document.getElementById("fechas_Ventas").value = "";
+  document.getElementById("inicio_Ventas").value = "";
   document.getElementById("final_Ventas").value = "";
   document.getElementById("unique_Ventas").value = "";
 }
@@ -825,7 +835,7 @@ function notificacionNoEncontrado(mensaje) {
         icon: 'warning',
         title: mensaje,
         showConfirmButton: false,
-        timer: 5000
+        timer: 2000
     })
 }
 
@@ -835,6 +845,6 @@ function reporteCreado(mensaje) {
         icon: 'success',
         title: mensaje,
         showConfirmButton: false,
-        timer: 5000
+        timer: 2000
     })
 }

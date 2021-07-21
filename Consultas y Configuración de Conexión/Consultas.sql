@@ -61,3 +61,4 @@
 	INNER JOIN inventario i ON i.id_inventario=sv.id_inventario
 	INNER JOIN productos p ON p.id_producto = i.id_producto;
 	#====================================================================================#
+	SELECT * FROM inventario WHERE stock <= estatus_alerta;

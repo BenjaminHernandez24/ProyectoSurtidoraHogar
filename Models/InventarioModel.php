@@ -13,6 +13,8 @@ private static $BORRAR_PRODUCTO_INVENTARIO = "DELETE FROM inventario WHERE id_in
 private static $OBTENER_ESTATUS_COMPARAR ="SELECT STOCK, ESTATUS_ACEPTABLE, ESTATUS_ALERTA from inventario WHERE id_producto = ?";
 private static $INSERTAR_ESTATUS ="UPDATE inventario set  estatus=? WHERE id_producto=?";
 private static $VALIDAR_EDITAR = "SELECT DISTINCT id_producto=? FROM inventario";
+
+private static $obtenerIDProducto = "SELECT * FROM productos WHERE nombre_producto=?";
 //-------- FUNCIÓN PARA OBTENER  PRODUCTOS EN INVENTARIO -------//
  public static function obtener_inventario_producto()
  {
@@ -108,15 +110,16 @@ public static function editar_productos_inventario($producto_edi)
         //Se abre la transacción.
         $conn->beginTransaction();
         //-------- Se verifica si ya existe el producto en inventario-------//
-        $pst = $conn->prepare(self::$VALIDAR_EDITAR);
-        $pst->execute([$producto_edi ['id_producto']]);
-        $validar = $pst->fetchAll();
-
-        if (!empty($validar)) {
+        
+        
+        $pst = $conn->prepare(self::$obtenerIDProducto); 
+        $pst->execute([$producto_edi['id_producto']]); 
+        $resultado = $pst->fetchAll(PDO::FETCH_ASSOC); 
+        $id_p = $resultado[0]["id_producto"];
        
         $pst = $conn->prepare(self::$EDITAR_PRODUCTO_INVENTARIO);
 
-        $resultado =$pst->execute([$producto_edi['id_producto'],$producto_edi ['estatus_aceptable'],$producto_edi['estatus_alerta'],$producto_edi['stock'], $producto_edi ['id_inventario']]);
+        $resultado =$pst->execute([$id_p,$producto_edi ['estatus_aceptable'],$producto_edi['estatus_alerta'],$producto_edi['stock'], $producto_edi ['id_inventario']]);
         
 
         if ($resultado == 1) {
@@ -129,9 +132,7 @@ public static function editar_productos_inventario($producto_edi)
             $conn->rollBack();
         }
 
-    } else {
-        return $msg="NO";
-    }
+    
         $conn = null;
         $conexion->closeConexion();
         return $msg;

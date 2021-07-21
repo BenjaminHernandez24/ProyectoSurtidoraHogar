@@ -8,8 +8,11 @@ class ProductoModelo
     private static $VALIDAR_PRODUCTO_EXISTENTE = "SELECT * FROM productos WHERE nombre_producto = ? ";
     private static $SELECT_ALL_TIPO_PRODUCTO = "SELECT * FROM tipo_producto";
     private static $SELECT_ALL_MARCA_PRODUCTO = "SELECT * FROM marcas_producto";
-    private static $SELECT_PRODUCTOS_TIPO_MARCA = "SELECT p.id_producto, p.nombre_producto, p.precio_publico, tp.descripcion_tipo, mp.descripcion_marca FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca";
+    private static $SELECT_PRODUCTOS_TIPO_MARCA = "SELECT p.id_producto, p.nombre_producto, p.precio_publico, tp.descripcion_tipo, mp.descripcion_marca FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca  ";
     private static $SELECT_ID_PRODUCTO = "SELECT id_producto  FROM productos WHERE id_producto= ?";
+
+    private static $obtenerIdMarca = "SELECT * FROM marcas_producto WHERE descripcion_marca = ?";
+    private static $obtenerIDProducto = "SELECT * FROM tipo_producto WHERE descripcion_tipo=?";
 //-------- FUNCIÓN PARA AGREGAR TIPO DE PRODUCTO -------//
     public static function agregar_productos($producto)
     {
@@ -64,8 +67,23 @@ class ProductoModelo
             //Se abre la transacción.
             $conn->beginTransaction();
 
+            //En el apartado de id_marca no estamos recibiendo el id_marca
+            //si no el valor, la descripcion que contiene, por eso por medio de una
+            //consulta debemos obtener el id marca que corresponde a esa descripcion
+             $pst = $conn->prepare(self::$obtenerIdMarca); //preparamos consulta
+             $pst->execute([$producto_edi['id_marca']]); //pasamos descripcion
+             $resultado = $pst->fetchAll(PDO::FETCH_ASSOC); //obtenemos la fila en array
+             $p1 = $resultado[0]["id_marca"];
+
+             $pst = $conn->prepare(self::$obtenerIDProducto); 
+             $pst->execute([$producto_edi['id_tipo']]); 
+             $resultado = $pst->fetchAll(PDO::FETCH_ASSOC); 
+             $p2 = $resultado[0]["id_tipo"];
+
+
              $pst = $conn->prepare(self::$EDITAR_PRODUCTO);
-             $resultado =$pst->execute([$producto_edi['nombre_producto'],$producto_edi ['id_tipo'],$producto_edi['id_marca'], $producto_edi ['precio_publico'], $producto_edi ['id_producto']]);
+             /*En el parametro de marcas, pasamos el valor del id_marca obtenido en la consulta anterior, resultado en su pocision 0 en el campo id_marca*/
+             $resultado =$pst->execute([$producto_edi['nombre_producto'],$p2,$p1, $producto_edi ['precio_publico'], $producto_edi ['id_producto']]);
              
              if ($resultado == 1) {
                 $msg = "OK";

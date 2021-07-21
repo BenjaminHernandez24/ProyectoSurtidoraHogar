@@ -47,15 +47,15 @@ async function llenar_Tipo_Producto(){
         var selectTipoProducto = document.getElementById('tipo_producto');
         var selectTipoProductoEdi = document.getElementById('tipo_producto_editar');
         for(item of resjson){
-            let option = document.createElement('option');
-            option.value = item.id_tipo;
-            option.text = item.descripcion_tipo;
-            selectTipoProducto.appendChild(option);
+            let option_r = document.createElement('option');
+            option_r.value = item.id_tipo;
+            option_r.text = item.descripcion_tipo;
+            selectTipoProducto.appendChild(option_r);
 
-            let option1 = document.createElement('option');
-            option1.value = item.id_tipo;
-            option1.text = item.descripcion_tipo;
-            selectTipoProductoEdi.appendChild(option1);
+            let option_e = document.createElement('option');
+            option_e.value = item.descripcion_tipo;
+            option_e.text = item.descripcion_tipo;
+            selectTipoProductoEdi.appendChild(option_e);
         }
         
     } catch (error) {
@@ -86,7 +86,9 @@ async function llenar_Marca_Producto(){
             optionM1.text = item.descripcion_marca;
             selectMarcaProducto.appendChild(optionM1);
 
-            optionM2.value = item.id_marca;
+        /*En vez de pasarle como value el id_marca, le pasamos la descripcion*/
+        /*OJO ESTO SOLO SE HACE CON EDITAR QUE ES LO QUE NECESITAMOS*/
+            optionM2.value = item.descripcion_marca;
             optionM2.text = item.descripcion_marca;
             selectMarcaProductoEdi.appendChild(optionM2);
         }
@@ -152,7 +154,7 @@ form_editar_producto.addEventListener('submit', async (e) => {
         notificarError('Seleccione una marca de producto');
     }else{
         try {
-            
+            console.log(document.getElementById('frm_editar_producto'));
             var datosProducto = new FormData(form_editar_producto);
             datosProducto.append('editar_producto', 'OK');
             datosProducto.append('id_producto', id_producto);
@@ -184,12 +186,14 @@ $(document).on('click', '.btnEditar', async function(){
         var data = tabla_productos.row($(this).parents("tr")).data();
     }
      
+    console.log(data);
     id_producto = data[0];
     $("#nom_producto_editar").val(data[1]);
     $("#precio_pub_editar").val(data[2]);
-    //$("#tipo_producto_editar").val(data[3]);
-    //var selectTipoProducto = document.getElementById('tipo_producto');
-    $("#default").val(data[3]);
+    /*Le decimos al combo que se pocisione por predeterminado donde el valor
+      sea igual a lo que se está obteniendo en el data de la tabla*/
+    document.querySelector("#tipo_producto_editar").value = data[3];
+    document.querySelector("#marca_producto_editar").value = data[4];
     // -----Mostramos el modal -----//
     $('#editar_producto').modal('show');
 

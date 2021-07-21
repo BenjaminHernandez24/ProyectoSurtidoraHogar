@@ -3,7 +3,7 @@ const form_editar_productoInv = document.getElementById('frm_editar_productoInv'
 
 var tabla_inventario;
 var id_inventario;
-var producto_reg;
+
 // Llenar Tabla de Inventario //
 async function inventario() {
     tabla_inventario = $("#tab_inventario").DataTable({
@@ -58,7 +58,7 @@ async function llenar_Producto(){
             option.text = item.nombre_producto;
             selectProducto.appendChild(option);
             let option1 = document.createElement('option');
-            option1.value = item.id_producto;
+            option1.value = item.nombre_producto;
             option1.text = item.nombre_producto;
             selectProductoEdi.appendChild(option1);
         }
@@ -153,6 +153,7 @@ $(document).on('click', '.btnEditar', async function(){
     }
      // Cargamos datos de la tabla del producto elegido //
     id_inventario = data[0];
+    document.querySelector("#producto_editar").value = data[1];
     $("#estatus_acept_editar").val(data[2]);
     $("#estatus_alert_editar").val(data[3]);
     $("#stock_editar").val(data[4]);
