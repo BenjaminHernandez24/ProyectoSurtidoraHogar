@@ -543,7 +543,6 @@ formDatosVenta.addEventListener('submit', async function(e) {
     let total_venta = document.getElementById("total").value;
     let cliente_venta = document.getElementById("nombre_cliente").value;
     let metodo_pago_venta = document.getElementById("nuevoMetodoPago").value;
-    let Descuento_venta = document.getElementById("descuento").value;
     let cobro_venta = document.getElementById("cobro").value;
     let cambio_venta = document.getElementById("cambio").value;
 
@@ -552,18 +551,14 @@ formDatosVenta.addEventListener('submit', async function(e) {
     } else {
 
         if (metodo_pago_venta == "Efectivo") {
-            if (cobro_venta == "" || cobro_venta <= 0 || Descuento_venta < 0) {
+            if (cobro_venta == "" || cobro_venta <= 0) {
                 notificarError("Campos Erroneos");
             } else {
                 insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla);
             }
         } else {
             /*ES OTRO TIPO DE PAGO, NO VALIDAMOS CAMPOS DE COBRO NI CAMBIO*/
-            if (Descuento_venta < 0) {
-                notificarError("Campos Erroneos");
-            } else {
-                insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla);
-            }
+            insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla);
         }
     }
 })
@@ -850,15 +845,14 @@ function limpiarCampos(mensaje) {
     if (mensaje == "limpiarventa") {
         document.getElementById('cobro').value = "";
         document.getElementById('cambio').value = "";
-        document.getElementById('descuento').value = "";
         document.getElementById('subtotal').value = "";
         document.getElementById('total').value = "";
         document.getElementById('nombre_cliente').value = "";
 
         document.getElementById('buscar_cliente').disabled = true;
         document.getElementById('cobro').disabled = true;
-        document.getElementById('descuento').disabled = true;
-
+        document.getElementById('generar').disabled = true;
+        $("#generar").val("Ticket");
         document.getElementById('nuevoMetodoPago').disabled = true;
         $("#nuevoMetodoPago").val("Efectivo");
         $("#fila_cobro").slideDown();
