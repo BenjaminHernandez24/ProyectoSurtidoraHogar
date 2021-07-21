@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-07-2021 a las 22:21:16
+-- Tiempo de generación: 21-07-2021 a las 07:30:49
 -- Versión del servidor: 10.4.19-MariaDB
 -- Versión de PHP: 8.0.7
 
@@ -40,7 +40,7 @@ CREATE TABLE `administrador` (
 
 CREATE TABLE `clientes` (
   `id_cli` int(11) NOT NULL,
-  `nombre_cli` varchar(200) NOT NULL,
+  `nombre_cli` varchar(250) NOT NULL,
   `tipo` varchar(25) NOT NULL,
   `telefono` varchar(20) NOT NULL,
   `Estatus` int(1) NOT NULL
@@ -54,11 +54,12 @@ CREATE TABLE `clientes` (
 
 CREATE TABLE `detalle_salida_venta` (
   `id_detalle_salida_venta` int(11) NOT NULL,
-  `cliente` varchar(200) NOT NULL,
+  `cliente` varchar(250) NOT NULL,
   `metodo_pago` varchar(50) NOT NULL,
   `total` decimal(10,2) NOT NULL,
   `pago` decimal(10,2) NOT NULL,
   `cambio` decimal(10,2) NOT NULL,
+  `impresiones` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `hora` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -197,7 +198,7 @@ INSERT INTO `notificaciones` (`boton`, `total`) VALUES
 
 CREATE TABLE `productos` (
   `id_producto` int(11) NOT NULL,
-  `nombre_producto` varchar(300) NOT NULL,
+  `nombre_producto` varchar(350) NOT NULL,
   `id_tipo` int(11) NOT NULL,
   `id_marca` int(11) NOT NULL,
   `precio_publico` decimal(10,2) NOT NULL
@@ -266,6 +267,27 @@ CREATE TABLE `salida_venta` (
   `subtotal` decimal(10,2) NOT NULL,
   `id_detalle_salida_venta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tickets`
+--
+
+CREATE TABLE `tickets` (
+  `id_ticket` int(11) NOT NULL,
+  `descripcion` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `tickets`
+--
+
+INSERT INTO `tickets` (`id_ticket`, `descripcion`) VALUES
+(1, 'ticket'),
+(2, 'factura'),
+(3, 'ambos'),
+(4, 'ninguno');
 
 -- --------------------------------------------------------
 
@@ -364,7 +386,8 @@ ALTER TABLE `clientes`
 -- Indices de la tabla `detalle_salida_venta`
 --
 ALTER TABLE `detalle_salida_venta`
-  ADD PRIMARY KEY (`id_detalle_salida_venta`);
+  ADD PRIMARY KEY (`id_detalle_salida_venta`),
+  ADD KEY `impresiones` (`impresiones`);
 
 --
 -- Indices de la tabla `entrada_compra`
@@ -422,6 +445,12 @@ ALTER TABLE `salida_venta`
   ADD PRIMARY KEY (`id_salida_venta`),
   ADD KEY `id_inventario` (`id_inventario`),
   ADD KEY `id_detalle_salida_venta` (`id_detalle_salida_venta`);
+
+--
+-- Indices de la tabla `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`id_ticket`);
 
 --
 -- Indices de la tabla `tipo_producto`
@@ -494,6 +523,12 @@ ALTER TABLE `salida_venta`
   MODIFY `id_salida_venta` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `tickets`
+--
+ALTER TABLE `tickets`
+  MODIFY `id_ticket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de la tabla `tipo_producto`
 --
 ALTER TABLE `tipo_producto`
@@ -502,6 +537,12 @@ ALTER TABLE `tipo_producto`
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `detalle_salida_venta`
+--
+ALTER TABLE `detalle_salida_venta`
+  ADD CONSTRAINT `tickets_detalle` FOREIGN KEY (`impresiones`) REFERENCES `tickets` (`id_ticket`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `entrada_compra`

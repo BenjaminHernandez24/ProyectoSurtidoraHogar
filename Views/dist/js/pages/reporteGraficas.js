@@ -55,13 +55,13 @@ async function inicializarGraficasProducto() {
                       maxRotation: 0,
                       minRotation: 0,
                       maxTicksLimit: 200,
-                      fontSize: 12,
+                      fontSize: 11.5,
                       fontColor: "#000000",
                     },
                     scaleLabel:{
                         display: true,
                         labelString: 'Productos',
-                        fontSize: 14,
+                        fontSize: 15,
                         fontColor: "#000000",
                       }
                   }],
@@ -69,7 +69,7 @@ async function inicializarGraficasProducto() {
                       ticks: {
                           beginAtZero: true,
                           stepSize : 10,
-                          fontSize: 14,
+                          fontSize: 13,
                           fontColor: "#000000",
                       },
                       scaleLabel:{
@@ -416,10 +416,10 @@ function guardarDatoDeFila(columns,lista){
   pdf.autoTable(columns,lista,
   {
     margin:{ top: 25 },
-    styles: {overflow: 'linebreak', cellWidth: '100', fontSize: 11.3, cellPadding: 1, overflowColumns: 'linebreak'},
+    styles: {cellWidth: '100', fontSize: 11.3, cellPadding: 1},
     headStyles: {fontSize: 11.3, valign: 'middle',halign: 'center',fillColor : [ 255 ,  127 ,  0] },
     bodyStyles: {minCellHeight: 10.2, fontSize: 11.3, valign: 'middle', halign: 'center',textColor : [ 0 ,  0 ,  0]},
-    margin: {horizontal: 12},
+    margin: {horizontal: 12, top:10, bottom:20},
     columnStyles: { 
       0: { halign: 'center',cellWidth:32} ,
       1: { halign: 'center',cellWidth:32},

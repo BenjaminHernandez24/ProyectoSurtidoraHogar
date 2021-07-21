@@ -10,15 +10,12 @@
             Top 5 Productos Mas Vendidos.
         </font>
         </div>
-        <div class="card-body">
-            <canvas class="linear" height="92" id="top5Productos" width="100%">
-            </canvas>
-        </div>
+        <canvas class="linear" height="92" id="top5Productos" width="100%">
+        </canvas>
     </div>
 </div>
 <div class="col-xl-6">
-    <div class="card" style="height: 95%;">
-    <div class="card header">
+    <div class="card" style="height: 96%;">
         <div class="card-header text-center">
             <font style="font-size: 140%">
             <i class="nav-icon fas fa-file-invoice-dollar"></i> ¿Quién me vendió mas barato el producto?
@@ -46,7 +43,6 @@
                     </tbody>
                 </table>
         </div>
-    </div>
     </div>
 </div>
 </div>
