@@ -106,8 +106,6 @@ $(document).on("click", ".btnAgregar", function(e) {
 
     descuento_cliente_tarjeta(valor_pago, tipo_cliente, subtotal);
 
-    document.getElementById('descuento').disabled = true;
-    document.getElementById('descuento').value = "";
     $("#nombre_cliente").val(data[1]);
     /* Hacemos visible el modal */
     $("#modalcliente").modal("hide");
