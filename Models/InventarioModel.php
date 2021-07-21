@@ -10,7 +10,9 @@ private static $VALIDAR_PRODUCTO_EXISTENTE = "SELECT * FROM inventario WHERE id_
 private static $SELECT_PRODUCTOS =  "SELECT id_producto, nombre_producto FROM productos";
 private static $EDITAR_PRODUCTO_INVENTARIO = "UPDATE inventario set id_producto = ?, estatus_aceptable = ?, estatus_alerta =?, stock=? WHERE id_inventario = ?";
 private static $BORRAR_PRODUCTO_INVENTARIO = "DELETE FROM inventario WHERE id_inventario = ?";
-private static $OBTENER_ESTATUS_COMPARAR ="SELECT STOCK, ESTATUS_ACEPTABLE, ESTATUS_ALERTA from inventario WHERE id_producto = ?";
+
+private static $OBTENER_ESTATUS_COMPARAR2 ="SELECT estatus_aceptable from inventario WHERE id_inventario = ?";
+private static $OBTENER_ESTATUS_COMPARAR1 ="SELECT stock, estatus_aceptable from inventario WHERE id_inventario = ?";
 private static $INSERTAR_ESTATUS ="UPDATE inventario set  estatus=? WHERE id_producto=?";
 private static $VALIDAR_EDITAR = "SELECT DISTINCT id_producto=? FROM inventario";
 
@@ -171,31 +173,37 @@ public static function editar_productos_inventario($producto_edi)
       }
   }
   //-------- FUNCIÓN PARA OBTENER  PRODUCTOS EN INVENTARIO -------//
- /*public static function obtener_estatus()
+ public static function obtener_estatus($id)
  {
      try {
          $conexion = new Conexion();
          $conn = $conexion->getConexion();
 
-         $pst = $conn->prepare(self::$OBTENER_ESTATUS );
-         $resultado = $pst->execute();
-         $inventario = $pst->fetchAll(PDO::FETCH_ASSOC);
-         if ($inventario['stock'] >= $inventario['status_aceptable'] ){
+         $pst = $conn->prepare(self::$OBTENER_ESTATUS_COMPARAR1 );
+         $pst->execute([$id]);
+         $resultado = $pst->fetchAll(PDO::FETCH_ASSOC);
+         $stock_p = $resultado[0]["stock"];
+         $estatus_acep = $resultado[0]["estatus_aceptable"];
+       
+        if ($stock_p >= $estatus_acep) {
            
-            $msg = "ACEPTABLE";
-         }else if ($inventario['stock'] <= $inventario['status_aceptable'] ) {
-            $msg = "ALERTA";
-           
-         }
+            $conn = null;
+          $conexion->closeConexion();
+            $msg="ACEPTABLE";
 
-         $conn = null;
-         $conexion->closeConexion();
-
+        }else {
+            $conn = null;
+            $conexion->closeConexion();
+           $msg= "ALERTA";
+        }
+        $conn = null;
+        $conexion->closeConexion();
          return $msg;
+         
      } catch (PDOException $e) {
          return $e->getMessage();
      }
- }*/
+ }
 
 }
 ?>

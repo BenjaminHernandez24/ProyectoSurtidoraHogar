@@ -24,7 +24,8 @@ async function inventario() {
             {"data": "estatus_aceptable"},
             {"data": "estatus_alerta"},
             {"data": "stock"},
-            { "defaultContent": "<button class='btn btn-success btn-sm '>Ver</button>"},
+            {"defaultContent": "<button class='btn btn-success btn-sm btnVerStatus'>Ver</button>"},
+           
             
            
             {
@@ -209,12 +210,36 @@ $(document).on('click', ".btnBorrar", async function() {
     }
 
 })
-$(document).on('click', '.btnVer', async function(){
+$(document).on('click', '.btnVerStatus', async function(){
     
-    if(tabla_inventario.row(this).child.isShown()){
-        var data = tabla_inventario.row(this).data();
-    }else{
-        var data = tabla_inventario.row($(this).parents("tr")).data();
+    try {
+        if (tabla_inventario.row(this).child.isShown()) {
+            var data = tabla_inventario.row(this).data();
+        } else {
+            var data = tabla_inventario.row($(this).parents("tr")).data();
+        }
+        id_inventario = data[0];
+        var datosPro = new FormData();
+        datosPro.append('obtener_estatus', 'OK');
+        datosPro.append('id_inventario', id_inventario);
+
+        var peticion = await fetch('../Controllers/InventarioController.php', {
+            method: 'POST',
+            body: datosPro
+        });
+//---------- Esperamos la respuesta que obtiene nuestro controlador para hacer la consulta. ---------//
+        var resjson = await peticion.json();
+
+        if (resjson.respuesta == "ACEPTABLE") {
+            mensajeStockAceptable('El stock es aceptable');
+           
+        } else if (resjson.respuesta == "ALERTA"){
+            mensajeStockBajo('El stock es bajo!!');
+        } else {
+            notificarError(resjson.respuesta);
+        }
+    } catch (error) {
+        console.log(error);
     }
      
 });  
@@ -239,6 +264,24 @@ function notificacionExitosa(mensaje) {
         document.getElementById('cerrar').click();
         document.getElementById('cerrarEditar').click();
     });
+}
+function mensajeStockAceptable(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Estatus Aceptable',
+        showConfirmButton: false,
+        timer: 2000
+    })
+}
+function mensajeStockBajo(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Estatus Alerta!!',
+        showConfirmButton: false,
+        timer: 2000
+    })
 }
 
 // --------- Limpiar campos del formulario para agregar producto a inventario. -----------//

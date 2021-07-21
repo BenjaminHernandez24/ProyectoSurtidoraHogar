@@ -59,10 +59,10 @@ if (isset($_POST['eliminar_producto_inv'])) {
     $respuesta = InventarioModelo::eliminar_producto_inventario($_POST['id_inventario']);
     echo json_encode(['respuesta' => $respuesta]);
 }
-/*if (isset($_POST['obtener_estatus'])) {
+if (isset($_POST['obtener_estatus'])) {
 
-    $respuesta = InventarioModelo::obtener_estatus();
+    $respuesta = InventarioModelo::obtener_estatus($_POST['id_inventario']);
     echo json_encode(['respuesta' => $respuesta]);
-}*/
+}
 
 ?>
