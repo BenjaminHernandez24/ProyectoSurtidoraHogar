@@ -104,19 +104,23 @@ function reporteComprasGeneral(datos,fechas,imagen){
     success:function(data)
     { 
       var contadorSumaDia = 0;
-      pdf.setFontSize(13);
-      pdf.setFontType("bold");
       if(data.length != 0){ //¿Está vacío?
         if(fechas.length == 2){ //¿Es de rango o unico?
-          pdf.setFontSize(12);
+          pdf.setDrawColor(0);
+          pdf.setFillColor(253, 253, 150);
+          pdf.rect(5, 15.4, 108, 33,'F'); //
+          pdf.setFontSize(13);
+          pdf.setFontType("bold");
           pdf.text(7,22,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
-          pdf.setFontSize(12);
           pdf.text(7,30,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
           sumaTotalPagina(data,38);
         }else{
-          pdf.setFontSize(12);
+          pdf.setDrawColor(0);
+          pdf.setFillColor(253, 253, 150);
+          pdf.rect(5, 15.4, 108, 25.2,'F'); //
+          pdf.setFontSize(13);
+          pdf.setFontType("bold");
           pdf.text(7,22,"Fecha: " + fechas + "."); //Fecha seleccionada.
-          pdf.setFontSize(12);
           sumaTotalPagina(data,30);
         }
 
@@ -181,20 +185,26 @@ function reporteComprasEspecifico(datos,fechas,imagen){
       pdf.setFontType("bold");
       if(data.length != 0){ //¿Está vacío?
         if(fechas.length > 2){ //¿Es de rango o unico?
-            pdf.setFontSize(12);
-            pdf.text(7,22,"Nombre del proveedor: " + fechas[2]); //Fecha seleccionada
-            pdf.setFontSize(12);
-            pdf.text(7,30,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
-            pdf.text(7,38,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
-            sumaTotalPagina(data,46);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, 110, 48,'F'); //
+            pdf.setFontSize(13);
+            pdf.setFontType("bold");
+            pdf.text(7,22,"Nombre del proveedor: "); //Fecha seleccionada
+            pdf.text(10,29,fechas[2]+".");
+            pdf.text(7,36,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
+            pdf.text(7,43,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
+            sumaTotalPagina(data,50);
           }else{
-            pdf.setFontSize(12);
-            pdf.text(7,22,"Nombre del proveedor: " + fechas[1]); //Fecha seleccionada
-            pdf.setFontSize(12);
-            pdf.text(7,30,"Fecha: " + fechas[0] + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
-            sumaTotalPagina(data,38);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, 110, 41,'F'); //
+            pdf.setFontSize(13);
+          pdf.setFontType("bold");
+            pdf.text(7,22,"Nombre del proveedor: "); //Fecha seleccionada
+            pdf.text(10,30,fechas[1]+".");
+            pdf.text(7,38,"Fecha: " + fechas[0] + "."); //Fecha seleccionada.
+            sumaTotalPagina(data,46);
           }
 
         espacioFilas(5);
@@ -272,15 +282,17 @@ function reporteVentas(datos,fechas,imagen){
         var contadorSumaTotales = 0;
 
         if(fechas.length == 2){ //¿Es de rango o unico?
-            pdf.setFontSize(12);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, 105, 42,'F'); //
             pdf.text(7,22,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
             pdf.text(7,30,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
             sumaTotalPaginaVentas(data,38,contadorCliente,contadorSumaTotales);
         }else{
-            pdf.setFontSize(12);
-            pdf.text(7,22,"Fecha: " + fechas + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, 105, 34,'F');
+            pdf.text(7,22,"Fecha: " + fechas + ".");//Fecha seleccionada.
             sumaTotalPaginaVentas(data,30,contadorCliente,contadorSumaTotales);
         }
 
@@ -443,15 +455,21 @@ function reporteImpresiones(datos,fechas,imagen){
         var contadorSumaTotales = 0;
 
         if(fechas.length == 2){ //¿Es de rango o unico?
-            pdf.setFontSize(12);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, pocision-5, 33,'F'); //
+            pdf.setFontSize(13);
+            pdf.setFontType("bold");
             pdf.text(7,22,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
             pdf.text(7,30,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
             sumaTotalPaginaImpresion(data,38);
         }else{
-            pdf.setFontSize(12);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, pocision-5, 25.2,'F'); //
+            pdf.setFontSize(13);
+            pdf.setFontType("bold");
             pdf.text(7,22,"Fecha: " + fechas + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
             sumaTotalPaginaImpresion(data,30);
         }
 
@@ -567,11 +585,11 @@ function espacioFilas(numero){
 function guardarDatoDeFila(columns,lista,drawCell){
   pdf.autoTable(columns,lista,
   {
-    margin:{ top: 24 },
+    rowPageBreak: 'avoid',
     styles: {cellWidth: '100', fontSize: 11.3, cellPadding: 1},
     headStyles: {fontSize: 11.3, valign: 'middle',halign: 'center',fillColor : [ 255 ,  127 ,  0] },
     bodyStyles: {minCellHeight: 10.2, fontSize: 11.3, valign: 'middle', halign: 'center',textColor : [ 0 ,  0 ,  0]},
-    margin: {horizontal: 12, top:8, bottom:22},
+    margin: {horizontal: 12, top:10, bottom:25},
     columnStyles: { 
       0: { halign: 'center',cellWidth:32} ,
       1: { halign: 'center',cellWidth:32},
@@ -583,7 +601,7 @@ function guardarDatoDeFila(columns,lista,drawCell){
 function guardarDatoDeFilaImpresion(columns,lista,drawCell){
   pdf.autoTable(columns,lista,
   {
-    margin:{ top: 24 },
+    margin:{ top: 20 },
     styles: {cellWidth: '100', fontSize: 11.3, cellPadding: 1},
     headStyles: {fontSize: 11.3, valign: 'middle',halign: 'center',fillColor : [ 255 ,  127 ,  0] },
     bodyStyles: {minCellHeight: 10.2, fontSize: 11.3, valign: 'middle', halign: 'center',textColor : [ 0 ,  0 ,  0]},
@@ -604,9 +622,6 @@ function sumaTotalPagina(data,pocision){
   for(var i = 0; i < data.length; i++){
     sumaTotal = sumaTotal + parseFloat(data[i]["subtotal"]);
   }
-
-  pdf.setFontSize(13);
-  pdf.setFontType("bold");
   pdf.text(7,pocision,"Productos comprados: " + data.length + ".");
   pocision = pocision + 8;
   pdf.text(7,pocision,"Total de gastos: $" + sumaTotal.toFixed(2) + " pesos.");
