@@ -12,7 +12,8 @@ private static $SELECT_ALL_PRODUCTOS = "SELECT i.id_producto as id_producto,  p.
 private static $SELECT_ALL_PROVEEDORES = "SELECT id_prov, nom_empresa FROM proveedores WHERE estatus=1";
 //-------------------- Funciones para agregar Compras -----------------------------//
 private static $SELECT_ID_INVENTARIO_PRODUCTO_AND_STOCK = "SELECT id_inventario, stock FROM inventario WHERE id_producto= ? ";
-private static $ACTUALIZAR_STOCK_INSERTAR_ENTRADA_COMPRA = "UPDATE inventario set stock=? WHERE id_producto=?; INSERT INTO entrada_compra (id_prov, id_inventario, num_piezas, precio_unitario,subtotal,fecha,hora) VALUES  (?,?,?,?,?, CURDATE(), CURTIME())";
+private static $ACTUALIZAR_STOCK = "UPDATE inventario set stock=? WHERE id_producto=?";
+private static $ENTRADA_COMPRA = "INSERT INTO entrada_compra (id_prov, id_inventario, num_piezas, precio_unitario,subtotal,fecha,hora) VALUES  (?,?,?,?,?, CURDATE(), CURTIME())";
 //--------------------- Funciones para Editar una Compra ---------------------//
 private static $ACTUALIZAR_STOCK_ACTUALIZAR_ENTRADA_COMPRA = "UPDATE inventario set stock=(stock+?) WHERE id_inventario=?; UPDATE entrada_compra SET id_prov=?, id_inventario=?, num_piezas=?, precio_unitario=?, subtotal=?, fecha=CURDATE(), hora=CURTIME() WHERE id_entrada_compra=?";
 private static $UPDATE1_STOCK="UPDATE inventario set stock=(stock-?) WHERE id_inventario=?";
@@ -91,17 +92,10 @@ public static function agregar_compras($compras)
             //Se abre la transacción.
             $conn->beginTransaction();
             
-            //--- Obtenemos el ID de producto con el nombre de producto ----//
-            $pst = $conn->prepare(self::$obtenerIDProducto); 
-            $pst->execute([$compras['id_producto']]); 
-            $resultado_Id_Prod = $pst->fetchAll(PDO::FETCH_ASSOC); 
-            $id_produc = $resultado_Id_Prod[0]["id_producto"];
-            //--- Obtenemos el ID del proveedor con el nombre de la empresa a la que pertenece. ----//
-            $pst = $conn->prepare(self::$obtenerIDProveedor); 
-            $pst->execute([$compras['id_prov']]); 
-            $resultado_Id_Prov = $pst->fetchAll(PDO::FETCH_ASSOC); 
-            $id_prov = $resultado_Id_Prov[0]["id_prov"];
-            
+            //Recibo id de producto desde el desplegable de agregar producto.
+            $id_produc = $compras['id_producto'];
+            //Recibo id proveedor desde el desplegable de agregar proveedor.
+            $id_prov = $compras['id_prov'];
 
             //-------- Se consulta el  ID de inventario, Y Stock del producto seleccionado-------//
             $pst = $conn->prepare(self::$SELECT_ID_INVENTARIO_PRODUCTO_AND_STOCK);
@@ -110,21 +104,33 @@ public static function agregar_compras($compras)
             $id_inv = $resultado_produc_stock[0]["id_inventario"];
             $sum_stock= $resultado_produc_stock[0]['stock'] + $compras['num_piezas'];
             
-        // ---------- obtenemos el subtotal-----------//
-        $sub= $compras ['precio_unitario'] * $compras ['num_piezas'];
+            // ---------- obtenemos el subtotal-----------//
+            $sub= $compras ['precio_unitario'] * $compras ['num_piezas'];
             //--------Actualizamos el stock en inventario de la compra e insertamos los datos de Compra -------//
-            $pst = $conn->prepare(self::$ACTUALIZAR_STOCK_INSERTAR_ENTRADA_COMPRA );
-            $resultado = $pst->execute([$sum_stock ,$id_produc,$id_prov,$id_inv,$compras['num_piezas'],$compras['precio_unitario'],$sub]);
-             if ($resultado == 1) {
-                $msg = "OK";
-                //Si todo está correcto se inserta.
-                $conn->commit();
-            } else {
+            $pst = $conn->prepare(self::$ACTUALIZAR_STOCK);
+            $resultado = $pst->execute([$sum_stock ,$id_produc]);
+
+            //Si se ejecutó bien la actualizacion de stock, que inserte en compras.
+            if($resultado == 1){
+                $pst = $conn->prepare(self::$ENTRADA_COMPRA);
+                $resultado = $pst->execute([$id_prov,$id_inv,$compras['num_piezas'],$compras['precio_unitario'],$sub]); 
+
+                //¿Se hizo bien la insercion en compras?
+                if ($resultado == 1) {
+                    $msg = "OK";
+                    //Si todo está correcto se inserta.
+                    $conn->commit();
+                } else {
+                    $msg = "Falló al eliminar";
+                    //Si algo falla, reestablece la bd a como estaba en un inicio.
+                    $conn->rollBack();
+                }
+            }else{
                 $msg = "Falló al eliminar";
                 //Si algo falla, reestablece la bd a como estaba en un inicio.
                 $conn->rollBack();
             }
-    
+
               $conn = null;
               $conexion->closeConexion();
     
