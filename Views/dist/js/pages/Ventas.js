@@ -748,11 +748,9 @@ function limpiarCampos(mensaje) {
         idCliente = "";
         tipo_cliente = "";
         datosClientes = "";
-        tablaClientes = "";
 
         /* VARIABLES PARA VENTAS */
         id_inventario = "";
-        tablaDatosVentas = "";
         stock_inicial = "";
         stock_editar = "";
         cantidad_editar = "";
