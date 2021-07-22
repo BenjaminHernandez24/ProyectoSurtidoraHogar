@@ -15,12 +15,15 @@ private static $SELECT_ID_INVENTARIO_PRODUCTO_AND_STOCK = "SELECT id_inventario,
 private static $ACTUALIZAR_STOCK = "UPDATE inventario set stock=? WHERE id_producto=?";
 private static $ENTRADA_COMPRA = "INSERT INTO entrada_compra (id_prov, id_inventario, num_piezas, precio_unitario,subtotal,fecha,hora) VALUES  (?,?,?,?,?, CURDATE(), CURTIME())";
 //--------------------- Funciones para Editar una Compra ---------------------//
-private static $ACTUALIZAR_STOCK_ACTUALIZAR_ENTRADA_COMPRA = "UPDATE inventario set stock=(stock+?) WHERE id_inventario=?; UPDATE entrada_compra SET id_prov=?, id_inventario=?, num_piezas=?, precio_unitario=?, subtotal=?, fecha=CURDATE(), hora=CURTIME() WHERE id_entrada_compra=?";
+private static $ACTUALIZAR_STOCK_EC = "UPDATE inventario set stock=(stock+?) WHERE id_inventario=?";
+private static $ACTUALIZAR_ENTRADA_COMPRA = "UPDATE entrada_compra SET id_prov=?, id_inventario=?, num_piezas=?, precio_unitario=?, subtotal=?, fecha=CURDATE(), hora=CURTIME() WHERE id_entrada_compra=?";
 private static $UPDATE1_STOCK="UPDATE inventario set stock=(stock-?) WHERE id_inventario=?";
 private static $SELECT_ID_INVENTARIO_PRODUCTO = "SELECT id_inventario FROM inventario WHERE id_producto= ? ";
 private static $SELECT_ID_PRODUCTO = "SELECT id_producto FROM productos WHERE nombre_producto=?";
+private static $SELECT_ID_PROVEEDOR = "SELECT id_prov FROM proveedores WHERE nom_empresa=?";
 //------------ Función para Eliminar una Compra-----------//
-private static $BORRAR_COMPRA_ACTUALIZAR_STOCK ="DELETE FROM entrada_compra WHERE id_entrada_compra = ?;UPDATE inventario set stock=(stock-?) WHERE id_inventario=?";
+private static $BORRAR_COMPRA ="DELETE FROM entrada_compra WHERE id_entrada_compra = ?";
+private static $ACTUALIZAR_STOCK_B ="UPDATE inventario set stock=(stock-?) WHERE id_inventario=?";
 private static $SELECT_ID_INVENTARIO_AND_NUM_PIEZAS ="SELECT id_inventario, num_piezas FROM  entrada_compra WHERE id_entrada_compra=?";
 private static $SELECT_NUM_PIEZAS = "SELECT  num_piezas FROM  entrada_compra WHERE id_entrada_compra=?";
 
@@ -150,16 +153,22 @@ public static function editar_compras($Compras_editar)
         $conn = $conexion->getConexion();
         //Se abre la transacción.
         $conn->beginTransaction();
-         
+         //-------Consultamos ID producto -----------//
         $pst = $conn->prepare(self::$SELECT_ID_PRODUCTO);
         $pst->execute([$Compras_editar ['id_producto']]);
         $res = $pst->fetch();
         $res_id_producto = $res ['id_producto'];
+           //-------Consultamos ID proveedor-----------//
+        $pst = $conn->prepare(self::$SELECT_ID_PROVEEDOR);
+        $pst->execute([$Compras_editar ['id_prov']]);
+        $res = $pst->fetch();
+        $res_id_proveedor = $res ['id_prov'];
 
         //-------- Se verifica si existe el producto seleccionado con un ID de inventario-------//
         $pst = $conn->prepare(self::$SELECT_ID_INVENTARIO_PRODUCTO);
         $pst->execute([$res_id_producto]);
         $res = $pst->fetch();
+        $res_id_inventario = $res['id_inventario'];
         
          // ---------- Consultamos las piezas que se había registrado ------------//
          $pst = $conn->prepare(self::$SELECT_NUM_PIEZAS);
@@ -169,15 +178,17 @@ public static function editar_compras($Compras_editar)
             
          // --- Le quitamos al stock del inventario las piezas que se registraron con anterioridad---//
       $pst = $conn->prepare(self::$UPDATE1_STOCK);
-      $pst->execute([$res_piezas,$res['id_inventario']]);
+      $pst->execute([$res_piezas, $res_id_inventario]);
        
        // ---------- obtenemos el subtotal-----------//
       $subt= $Compras_editar ['precio_unitario'] * $Compras_editar ['num_piezas'];
      
        //--------Actualizamos el stock en inventario de la compra e insertamos los datos de Compra que se editó -------//
-       $pst = $conn->prepare(self::$ACTUALIZAR_STOCK_ACTUALIZAR_ENTRADA_COMPRA );
-       $resultado = $pst->execute([$Compras_editar['num_piezas'],$res['id_inventario'],$Compras_editar['id_prov'],$res['id_inventario'],$Compras_editar['num_piezas'],$Compras_editar['precio_unitario'],$subt, $Compras_editar['id_entrada_compra']]);
+       $pst = $conn->prepare(self::$ACTUALIZAR_STOCK_EC );
+       $resultado = $pst->execute([$Compras_editar['num_piezas'], $res_id_inventario]);
 
+       $pst = $conn->prepare(self::$ACTUALIZAR_ENTRADA_COMPRA);
+       $resultado = $pst->execute([$res_id_proveedor, $res_id_inventario,$Compras_editar['num_piezas'],$Compras_editar['precio_unitario'],$subt, $Compras_editar['id_entrada_compra']]);
         if ($resultado == 1) {
             $msg = "OK";
             //Si todo está correcto se inserta.
@@ -210,10 +221,13 @@ public static function eliminar_compras($id)
        $result = $pst->fetchAll(PDO::FETCH_ASSOC);
        $id_inventario = $result[0]["id_inventario"];
        $res_piezas=$result[0]["num_piezas"];
+
+    $pst = $conn->prepare(self::$ACTUALIZAR_STOCK_B);
+    $resultado = $pst->execute([$res_piezas,$id_inventario]);
          
     //--------Eliminamos la compra y Actualizamos (restamos) el stock en inventario de la compra eliminada -------//
-    $pst = $conn->prepare(self::$BORRAR_COMPRA_ACTUALIZAR_STOCK);
-    $resultado = $pst->execute([$id,$res_piezas,$id_inventario]);
+    $pst = $conn->prepare(self::$BORRAR_COMPRA);
+    $resultado = $pst->execute([$id]);
         
     if ($resultado == 1) {
         $msg = "OK";
