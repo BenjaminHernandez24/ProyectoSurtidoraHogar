@@ -743,5 +743,19 @@ function limpiarCampos(mensaje) {
         $("#tblDetalleVenta").DataTable().clear().draw();
         $("#tblDetalleVenta").DataTable().destroy();
         $('#tblDetalleVenta').DataTable().draw();
+
+        /* VARIABLES PARA LA PARTE DE CLIENTE */
+        idCliente = "";
+        tipo_cliente = "";
+        datosClientes = "";
+        tablaClientes = "";
+
+        /* VARIABLES PARA VENTAS */
+        id_inventario = "";
+        tablaDatosVentas = "";
+        stock_inicial = "";
+        stock_editar = "";
+        cantidad_editar = "";
+        fila_editar = "";
     }
 }
