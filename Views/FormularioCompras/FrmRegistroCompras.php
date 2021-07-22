@@ -24,7 +24,7 @@
                         <label for="producto">Producto</label>
                         <div class="input-group mb-3">
                            <span class="input-group-text" id="addon-wrapping"><i class="fas fa-blender"></i></span>
-                             <select class="form-control" name="producto_registro" id="producto_registro" onchange="showSelected();">
+                             <select class="form-control" name="producto_registro" id="producto_registro">
                               <option value="default">Selecciona un producto</option>
                             </select>
                         </div>

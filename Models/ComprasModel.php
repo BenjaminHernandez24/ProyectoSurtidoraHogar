@@ -17,6 +17,7 @@ private static $ACTUALIZAR_STOCK_INSERTAR_ENTRADA_COMPRA = "UPDATE inventario se
 private static $ACTUALIZAR_STOCK_ACTUALIZAR_ENTRADA_COMPRA = "UPDATE inventario set stock=(stock+?) WHERE id_inventario=?; UPDATE entrada_compra SET id_prov=?, id_inventario=?, num_piezas=?, precio_unitario=?, subtotal=?, fecha=CURDATE(), hora=CURTIME() WHERE id_entrada_compra=?";
 private static $UPDATE1_STOCK="UPDATE inventario set stock=(stock-?) WHERE id_inventario=?";
 private static $SELECT_ID_INVENTARIO_PRODUCTO = "SELECT id_inventario FROM inventario WHERE id_producto= ? ";
+private static $SELECT_ID_PRODUCTO = "SELECT id_producto FROM productos WHERE nombre_producto=?";
 //------------ Función para Eliminar una Compra-----------//
 private static $BORRAR_COMPRA_ACTUALIZAR_STOCK ="DELETE FROM entrada_compra WHERE id_entrada_compra = ?;UPDATE inventario set stock=(stock-?) WHERE id_inventario=?";
 private static $SELECT_ID_INVENTARIO_AND_NUM_PIEZAS ="SELECT id_inventario, num_piezas FROM  entrada_compra WHERE id_entrada_compra=?";
@@ -141,13 +142,19 @@ public static function editar_compras($Compras_editar)
         
         $conexion = new Conexion();
         $conn = $conexion->getConexion();
+        //Se abre la transacción.
+        $conn->beginTransaction();
          
-        //-------- Se verifica si existe el producto seleccionado con un ID de inventario-------//
-        $pst = $conn->prepare(self::$SELECT_ID_INVENTARIO_PRODUCTO);
+        $pst = $conn->prepare(self::$SELECT_ID_PRODUCTO);
         $pst->execute([$Compras_editar ['id_producto']]);
         $res = $pst->fetch();
-        if (!empty($res)) {
+        $res_id_producto = $res ['id_producto'];
 
+        //-------- Se verifica si existe el producto seleccionado con un ID de inventario-------//
+        $pst = $conn->prepare(self::$SELECT_ID_INVENTARIO_PRODUCTO);
+        $pst->execute([$res_id_producto]);
+        $res = $pst->fetch();
+        
          // ---------- Consultamos las piezas que se había registrado ------------//
          $pst = $conn->prepare(self::$SELECT_NUM_PIEZAS);
          $pst->execute([$Compras_editar['id_entrada_compra']]);
@@ -163,13 +170,21 @@ public static function editar_compras($Compras_editar)
      
        //--------Actualizamos el stock en inventario de la compra e insertamos los datos de Compra que se editó -------//
        $pst = $conn->prepare(self::$ACTUALIZAR_STOCK_ACTUALIZAR_ENTRADA_COMPRA );
-        $pst->execute([$Compras_editar['num_piezas'],$res['id_inventario'],$Compras_editar['id_prov'],$res['id_inventario'],$Compras_editar['num_piezas'],$Compras_editar['precio_unitario'],$subt, $Compras_editar['id_entrada_compra']]);
+       $resultado = $pst->execute([$Compras_editar['num_piezas'],$res['id_inventario'],$Compras_editar['id_prov'],$res['id_inventario'],$Compras_editar['num_piezas'],$Compras_editar['precio_unitario'],$subt, $Compras_editar['id_entrada_compra']]);
 
-      
-        $conn = null;
-        $conexion->closeConexion();
-        return $msg="OK";
-       }
+        if ($resultado == 1) {
+            $msg = "OK";
+            //Si todo está correcto se inserta.
+            $conn->commit();
+        } else {
+            $msg = "Falló al eliminar";
+            //Si algo falla, reestablece la bd a como estaba en un inicio.
+            $conn->rollBack();
+        }
+    
+         $conn = null;
+         $conexion->closeConexion();
+         return $msg;  
     } catch (PDOException $e) {
         return $e->getMessage();
     }
