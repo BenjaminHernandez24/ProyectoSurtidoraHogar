@@ -13,16 +13,17 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-body">
-                        <table id="tblVentaDia" class="table table-light">
+                        <table id="tblImpresion" class="table table-light">
                             <thead class="thead-light">
                                 <tr class="table table-dark">
+                                    <th>ID Venta</th>
                                     <th>Cliente</th>
                                     <th>Método Pago</th>
                                     <th>total</th>
                                     <th>Hora</th>
                                     <th>Ticket</th>
                                     <th>Factura</th>
-                                    <th>Ambos</th>
+                                    <th>Ticket/Factura</th>
                                 </tr>
                             </thead>
                         </table>

@@ -237,7 +237,7 @@ if (!isset($_SESSION['user'])) {
 
                         
                         <li class="nav-item has-treeview">
-                            <a href="" id="boton_factura" class="nav-link">
+                            <a type="button" id="boton_factura" class="nav-link">
                                 <i class="nav-icon fas fa-clipboard-list" style="color:white"></i>
                                 <p style="color:white; font-size: 25px;">
                                     Ticket/Factura
@@ -246,7 +246,7 @@ if (!isset($_SESSION['user'])) {
                         </li>
                         <?php } else if ($_SESSION['user'] == "Empleado") { ?>
                             <li class="nav-item has-treeview">
-                            <a href="" id="boton_factura" class="nav-link">
+                            <a type="button" id="boton_factura" class="nav-link">
                                 <i class="nav-icon fas fa-clipboard-list" style="color:white"></i>
                                 <p style="color:white; font-size: 25px;">
                                     Ticket/Factura

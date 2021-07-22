@@ -3,7 +3,7 @@ require_once "Conexion.php";
 
 class EstadisticaModelo
 {
-    private static $VENTAS = "SELECT cliente,metodo_pago,total,hora FROM detalle_salida_venta WHERE fecha = (SELECT CURRENT_DATE);";
+    private static $VENTAS = "SELECT id_detalle_salida_venta,cliente,metodo_pago,total,hora FROM detalle_salida_venta WHERE fecha = (SELECT CURRENT_DATE);";
 
     /* ===========================
         FUNCION PARA OBTENER TODO LOS CLIENTES
@@ -28,7 +28,7 @@ class EstadisticaModelo
         }
     }
 
-    public function ObtenerFechaBD()
+    public static function ObtenerFechaBD()
     {
         try {
             $conexion = new Conexion();
