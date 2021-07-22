@@ -9,7 +9,7 @@ class reportesGraficasModel
     INNER JOIN productos p ON p.id_producto = i.id_producto
     AND MONTH(dsv.fecha)= (SELECT MONTH(CURRENT_DATE))
     AND YEAR(dsv.fecha) = (SELECT YEAR(CURRENT_DATE)) GROUP BY(sv.id_inventario)
-    ORDER BY (SUM(sv.num_piezas)) DESC LIMIT 5";
+    ORDER BY (SUM(sv.num_piezas)) DESC LIMIT 8";
 
     private static $obtenerTodosProductos = "SELECT p.nombre_producto FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto";
 

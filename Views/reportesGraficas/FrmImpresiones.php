@@ -16,10 +16,10 @@
                             <div class="col-sm-12">
                                 <label style = "font-size: 115%;">Seleccione una opción:</label><br>
                                 <select id="seleccionImpresion" style = "font-size: 110%;">
-                                 <option value="1">Tickets</option>
-                                 <option value="2">Facturas</option>
-                                 <option value="3">Ambos</option>
-                                 <option value="4">Ninguno</option>
+                                 <option value="Ticket">Tickets</option>
+                                 <option value="Factura">Facturas</option>
+                                 <option value="Ambos">Ambos</option>
+                                 <option value="Ninguno">Ninguno</option>
                                 </select>
                             </div>
                             <div class="col-sm-5">

@@ -1,52 +1,72 @@
 <!--Graficas-->
  <link href="dist/css/styles.css">
  
-<div class="col-xl-6">
+<div class="col-xl-12">
     <div class="card mb-4">
         <div class="card-header">
             <font style="font-size: 140%">
             <i class="fas fa-chart-area me-1">
             </i>
-            Top 5 Productos Mas Vendidos.
+            Top 8 Productos Mas Vendidos.
         </font>
+            <button class="col-md-2 float-right btn btn-primary" type="button" id="precioBarato"><font size="4">Precio más barato</font></button>
         </div>
-        <canvas class="linear" height="92" id="top5Productos" width="100%">
+        <div class="card-body">
+        <canvas class="linear" height="45" id="top5Productos" width="100%">
         </canvas>
     </div>
-</div>
-<div class="col-xl-6">
-    <div class="card" style="height: 96%;">
-        <div class="card-header text-center">
-            <font style="font-size: 140%">
-            <i class="nav-icon fas fa-file-invoice-dollar"></i> ¿Quién me vendió mas barato el producto?
-        </font>
     </div>
-    <div class="card-body">
-        <label><font size=5% FACE="roman">Buscar Producto</font></label>
-        <div class="input-group mb-3">
-            <input id="buscar" name="buscar" type="text" class="form-control" placeholder="Nombre del Producto" aria-label="Recipient's username" aria-describedby="button-addon2">
-        </div>
-        
-                    <br>
-                <!-- TABLA CLIENTES -->
-                <table id="tblReportesGraficasProductos" class="table table-light text-center">
-                    <thead class="thead-light" >
-                       <tr class="table table-dark">
-                        <th >Proveedor</th>
-                        <th >Producto</th>
-                        <th >Precio</th>
-                        <th >Fecha</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody">
-                        
-                    </tbody>
-                </table>
-        </div>
-    </div>
-</div>
 </div>
 
+<!-- Modal Reporte 1 -->
+<div id="modalFrmBarato" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="nav-icon fas fa-file-invoice-dollar" style="color:#F29F05; font-size: 24px;"> ¿Quién me vendió más barato el producto?</i>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" >&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="container">
+                <div class="row">
+                        <div class="col-sm-12">
+                            <label style = "font-size: 110%;">Buscar Producto:</label>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="input-group mb-3">
+                               <input id="buscar" name="buscar" type="text" class="form-control" placeholder="Nombre del Producto" aria-label="Recipient's username" aria-describedby="button-addon2">
+                               <style> .ui-autocomplete { position: absolute; z-index: 2150000000 !important; cursor: default; border: 2px solid #ccc; padding: 5px 0; border-radius: 2px; } </style>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                        <br>
+                            <table id="tblReportesGraficasProductos" class="table table-light text-center">
+                                <thead class="thead-light" >
+                                   <tr class="table table-dark">
+                                    <th >Proveedor</th>
+                                    <th >Producto</th>
+                                    <th >Precio</th>
+                                    <th >Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="closeEdit" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal Reporte 1 -->
 <?php include("FrmReporteComprasGeneral.php"); ?>
 
