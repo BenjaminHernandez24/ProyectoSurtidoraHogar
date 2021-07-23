@@ -118,20 +118,23 @@ $ctr = new EstadisticasControlador();
                             </div>
                         </div>
                         <?php } ?>
+                       
                     </div>
+                    
                 </div>
             </section>
+           
 
             <?php include('FormulariosPrincipal/TablaVentasDia.php'); ?>
 
                 <?php include('FormulariosPrincipal/FormatoGraficas.php'); ?>
         </div>
-
         <!-- footer -->
         <?php include('Include/footer.php'); ?>
+      
     </div>
     <!-- ./wrapper -->
-
+    
     <?php include('Include/scripts.php'); ?>
     <script src="dist/js/pages/Estadistica.js"></script>
 </body>

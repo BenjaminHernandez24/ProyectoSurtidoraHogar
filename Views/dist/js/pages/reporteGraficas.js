@@ -94,7 +94,7 @@ function reporteComprasGeneral(datos,fechas,imagen){
   pdf = new jsPDF();
   pdf.setFontSize(18);
   pdf.text(7,12,"Reporte De Compras General");
-  propiedadImagen(imagen);
+  propiedadImagen(113,imagen);
 
   $.ajax({
     url:"../Controllers/reportesGraficasController.php",
@@ -103,17 +103,24 @@ function reporteComprasGeneral(datos,fechas,imagen){
     dataType:"json",
     success:function(data)
     { 
+      var contadorSumaDia = 0;
       if(data.length != 0){ //¿Está vacío?
         if(fechas.length == 2){ //¿Es de rango o unico?
-          pdf.setFontSize(12);
+          pdf.setDrawColor(0);
+          pdf.setFillColor(253, 253, 150);
+          pdf.rect(5, 15.4, 108, 33,'F'); //
+          pdf.setFontSize(13);
+          pdf.setFontType("bold");
           pdf.text(7,22,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
-          pdf.setFontSize(12);
           pdf.text(7,30,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
           sumaTotalPagina(data,38);
         }else{
-          pdf.setFontSize(12);
+          pdf.setDrawColor(0);
+          pdf.setFillColor(253, 253, 150);
+          pdf.rect(5, 15.4, 108, 25.2,'F'); //
+          pdf.setFontSize(13);
+          pdf.setFontType("bold");
           pdf.text(7,22,"Fecha: " + fechas + "."); //Fecha seleccionada.
-          pdf.setFontSize(12);
           sumaTotalPagina(data,30);
         }
 
@@ -126,21 +133,33 @@ function reporteComprasGeneral(datos,fechas,imagen){
             if(fecha === data[j]["fecha"]){
               contador++;
               lista.push([data[j]["proveedor"],data[j]["producto"],data[j]["piezas"],"$ " + data[j]["precio_unitario"],"$ " + data[j]["subtotal"],data[j]["fecha"],data[j]["hora"]]);
+              contadorSumaDia += parseFloat(data[j]["subtotal"]);
             }
           }
 
           cabeceraFecha(data[i]["fecha"]);
           columns = ["Proveedor", "Producto", "Piezas", "Precio C/U", "Subtotal", "Fecha", "Hora"];
-          guardarDatoDeFila(columns, lista);
+          lista.push(["","","","","","Compras","$"+contadorSumaDia.toFixed(2)]);
+          let drawCell = function(data) {
+              var doc = data.doc;
+              var rows = data.table.body;
+              if (rows.length === 1) {
+              } else if (data.row.index === rows.length - 1) {
+                doc.setFontStyle("bold");
+                doc.setFontSize("11.3");
+                doc.setFillColor(253, 253, 150);
+              }
+            };
+          guardarDatoDeFila(columns, lista, drawCell);
           
           i = i + (contador-1);
           contador = 0;
+          contadorSumaDia = 0;
         }
         pieDePagina();
         pdf.save('ReporteComprasGeneral.pdf');
         reporteCreado("Reporte Generado Con Éxito");
         $('#modalFrmReportesComprasGenerales').modal('hide');
-        limpiarVariables();
       }else{
           notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna compra');
       }
@@ -152,7 +171,7 @@ function reporteComprasEspecifico(datos,fechas,imagen){
   pdf = new jsPDF();
   pdf.setFontSize(18);
   pdf.text(7,12,"Reporte De Compras Específico");
-  propiedadImagen(imagen);
+  propiedadImagen(115,imagen);
 
   $.ajax({
     url:"../Controllers/reportesGraficasController.php",
@@ -161,22 +180,31 @@ function reporteComprasEspecifico(datos,fechas,imagen){
     dataType:"json",
     success:function(data)
     {
+      var contadorSumaDia = 0;
+      pdf.setFontSize(13);
+      pdf.setFontType("bold");
       if(data.length != 0){ //¿Está vacío?
         if(fechas.length > 2){ //¿Es de rango o unico?
-            pdf.setFontSize(12);
-            pdf.text(7,22,"Nombre del proveedor: " + fechas[2]); //Fecha seleccionada
-            pdf.setFontSize(12);
-            pdf.text(7,30,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
-            pdf.text(7,38,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
-            sumaTotalPagina(data,46);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, 110, 48,'F'); //
+            pdf.setFontSize(13);
+            pdf.setFontType("bold");
+            pdf.text(7,22,"Nombre del proveedor: "); //Fecha seleccionada
+            pdf.text(10,29,fechas[2]+".");
+            pdf.text(7,36,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
+            pdf.text(7,43,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
+            sumaTotalPagina(data,50);
           }else{
-            pdf.setFontSize(12);
-            pdf.text(7,22,"Nombre del proveedor: " + fechas[1]); //Fecha seleccionada
-            pdf.setFontSize(12);
-            pdf.text(7,30,"Fecha: " + fechas[0] + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
-            sumaTotalPagina(data,38);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, 110, 41,'F'); //
+            pdf.setFontSize(13);
+          pdf.setFontType("bold");
+            pdf.text(7,22,"Nombre del proveedor: "); //Fecha seleccionada
+            pdf.text(10,30,fechas[1]+".");
+            pdf.text(7,38,"Fecha: " + fechas[0] + "."); //Fecha seleccionada.
+            sumaTotalPagina(data,46);
           }
 
         espacioFilas(5);
@@ -188,12 +216,24 @@ function reporteComprasEspecifico(datos,fechas,imagen){
             if(fecha === data[j]["fecha"]){
               contador++;
               lista.push([data[j]["producto"],data[j]["piezas"],"$ " + data[j]["precio_unitario"],"$ " + data[j]["subtotal"],data[j]["fecha"],data[j]["hora"]]);
+              contadorSumaDia += parseFloat(data[j]["subtotal"]);
             }
           }
 
           cabeceraFecha(data[i]["fecha"]);
           columns = ["Producto", "Piezas", "Precio C/U", "Subtotal", "Fecha", "Hora"];
-          guardarDatoDeFila(columns,lista);
+          let drawCell = function(data) {
+              var doc = data.doc;
+              var rows = data.table.body;
+              if (rows.length === 1) {
+              } else if (data.row.index === rows.length - 1) {
+                doc.setFontStyle("bold");
+                doc.setFontSize("11.3");
+                doc.setFillColor(253, 253, 150);
+            }
+          };
+          lista.push(["","","","","Compras","$"+contadorSumaDia.toFixed(2)]);
+          guardarDatoDeFila(columns,lista,drawCell);
           
           i = i + (contador-1);
           contador = 0;
@@ -218,7 +258,7 @@ function reporteVentas(datos,fechas,imagen){
   pdf = new jsPDF();
   pdf.setFontSize(18);
   pdf.text(7,12,"Reporte De Ventas Totales");
-  propiedadImagen(imagen);
+  propiedadImagen(110,imagen);
 
   $.ajax({
     url:"../Controllers/reportesGraficasController.php",
@@ -227,6 +267,8 @@ function reporteVentas(datos,fechas,imagen){
     dataType:"json",
     success:function(data)
     { 
+      pdf.setFontSize(13);
+      pdf.setFontType("bold");
       if(data.length != 0){ //¿Está vacío?
         var lista = new Array();
         var lista2 = new Array();
@@ -240,15 +282,17 @@ function reporteVentas(datos,fechas,imagen){
         var contadorSumaTotales = 0;
 
         if(fechas.length == 2){ //¿Es de rango o unico?
-            pdf.setFontSize(12);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, 105, 42,'F'); //
             pdf.text(7,22,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
             pdf.text(7,30,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
             sumaTotalPaginaVentas(data,38,contadorCliente,contadorSumaTotales);
         }else{
-            pdf.setFontSize(12);
-            pdf.text(7,22,"Fecha: " + fechas + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, 105, 34,'F');
+            pdf.text(7,22,"Fecha: " + fechas + ".");//Fecha seleccionada.
             sumaTotalPaginaVentas(data,30,contadorCliente,contadorSumaTotales);
         }
 
@@ -316,8 +360,8 @@ function reporteVentas(datos,fechas,imagen){
                 if(n == 0){
                   if(variable.length < 2){
                     lista3.push([variable[n]["cliente"],variable[n]["producto"],variable[n]["piezas"],"$ " + variable[n]["precio"],"$ " + variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"],"$ " + variable[n]["total"]]);
-                    contadorSumaTotales = contadorSumaTotales + parseFloat(variable[n]["total"]);
-                    contadorSumaDia = contadorSumaDia + parseFloat(variable[n]["total"]);
+                    contadorSumaTotales += parseFloat(variable[n]["total"]);
+                    contadorSumaDia += parseFloat(variable[n]["total"]);
                     break;
                   }else{
                     lista3.push([variable[n]["cliente"],variable[n]["producto"],variable[n]["piezas"],"$ " + variable[n]["precio"],"$ " + variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"]]);
@@ -325,8 +369,8 @@ function reporteVentas(datos,fechas,imagen){
                 }else{
                   if(n == variable.length-1){
                     lista3.push(["",variable[n]["producto"],variable[n]["piezas"],"$ " + variable[n]["precio"],"$ " + variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"],"$ " + variable[n]["total"]]);
-                    contadorSumaTotales = contadorSumaTotales + parseFloat(variable[n]["total"]);
-                    contadorSumaDia = contadorSumaDia + parseFloat(variable[n]["total"]);
+                    contadorSumaTotales += parseFloat(variable[n]["total"]);
+                    contadorSumaDia += parseFloat(variable[n]["total"]);
                   }else{
                     lista3.push(["",variable[n]["producto"],variable[n]["piezas"],"$ " + variable[n]["precio"],"$ " + variable[n]["subtotal"],variable[n]["fecha"],variable[n]["hora"]]);
                   }
@@ -336,10 +380,20 @@ function reporteVentas(datos,fechas,imagen){
                 contador2 = 0;
             }
 
-            lista3.push(["","","","","","","Total de ventas","$ " + contadorSumaDia]);
+            lista3.push(["","","","","","","Ventas por día","$ " + contadorSumaDia.toFixed(2)]);
             
             contadorSumaDia = 0;
-            guardarDatoDeFila(columns, lista3);
+            let drawCell = function(data) {
+              var doc = data.doc;
+              var rows = data.table.body;
+              if (rows.length === 1) {
+              } else if (data.row.index === rows.length - 1) {
+                doc.setFontStyle("bold");
+                doc.setFontSize("11.3");
+                doc.setFillColor(253, 253, 150);
+              }
+            };
+            guardarDatoDeFila(columns, lista3,drawCell);
             lista3.splice(0, lista3.length);
             i = i + (contador-1);
             contador = 0;
@@ -361,28 +415,31 @@ function reporteVentas(datos,fechas,imagen){
 function reporteImpresiones(datos,fechas,imagen){
   pdf = new jsPDF();
   pdf.setFontSize(18);
-  pdf.text(7,12,"Reporte De Ventas Totales");
 
-  var tipo = "";
+  var pocision = 0;
   switch(datos["impresion"]){
-    case 1:
+    case "Ticket":
       pdf.text(7,12,"Reporte De Ventas Por Ticket");
-      tipo = " Ticket";
+      tipo = "Tickets";
+      pocision = 115;
     break;
-    case 2:
+    case "Factura":
       pdf.text(7,12,"Reporte De Ventas Por Factura");
-      tipo = " Factura";
+      tipo = "Factura";
+      pocision = 115;
     break;
-    case 3:
+    case "Ambos":
       pdf.text(7,12,"Reporte De Ventas Por Factura Y Ticket");
-      tipo = " Factura Y Ticket";
+      tipo = "FacturaYTicket";
+      pocision = 122;
     break;
-    case 4:
-    pdf.text(7,12,"Reporte De Ventas Sin Ticket o Factura");
-      tipo = " Sin FacturaYTicket";
+    case "Ninguno":
+    pdf.text(7,12,"Reporte De Ventas Sin Ticket ni Factura");
+      tipo = "SinFacturaYTicket";
+      pocision = 122;
     break;
   }
-  propiedadImagen(imagen);
+  propiedadImagen(pocision,imagen);
   $.ajax({
     url:"../Controllers/reportesGraficasController.php",
     method:"POST",
@@ -390,66 +447,71 @@ function reporteImpresiones(datos,fechas,imagen){
     dataType:"json",
     success:function(data)
     { 
+      pdf.setFontSize(13);
+      pdf.setFontType("bold");
       if(data.length != 0){ //¿Está vacío?
         var lista = new Array();
-        var lista2 = new Array();
-        var lista3 = new Array();
-        var cliente = "";
-        var nueva_lista = [];
-        let variable = [];
-        var contador2 = 0;
-        var contadorCliente= 0;
         var contadorSumaDia = 0;
         var contadorSumaTotales = 0;
 
         if(fechas.length == 2){ //¿Es de rango o unico?
-            pdf.setFontSize(12);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, pocision-5, 33,'F'); //
+            pdf.setFontSize(13);
+            pdf.setFontType("bold");
             pdf.text(7,22,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
             pdf.text(7,30,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
-            sumaTotalPaginaVentas(data,38,contadorCliente,contadorSumaTotales);
+            sumaTotalPaginaImpresion(data,38);
         }else{
-            pdf.setFontSize(12);
+            pdf.setDrawColor(0);
+            pdf.setFillColor(253, 253, 150);
+            pdf.rect(5, 15.4, pocision-5, 25.2,'F'); //
+            pdf.setFontSize(13);
+            pdf.setFontType("bold");
             pdf.text(7,22,"Fecha: " + fechas + "."); //Fecha seleccionada.
-            pdf.setFontSize(12);
-            sumaTotalPaginaVentas(data,30,contadorCliente,contadorSumaTotales);
+            sumaTotalPaginaImpresion(data,30);
         }
 
           espacioFilas(5);
+          var lista = new Array();
           for(var i = 0; i < data.length; i++){
-            lista.splice(0, data.length);
-            contadorSumaDia = 0;
+            lista.splice(0,lista.length);
             fecha = data[i]["fecha"];
-
-            cabeceraFecha(data[i]["fecha"]);
-            columns = ["Cliente", "Fecha", "Hora", "Total"];
-            
-            //Separamos Ventas Por Dìas...
             for(var j = i; j < data.length; j++){
               if(fecha === data[j]["fecha"]){
-                lista[j] = { 
-                  "cliente": data[j]["cliente"],
-                  "fecha": data[j]["fecha"],
-                  "hora": data[j]["hora"],
-                  "total": data[j]["total"]
-                };
                 contador++;
+                lista.push([data[j]["cliente"],data[j]["fecha"],data[j]["hora"],"$ " + data[j]["total"]]);
+                contadorSumaDia += parseFloat(data[j]["total"]);
               }
             }
 
-            for(var n = 0; n < lista.length; n++){
-              lista2.push([lista[n]["cliente"],lista[n]["fecha"],lista[n]["hora"],lista[n]["total"]]);
-              contadorSumaDia += lista[n]["total"];
-            }
-
-            lista2.push("","","Total Venta Día: ",contadorSumaDia);
+            cabeceraFecha(data[i]["fecha"]);
+            columns = ["Cliente","Fecha", "Hora","Total"];
+            lista.push(["","","Ventas por día","$"+contadorSumaDia.toFixed(2)]);
+            contadorSumaTotales += contadorSumaDia;
             contadorSumaDia = 0;
-            guardarDatoDeFila(columns, lista);
+
+            let drawCell = function(data) {
+              var doc = data.doc;
+              var rows = data.table.body;
+              if (rows.length === 1) {
+              } else if (data.row.index === rows.length - 1) {
+                doc.setFontStyle("bold");
+                doc.setFontSize("11.3");
+                doc.setFillColor(253, 253, 150);
+              }
+            };
+            guardarDatoDeFilaImpresion(columns, lista,drawCell);
+            
             i = i + (contador-1);
             contador = 0;
           }
           pieDePagina();
-          pdf.save('ReporteVentasTotales.pdf');
+          pdf.save('Reporte'+tipo+".pdf");
+          reporteCreado("Reporte Generado Con Éxito");
+          $('#modalFrmReportesImpresiones').modal('hide');
+          limpiarVariables();
         }else{
         notificacionNoEncontrado('No se pudo generar el reporte, porque no hubo alguna venta');
         }
@@ -467,10 +529,10 @@ function getBase64Image(img) {
   return dataURL;
 }
 
-function propiedadImagen(imagen){
+function propiedadImagen(longitud,imagen){
   //Definimos Linea Horizontal debajo
   pdf.setLineWidth(0.6);
-  pdf.line(5, 15, 113, 15);
+  pdf.line(5, 15, longitud, 15);
 
   //Imagen La Surtidora Del Hogar
   var base64 = getBase64Image(imagen);
@@ -520,31 +582,49 @@ function espacioFilas(numero){
   }
 }
 
-function guardarDatoDeFila(columns,lista){
+function guardarDatoDeFila(columns,lista,drawCell){
   pdf.autoTable(columns,lista,
   {
-    margin:{ top: 25 },
+    rowPageBreak: 'avoid',
     styles: {cellWidth: '100', fontSize: 11.3, cellPadding: 1},
     headStyles: {fontSize: 11.3, valign: 'middle',halign: 'center',fillColor : [ 255 ,  127 ,  0] },
     bodyStyles: {minCellHeight: 10.2, fontSize: 11.3, valign: 'middle', halign: 'center',textColor : [ 0 ,  0 ,  0]},
-    margin: {horizontal: 12, top:10, bottom:20},
+    margin: {horizontal: 12, top:10, bottom:25},
     columnStyles: { 
       0: { halign: 'center',cellWidth:32} ,
       1: { halign: 'center',cellWidth:32},
     },
+    willDrawCell: drawCell,
   });
 }
+
+function guardarDatoDeFilaImpresion(columns,lista,drawCell){
+  pdf.autoTable(columns,lista,
+  {
+    margin:{ top: 20 },
+    styles: {cellWidth: '100', fontSize: 11.3, cellPadding: 1},
+    headStyles: {fontSize: 11.3, valign: 'middle',halign: 'center',fillColor : [ 255 ,  127 ,  0] },
+    bodyStyles: {minCellHeight: 10.2, fontSize: 11.3, valign: 'middle', halign: 'center',textColor : [ 0 ,  0 ,  0]},
+    margin: {horizontal: 12, top:8, bottom:22},
+    columnStyles: { 
+      0: { halign: 'center',cellWidth:75} ,
+      1: { halign: 'center',cellWidth:30},
+      2: { halign: 'center',cellWidth:35} ,
+      3: { halign: 'center',cellWidth:45},
+    },
+    willDrawCell: drawCell,
+  });
+}
+
 
 function sumaTotalPagina(data,pocision){
   var sumaTotal = 0;
   for(var i = 0; i < data.length; i++){
     sumaTotal = sumaTotal + parseFloat(data[i]["subtotal"]);
   }
-
-  pdf.setFontSize(12.2);
   pdf.text(7,pocision,"Productos comprados: " + data.length + ".");
   pocision = pocision + 8;
-  pdf.text(7,pocision,"Total de gastos: $" + sumaTotal + " pesos.");
+  pdf.text(7,pocision,"Total de gastos: $" + sumaTotal.toFixed(2) + " pesos.");
   pocision = 0;
 }
 
@@ -628,13 +708,27 @@ function sumaTotalPaginaVentas(data,pocision,clientes,total){
     productosVendidos = productosVendidos + parseFloat(data[i]["piezas"]);
   }
 
-  pdf.setFontSize(12.2);
+  pdf.setFontSize(13);
+  pdf.setFontType("bold");
   pdf.text(7,pocision,"Numero de Ventas: " + contadorCliente + ".");
   pocision = pocision + 8;
-  pdf.setFontSize(12.2);
   pdf.text(7,pocision,"Productos vendidos: " + productosVendidos + ".");
   pocision = pocision + 8;
-  pdf.text(7,pocision,"Total de ventas: $" + contadorSumaTotales + " pesos.");
+  pdf.text(7,pocision,"Total de ventas: $" + contadorSumaTotales.toFixed(2) + " pesos.");
+  pocision = 0;
+}
+
+function sumaTotalPaginaImpresion(data,pocision){
+  var sumaTotal = 0;
+  for(var i = 0; i < data.length; i++){
+    sumaTotal = sumaTotal + parseFloat(data[i]["total"]);
+  }
+
+  pdf.setFontSize(13);
+  pdf.setFontType("bold");
+  pdf.text(7,pocision,"Numero de Ventas: " + data.length + ".");
+  pocision = pocision + 8;
+  pdf.text(7,pocision,"Total de Ventas: $" + sumaTotal.toFixed(2) + " pesos.");
   pocision = 0;
 }
 
@@ -658,6 +752,14 @@ function pieDePagina(){
  /*======================================
                 REPORTE 1
    ======================================*/
+$("#precioBarato").click(function(){
+  $("#tblReportesGraficasProductos").DataTable().clear().draw();
+  $("#tblReportesGraficasProductos").DataTable().destroy();
+  document.getElementById("buscar").value = "";
+  $('#modalFrmBarato').modal('show');
+
+});
+
 $(document).ready(async function() {
     try {
         var productos = new FormData();
@@ -925,6 +1027,7 @@ $("#Generar_Ventas").click(function(){
 $("#reporteGeneralImpresion").click(function(){
   limpiarVariables();
   $('#modalFrmReportesImpresiones').modal('show');
+  document.querySelector("#seleccionImpresion").value = "Ticket";
   document.getElementById("img4").style.display = 'none';
   document.getElementById("fecha_unica_Imp").style.display='block';
   document.getElementById("fechas_Imp").style.display = 'none';
