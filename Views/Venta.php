@@ -14,7 +14,7 @@ if (!isset($_SESSION['user'])) {
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
-    <div class="wrapper">
+    <div class="wrapper" style="width:1349px;">
         <?php include("include/navegacion.php"); ?>
 
         <!--Estructura modelo venta -->

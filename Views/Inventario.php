@@ -20,7 +20,7 @@ if (
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
-    <div class="wrapper">
+    <div class="wrapper" style="width:1349px;">
 
         <?php include("include/navegacion.php"); ?>
         <!--------------- TABLA  MARCA DE PRODUCTO------------------->
