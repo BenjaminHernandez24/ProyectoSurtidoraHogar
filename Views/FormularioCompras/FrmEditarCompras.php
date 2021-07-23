@@ -40,7 +40,7 @@
                                 <label for="precio_unit">Precio Unitario</label>
                                 <div class="input-group mb-3">   
                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-money-check-alt"></i></i></span>
-                                <input class="form-control"  autocomplete="off" type="number" id="precio_unit_editar" name="precio_unit_editar" placeholder="Introduzca el precio" required>
+                                <input class="form-control"  autocomplete="off" type="number" step="any" id="precio_unit_editar" name="precio_unit_editar" placeholder="Introduzca el precio" required>
                             </div>
                         </div>
                          <!---------------------- FOOTER ----------------------->

@@ -24,8 +24,7 @@ if (isset($_POST['obtener_proveedor'])) {
 //---------- Agregar Producto en Inventario -------//
 if (isset($_POST['agregar_compra'])) {
     if ( 
-          preg_match('/^[0-9]+$/', $_POST['piezas']) &&
-          preg_match('/^[0-9]+$/', $_POST['precio_unit']) 
+          preg_match('/^[0-9]+$/', $_POST['piezas']) 
          
        ) {
     $Compra = array(
@@ -45,8 +44,7 @@ if (isset($_POST['agregar_compra'])) {
 //---------- Editar Compra -------//
 if (isset($_POST['editar_compra'])) {
     if ( 
-        preg_match('/^[0-9]+$/', $_POST['piezas_editar']) &&
-        preg_match('/^[0-9]+$/', $_POST['precio_unit_editar']) 
+        preg_match('/^[0-9]+$/', $_POST['piezas_editar']) 
        ) {
     $Compra_editar = array(
         "id_entrada_compra" => $_POST['id_entrada_compra'],

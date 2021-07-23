@@ -212,7 +212,7 @@ $(document).on('click', ".btnBorrar", async function() {
     id_producto = data[0];
     const result = await Swal.fire({
         title: '¿ESTÁ SEGURO(A) DE ELIMINAR ESTE PRODUCTO?',
-        text: "¡La eliminación es permanente!",
+        text: "¡Se eliminará en: Ventas, Compras e Inventario!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#5bc0de',
@@ -248,6 +248,27 @@ $(document).on('click', ".btnBorrar", async function() {
 
 })
 //---------- Fin Borrar un Producto ---------//
+
+//---------- Validar números negativos-registro---------//
+document.getElementById('precio_pub').addEventListener('keyup', () => {
+    if (!document.getElementById('precio_pub').value == "") {
+        let precio = parseFloat(document.getElementById('precio_pub').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+//---------- Validar números negativos-editar---------//
+document.getElementById('precio_pub_editar').addEventListener('keyup', () => {
+    if (!document.getElementById('precio_pub_editar').value == "") {
+        let precio = parseFloat(document.getElementById('precio_pub_editar').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+// ------- Mensajes de Alert -------//
+
 function notificarError(mensaje) {
     Swal.fire({
         icon: 'error',
@@ -255,7 +276,15 @@ function notificarError(mensaje) {
         text: mensaje
     })
 }
-// ------- Mensajes de Alert -------//
+function Error(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 3000
+    })
+}
 
 function notificacionExitosa(mensaje) {
     Swal.fire(

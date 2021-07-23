@@ -244,6 +244,62 @@ $(document).on('click', '.btnVerStatus', async function(){
      
 });  
 //---------- Fin Borrar un Producto de Inventario ---------//
+
+//---------- Validar números negativos-estatus aceptable en Registro---------//
+document.getElementById('estatus_acept').addEventListener('keyup', () => {
+    if (!document.getElementById('estatus_acept').value == "") {
+        let precio = parseFloat(document.getElementById('estatus_acept').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+//---------- Validar números negativos-estatus alerta en Registro---------//
+document.getElementById('estatus_alert').addEventListener('keyup', () => {
+    if (!document.getElementById('estatus_alert').value == "") {
+        let precio = parseFloat(document.getElementById('estatus_alert').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+//---------- Validar números negativos-stock en Registro---------//
+document.getElementById('stock').addEventListener('keyup', () => {
+    if (!document.getElementById('stock').value == "") {
+        let precio = parseFloat(document.getElementById('stock').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+//---------- Validar números negativos-estatus aceptable en Editar---------//
+document.getElementById('estatus_acept_editar').addEventListener('keyup', () => {
+    if (!document.getElementById('estatus_acept_editar').value == "") {
+        let precio = parseFloat(document.getElementById('estatus_acept_editar').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+//---------- Validar números negativos-estatus alerta en Editar---------//
+document.getElementById('estatus_alert_editar').addEventListener('keyup', () => {
+    if (!document.getElementById('estatus_alert_editar').value == "") {
+        let precio = parseFloat(document.getElementById('estatus_alert_editar').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+//---------- Validar números negativos-stock en Editar---------//
+document.getElementById('stock_editar').addEventListener('keyup', () => {
+    if (!document.getElementById('stock_editar').value == "") {
+        let precio = parseFloat(document.getElementById('stock_editar').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+
 function notificarError(mensaje) {
     Swal.fire({
         icon: 'error',
@@ -252,7 +308,15 @@ function notificarError(mensaje) {
     })
 }
 // ------- Mensajes de Alert -------//
-
+function Error(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 3000
+    })
+}
 function notificacionExitosa(mensaje) {
     Swal.fire(
         mensaje,

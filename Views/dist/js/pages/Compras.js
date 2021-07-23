@@ -242,7 +242,52 @@ $(document).on('click', ".btnBorrar", async function() {
     }
 
 })
-//------ NOTIFICACIONES -----------//
+//---------- Validar números negativos-num_piezas en Registro---------//
+document.getElementById('piezas').addEventListener('keyup', () => {
+    if (!document.getElementById('piezas').value == "") {
+        let precio = parseFloat(document.getElementById('piezas').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+//---------- Validar números negativos-precio_unitario en Registro ----------//
+document.getElementById('precio_unit').addEventListener('keyup', () => {
+    if (!document.getElementById('precio_unit').value == "") {
+        let precio = parseFloat(document.getElementById('precio_unit').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+//---------- Validar números negativos-num_piezas en Editar---------//
+document.getElementById('piezas_editar').addEventListener('keyup', () => {
+    if (!document.getElementById('piezas_editar').value == "") {
+        let precio = parseFloat(document.getElementById('piezas_editar').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+//---------- Validar números negativos-precio_unitario en Editar ----------//
+document.getElementById('precio_unit_editar').addEventListener('keyup', () => {
+    if (!document.getElementById('precio_unit_editar').value == "") {
+        let precio = parseFloat(document.getElementById('precio_unit_editar').value);
+        if (precio <= 0) {
+            Error("No Puede Ingresar Números Negativos o Cero");
+        }
+    }
+})
+// ------- Mensajes de Alert -------//
+function Error(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 3000
+    })
+}
 function notificarError(mensaje) {
     Swal.fire({
         icon: 'error',

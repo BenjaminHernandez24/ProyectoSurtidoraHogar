@@ -24,21 +24,21 @@
                                 <label for="estatus_acept">Estatus Aceptable</label>
                                 <div class="input-group mb-3">
                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-sort-amount-up"></i></span>
-                                <input class="form-control"  autocomplete="off" type="number" name="estatus_acept" placeholder="Introduzca Estatus Aceptable" required>
+                                <input class="form-control"  autocomplete="off"  id="estatus_acept" type="number" name="estatus_acept" placeholder="Introduzca Estatus Aceptable" required>
                             </div>
                         </div>
                         <div class="modal-body">
                                 <label for="estatus_alert">Estatus Alerta</label>
                                 <div class="input-group mb-3">   
                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-sort-amount-down"></i></i></span>
-                                <input class="form-control"  autocomplete="off" type="number" name="estatus_alert" placeholder="Introduzca Estatus Alerta" required>
+                                <input class="form-control"  autocomplete="off" type="number" id="estatus_alert" name="estatus_alert" placeholder="Introduzca Estatus Alerta" required>
                             </div>
                         </div>
                         <div class="modal-body">
                                 <label for="stock">Stock</label>
                                 <div class="input-group mb-3">   
                                 <span class="input-group-text" id="addon-wrapping"><i class="nav-icon fas fa-boxes"></i></i></span>
-                                <input class="form-control"  autocomplete="off" type="number" name="stock" placeholder="Introduzca la cantidad de producto" required>
+                                <input class="form-control"  autocomplete="off" type="number" id="stock" name="stock" placeholder="Introduzca la cantidad de producto" required>
                             </div>
                         </div>
                     <!------------------------ FOOTER ------------------------->

@@ -33,14 +33,14 @@
                                 <label for="piezas">Número de piezas</label>
                                 <div class="input-group mb-3">
                                 <span class="input-group-text" id="addon-wrapping"><i class="nav-icon fas fa-boxes"></i></span>
-                                <input class="form-control"  autocomplete="off" type="number" name="piezas" placeholder="Introduzca la cantidad" required>
+                                <input class="form-control"  autocomplete="off" type="number" id="piezas" name="piezas" placeholder="Introduzca la cantidad" required>
                             </div>
                         </div>
                         <div class="modal-body">
                                 <label for="precio_unit">Precio Unitario</label>
                                 <div class="input-group mb-3">   
                                 <span class="input-group-text" id="addon-wrapping"><i class="fas fa-money-check-alt"></i></i></span>
-                                <input class="form-control"  autocomplete="off" type="number" name="precio_unit" placeholder="Introduzca el precio" required>
+                                <input class="form-control"  autocomplete="off" type="number" step="any" id="precio_unit" name="precio_unit" placeholder="Introduzca el precio" required>
                             </div>
                         </div>
                     <!------------------------ FOOTER ------------------------->

@@ -3,9 +3,7 @@ require_once "../Models/ProductosModel.php";
 
 //---------- Agregar Producto -------//
 if (isset($_POST['agregar_producto'])) {
-    if ( 
-          preg_match('/^[0-9]+$/', $_POST['precio_pub'])
-       ) {
+    
     $Producto = array(
     
         "nombre_producto" => $_POST['nom_producto'], //Variables de input (name) //
@@ -15,15 +13,11 @@ if (isset($_POST['agregar_producto'])) {
     );
     $respuesta = ProductoModelo::agregar_productos($Producto);
     echo json_encode(['respuesta' => $respuesta]);
-   } else {
-    echo json_encode(['respuesta' => 'Error de escritura en los campos.']);
-   }
+   
 }
 //---------- Editar Producto -------//
 if (isset($_POST['editar_producto'])) {
-    if ( 
-          preg_match('/^[0-9]+$/', $_POST['precio_pub_editar'])
-       ) {
+    
     $producto_editar = array(
         "id_producto" => $_POST['id_producto'],
         "nombre_producto" => $_POST['nom_producto_editar'], //Variables de input (name) //
@@ -34,9 +28,7 @@ if (isset($_POST['editar_producto'])) {
     );
     $respuesta = ProductoModelo::editar_productos($producto_editar);
     echo json_encode(['respuesta' => $respuesta]);
-} else {
-    echo json_encode(['respuesta' => 'Error de escritura en los campos.']);
-   }
+
 }
 
 //---------- Eliminar Producto -------//

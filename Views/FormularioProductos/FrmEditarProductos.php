@@ -41,7 +41,7 @@
                                 <label for="precio_pub">Precio Público</label>
                                 <div class="input-group mb-3">
                                 <span class="input-group-text" id="addon-wrapping"> <i class="fas fa-money-check-alt"></i></span>
-                                <input class="form-control" type="number" id="precio_pub_editar" name="precio_pub_editar" placeholder="Precio" required>
+                                <input class="form-control" type="number" step="any" id="precio_pub_editar" name="precio_pub_editar" placeholder="Precio" required>
                             </div>
                         </div>
                          <!---------------------- FOOTER ----------------------->
