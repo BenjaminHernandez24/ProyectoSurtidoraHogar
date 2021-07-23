@@ -21,3 +21,4 @@
   <!--Notificaciones-->
  <script src="dist/js/push.min.js"></script>
  <script src="dist/js/pages/Notificacion.js"></script>
+ <script src="dist/js/pages/TablaFactura_Venta.js"></script>

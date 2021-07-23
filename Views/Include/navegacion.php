@@ -2,6 +2,7 @@
 if (!isset($_SESSION['user'])) {
     session_start();
 }
+include('Include/Ticket_Factura.php');
 ?>
 
 <!-- Navbar -->

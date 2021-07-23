@@ -125,7 +125,6 @@ $ctr = new EstadisticasControlador();
             <?php include('FormulariosPrincipal/TablaVentasDia.php'); ?>
 
                 <?php include('FormulariosPrincipal/FormatoGraficas.php'); ?>
-                <?php include('Include/Ticket_Factura.php'); ?>
         </div>
 
         <!-- footer -->
@@ -135,7 +134,6 @@ $ctr = new EstadisticasControlador();
 
     <?php include('Include/scripts.php'); ?>
     <script src="dist/js/pages/Estadistica.js"></script>
-    <script src="dist/js/pages/TablaFactura_Venta.js"></script>
 </body>
 
 </html>

@@ -211,7 +211,9 @@ $(document).on('click', '.ambos', async function() {
 document.getElementById('boton_factura').addEventListener('click', (e) => {
     e.preventDefault();
     $("#ModalVentasTicket").modal("show");
+    console.log("hola")
 })
+
 
 function notificacionExitosa(mensaje) {
     Swal.fire(mensaje, '', 'success').then(result => {
