@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['user']) ) {
-   header('Location: Login.php');
+ header('Location: Login.php');
 }
 ?>    
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ if (!isset($_SESSION['user']) ) {
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
+    <div class="wrapper" style="width:1349px;">
 
         <!-- navegacion -->
 
@@ -30,15 +30,15 @@ if (!isset($_SESSION['user']) ) {
                     <div class="row mb-2">
 
                         <!-- PROVEEDORES -->
-                        <div class="col-lg-3 col-6" class="small-box-footer">
-                            <div class="small-box bg-green">
+                        <div class="col-lg-3 col-6">
+                            <div class="small-box bg-green" style="height:119px;">
                                 <div class="inner">
-                                    <h1>Compras en General</h1>
+                                    <h1>Compras en<br>General</h1>
+                                    <div class="icon">
+                                        <i class="fas fas fa-truck"></i>
+                                    </div>
                                 </div>
-                                <div class="icon">
-                                    <i class="fas fas fa-truck"></i>
-                                </div>
-                                <a class="small-box-footer" id="reporteGeneral" type="button">
+                            <a class="small-box-footer" id="reporteGeneral" type="button">
                                     Generar Reporte <i class="fas fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -46,10 +46,10 @@ if (!isset($_SESSION['user']) ) {
 
                         <!-- PRODUCTOS -->
                         <div class="col-lg-3 col-6" class="small-box-footer">
-                            <div class="small-box bg-red">
+                            <div class="small-box bg-red" style="height:119px;">
                                 <div class="inner">
 
-                                    <h1>Compras Específicas</h1>
+                                    <h1>Compras<br>Específicas</h1>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-users"></i>
@@ -62,9 +62,9 @@ if (!isset($_SESSION['user']) ) {
 
                         <!-- CLIENTES -->
                         <div class="col-lg-3 col-6" class="small-box-footer">
-                            <div class="small-box bg-gradient-orange">
+                            <div class="small-box bg-gradient-orange" style="height:119px;">
                                 <div class="inner">
-                                    <h1 style="color:white;">Generar Ventas Totales</h1>
+                                    <h1 style="color:white;">Generar Ventas<br>Totales</h1>
                                 </div>
                                 <div class="icon">
                                     <i class="fas fa-money-bill-wave"></i>
@@ -77,7 +77,7 @@ if (!isset($_SESSION['user']) ) {
 
                         <!-- VENTAS -->
                         <div class="col-lg-3 col-6" class="small-box-footer">
-                            <div class="small-box bg-blue">
+                            <div class="small-box bg-blue" style="height:119px;">
                                 <div class="inner">
                                     <h1>Reportes Tickets y Facturas</h1>
                                 </div>
@@ -92,7 +92,7 @@ if (!isset($_SESSION['user']) ) {
                     </div>
                     <!-- ./col -->
                     <div class="row">
-                    <?php include('reportesGraficas/reportesGraficas.php'); ?>
+                        <?php include('reportesGraficas/reportesGraficas.php'); ?>
                     </div>
                 </div>
             </section>
@@ -105,14 +105,14 @@ if (!isset($_SESSION['user']) ) {
     <!-- ./wrapper -->
 
     <?php include('Include/scripts.php'); ?>
-     <script src="dist/js/jspdf.min.js"></script>
+    <script src="dist/js/jspdf.min.js"></script>
     <script src="dist/js/jspdf.plugin.autotable.min.js"></script>
     <!-- Gráficas--> 
- <script src="plugins/chart.js/Chart.min.js"></script>
- <script src="dist/js/scripts.js"></script>
- <script src="dist/js/simple-datatables@latest.js"></script>
- <script src="dist/js/datatables-simple-demo.js"></script>
- <script src="dist/js/pages/reporteGraficas.js"></script>
+    <script src="plugins/chart.js/Chart.min.js"></script>
+    <script src="dist/js/scripts.js"></script>
+    <script src="dist/js/simple-datatables@latest.js"></script>
+    <script src="dist/js/datatables-simple-demo.js"></script>
+    <script src="dist/js/pages/reporteGraficas.js"></script>
 </body>
 
 </html>
