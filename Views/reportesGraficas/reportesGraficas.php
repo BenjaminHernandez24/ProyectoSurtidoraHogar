@@ -47,6 +47,7 @@
                                 <thead class="thead-light" >
                                    <tr class="table table-dark">
                                     <th >Proveedor</th>
+                                    <th >Estatus</th>
                                     <th >Producto</th>
                                     <th >Precio</th>
                                     <th >Fecha</th>

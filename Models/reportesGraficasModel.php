@@ -11,9 +11,10 @@ class reportesGraficasModel
     AND YEAR(dsv.fecha) = (SELECT YEAR(CURRENT_DATE)) GROUP BY(sv.id_inventario)
     ORDER BY (SUM(sv.num_piezas)) DESC LIMIT 8";
 
-    private static $obtenerTodosProductos = "SELECT p.nombre_producto FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto";
+    private static $obtenerTodosProductos = "SELECT p.nombre_producto as nombre_producto FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto
+    INNER JOIN entrada_compra ec ON ec.id_inventario=i.id_inventario GROUP BY ec.id_inventario";
 
-    private static $obtenerProveedor = "SELECT prov.nom_prov as proveedor, ec.precio_unitario as precio,ec.fecha as fecha, ec.hora as hora 
+    private static $obtenerProveedor = "SELECT prov.nom_prov as proveedor, prov.estatus as estatus,ec.precio_unitario as precio,ec.fecha as fecha, ec.hora as hora 
     FROM entrada_compra ec INNER JOIN proveedores prov ON prov.id_prov=ec.id_prov 
     AND ec.id_entrada_compra IN
     (SELECT MAX(ec.id_entrada_compra) FROM entrada_compra ec

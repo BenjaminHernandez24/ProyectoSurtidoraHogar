@@ -4,6 +4,7 @@ var pdf;
 var fecha = '';
 var contador = 0;
 var sumaTotal = 0;
+var estatus = '';
 
 async function inicializarGraficasProducto() {
     try{
@@ -787,6 +788,12 @@ $(document).ready(async function() {
                 dataType:"json",
                 success:function(data)
                 {
+                  if(data[0]["estatus"] == 1){
+                    estado = `<button class="btn btn-success btn-sm desactivar">Activo</button>`;
+                  }else{
+                    estado = `<button class="btn btn-danger btn-sm activar">Inactivo</button>`;
+                  }
+
                   $("#tblReportesGraficasProductos").DataTable().clear().draw();
                   $("#tblReportesGraficasProductos").DataTable().destroy();
                   if(data.length != 0){
@@ -794,6 +801,9 @@ $(document).ready(async function() {
                        <tr id="" height="75%">
                            <td class="row-index">
                            <p>${data[0]["proveedor"]}</p>
+                           </td>
+                           <td class="row-index">
+                           <p>${estado}</p>
                            </td>
                            <td class="row-index">
                            <p>${item.item.value}</p>

@@ -4,10 +4,9 @@ class GraficasModel
 {
 
     private static $frecuenciaClientes = "
-        SELECT dsv.cliente as clientes, COUNT(*) as frecuencia FROM detalle_salida_venta dsv 
-        INNER JOIN clientes c ON c.nombre_cli=dsv.cliente 
-        AND YEAR(dsv.fecha)=(SELECT YEAR(current_date)) 
-        AND MONTH(dsv.fecha)=(SELECT MONTH(current_date)) 
+        SELECT dsv.cliente as clientes, COUNT(*) as frecuencia FROM detalle_salida_venta dsv WHERE YEAR(dsv.fecha)=(SELECT YEAR(current_date)) 
+        AND MONTH(dsv.fecha)=(SELECT MONTH(current_date))
+        AND dsv.cliente!= 'cliente'
         GROUP BY (dsv.cliente) ORDER BY (COUNT(*)) 
         DESC LIMIT 4";
 
