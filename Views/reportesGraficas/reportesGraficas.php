@@ -12,18 +12,21 @@
             <button class="col-md-2 float-right btn btn-primary" type="button" id="precioBarato"><font size="4">Precio más barato</font></button>
         </div>
         <div class="card-body">
-        <canvas class="linear" height="45" id="top5Productos" width="100%">
+        <canvas class="linear" height="55" id="top5Productos" width="100%">
         </canvas>
     </div>
     </div>
 </div>
 
 <!-- Modal Reporte 1 -->
-<div id="modalFrmBarato" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+<div id="modalFrmBarato" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="left: 50%;
+   top: 27%; 
+   margin-left: -365px;
+   margin-top: -150px;">
+        <div class="modal-content" style="width:750px;">
             <div class="modal-header">
-                <i class="nav-icon fas fa-file-invoice-dollar" style="color:#F29F05; font-size: 24px;"> ¿Quién me vendió más barato el producto?</i>
+                <i class="nav-icon fas fa-file-invoice-dollar" style="color:#F29F05; font-size: 26px;"> ¿Quién me vendió más barato el producto?</i>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" >&times;</span>
                 </button>

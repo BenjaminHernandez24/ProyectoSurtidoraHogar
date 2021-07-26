@@ -44,6 +44,8 @@ function grafica_1_Resguardo(respuesta){
                 labels: {
                     fontSize: 15,
                     fontColor: "#000000",
+                    fontSize: 18,
+                    fontFamily: "'Raleway'",
                 }
             },
             scales: {
@@ -59,7 +61,8 @@ function grafica_1_Resguardo(respuesta){
                     display: true,
                     labelString: 'Clientes',
                     fontColor: "#000000",
-                    fontSize: 15,
+                    fontSize: 18,
+                    fontFamily: "'Raleway'",
                   }
               }],
               yAxes: [{
@@ -73,7 +76,8 @@ function grafica_1_Resguardo(respuesta){
                     display: true,
                     labelString: 'Número De Visitas',
                     fontColor: "#000000",
-                    fontSize: 15,
+                    fontSize: 18,
+                    fontFamily: "'Raleway'",
                   }
               }],
             },
@@ -128,6 +132,8 @@ function grafica_2_Resguardo(respuesta){
                 labels: {
                     fontSize: 15,
                     fontColor: "#000000",
+                    fontSize: 18,
+                    fontFamily: "'Raleway'",
                 }
             },
             scales: {
@@ -141,6 +147,8 @@ function grafica_2_Resguardo(respuesta){
                     labelString: 'Meses',
                     fontSize: 14,
                     fontColor: "#000000",
+                    fontSize: 18,
+                    fontFamily: "'Raleway'",
                   }
               }],
               yAxes: [{
@@ -152,9 +160,11 @@ function grafica_2_Resguardo(respuesta){
                   },
                   scaleLabel:{
                     display: true,
-                    labelString: 'Ventas',
+                    labelString: 'Ventas($)',
                     fontSize: 15,
                     fontColor: "#000000",
+                    fontSize: 18,
+                    fontFamily: "'Raleway'",
                   }
               }],
             },

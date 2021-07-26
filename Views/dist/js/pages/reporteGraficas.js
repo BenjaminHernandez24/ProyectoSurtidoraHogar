@@ -44,8 +44,9 @@ async function inicializarGraficasProducto() {
                 display: true,
                 position: 'top',
                 labels: {
-                    fontSize: 15,
                     fontColor: "#000000",
+                    fontSize: 18,
+                    fontFamily: "'Raleway'",
                 }
               },
                 scales: {
@@ -56,14 +57,15 @@ async function inicializarGraficasProducto() {
                       maxRotation: 0,
                       minRotation: 0,
                       maxTicksLimit: 200,
-                      fontSize: 11.5,
+                      fontSize: 13.5,
                       fontColor: "#000000",
                     },
                     scaleLabel:{
                         display: true,
                         labelString: 'Productos',
-                        fontSize: 15,
                         fontColor: "#000000",
+                        fontSize: 18,
+                        fontFamily: "'Raleway'",
                       }
                   }],
                   yAxes: [{
@@ -76,8 +78,9 @@ async function inicializarGraficasProducto() {
                       scaleLabel:{
                         display: true,
                         labelString: 'Piezas',
-                        fontSize: 15,
                         fontColor: "#000000",
+                        fontSize: 18,
+                        fontFamily: "'Raleway'",
                       }
                   }],
                 },
@@ -192,7 +195,7 @@ function reporteComprasEspecifico(datos,fechas,imagen){
             pdf.setFontSize(13);
             pdf.setFontType("bold");
             pdf.text(7,22,"Nombre del proveedor: "); //Fecha seleccionada
-            pdf.text(10,29,fechas[2]+".");
+            pdf.text(9,29,"-"+fechas[2]+".");
             pdf.text(7,36,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
             pdf.text(7,43,"Fecha Final: "+ fechas[1] + "."); //Fecha seleccionada.
             sumaTotalPagina(data,50);
@@ -805,13 +808,13 @@ $(document).ready(async function() {
                            <td class="row-index">
                            <p>${estado}</p>
                            </td>
-                           <td class="row-index">
+                           <td class="row-index text-justify">
                            <p>${item.item.value}</p>
                            </td>
-                           <td class="row-index text-center" width="10%">
+                           <td class="row-index text-center" width="14%">
                            <p>${data[0]["precio"]}</p>
                            </td>
-                           <td class="row-index text-center" width="25%">
+                           <td class="row-index text-center" width="15%">
                            <p>${data[0]["fecha"]}</p>
                            </td>
                         </tr>`);

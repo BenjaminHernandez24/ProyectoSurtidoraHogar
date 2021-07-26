@@ -4,50 +4,35 @@ require_once "../Models/GraficasModel.php";
 if (isset($_POST['frecuenciaClientes'])) {
     $data = GraficasModel::frecuenciaClientes();
 
-    $parametros = [];
-    $cadenaTemporal1 = "";
-    $cadenaTemporal2 = "";
-    $arregloTemporal = [];
+    $palabraCorta="";
+    $acumuladorCorto = "";
+    $cadena = [];
     for ($i = 0; $i < sizeof($data); $i++) {
         $arrayPalabras = explode(" ",$data[$i]['clientes']);
-        
-        for($k = 0; $k < sizeof($arrayPalabras); $k++){
-            $cadena = str_replace(' ', '', $arrayPalabras[$k]);
-            if(strlen($cadena) != 0){
-                $arregloTemporal[] = $cadena;
-            }
-        }
-
-        for($j=0; $j<sizeof($arregloTemporal); $j++){
-            if(($j%2) == 0){
-                $cadenaTemporal2 = $cadenaTemporal1." ".$arregloTemporal[$j];
-
-                if(strlen($cadenaTemporal2) <= 12){
-                    $variable[] = $cadenaTemporal1." ".$arregloTemporal[$j];
-                }else{
-                    if(strlen($cadenaTemporal1) != 0){
-                        $variable[] = $cadenaTemporal1;
-                        $variable[] = $arregloTemporal[$j];
-                    }else{
-                        $variable[] = $arregloTemporal[$j];
-                    }
+        for($j = 0; $j < sizeof($arrayPalabras); $j++){
+            $palabraCorta = $arrayPalabras[$j];
+            if(strlen($palabraCorta) < 14){
+                $acumuladorCorto .= $palabraCorta." ";
+                if(strlen($acumuladorCorto) > 13){
+                    $acumuladorCorto = rtrim($acumuladorCorto," ");
+                    $cadena[] = substr($acumuladorCorto,0,(strlen($acumuladorCorto)-strlen($palabraCorta)-1));
+                    $acumuladorCorto = $palabraCorta." ";
                 }
-
-            } else if(sizeof($arregloTemporal) == 1){
-                $variable[] = $arregloTemporal[$j];
-            }else if($j == sizeof($arrayPalabras)-1){
-                $variable[] = $arregloTemporal[$j];
             }else{
-                $cadenaTemporal1 = $arregloTemporal[$j]; 
+                if($acumuladorCorto != ""){
+                    $cadena[] = $acumuladorCorto;
+                }
+                $cadena[] = $palabraCorta;
+                $acumuladorCorto = "";
             }
         }
-        $parametros[] = $variable;
-        $arrayPalabras = [];
-        $arregloTemporal = [];
-        $variable = [];
-        $cadenaTemporal1 = "";
-        $cadenaTemporal2 = "";
+        $acumuladorCorto = rtrim($acumuladorCorto," ");
+        $cadena[] = $acumuladorCorto;
+        $palabraCorta="";
+        $acumuladorCorto = "";
+        $parametros[] = $cadena;
         $valores[]    = $data[$i]['frecuencia'];
+        $cadena = [];
     }
 
     if($parametros != NULL){
