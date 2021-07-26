@@ -22,6 +22,7 @@
                             <tr class="table table-dark">
                                 <th>ID</th>
                                 <th>Tipo de Producto</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>

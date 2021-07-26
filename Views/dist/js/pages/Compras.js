@@ -27,15 +27,17 @@ async function compras() {
             {"data": "subtotal"},
             {"data": "fecha"},
             {"data": "hora"},
-           
+        
             {
                 "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div> "
                
               } 
+            
         ]
     });
 }
 compras();
+
 //------- Función para llenar Select de Proveedor ------//
 async function llenar_Proveedor(){
     try {
@@ -164,7 +166,9 @@ form_editar_compra.addEventListener('submit', async (e) => {
             if(resjson.respuesta == "OK"){
                 notificacionExitosa('Compra Actualizada');
                 tabla_compras.ajax.reload(null,false);
-            }else{
+            } else if  (resjson.respuesta == "NO") {
+                notificarError('Debe ser una compra del día Actual');
+            }else {
                 notificarError(resjson.respuesta);
             }
             
@@ -207,7 +211,7 @@ $(document).on('click', ".btnBorrar", async function() {
     id_entrada_compra = data[0];
     const result = await Swal.fire({
         title: '¿ESTÁ SEGURO(A) DE ELIMINAR ESTA COMPRA?',
-        text: "¡La eliminación es permanente!",
+        text: "Se descontará al inventario.",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#5bc0de',
@@ -232,7 +236,9 @@ $(document).on('click', ".btnBorrar", async function() {
             if (resjson.respuesta == "OK") {
                 notificacionExitosa('¡ELiminación exitosa!');
                 tabla_compras.ajax.reload(null, false);
-            } else {
+            } else if  (resjson.respuesta == "NO") {
+                notificarError('Debe ser una compra del día Actual');
+            }else {
                 notificarError(resjson.respuesta);
             }
 
@@ -242,6 +248,12 @@ $(document).on('click', ".btnBorrar", async function() {
     }
 
 })
+
+$(document).on('click', '.btnVer', async function(){
+
+
+});  
+   
 //---------- Validar números negativos-num_piezas en Registro---------//
 document.getElementById('piezas').addEventListener('keyup', () => {
     if (!document.getElementById('piezas').value == "") {

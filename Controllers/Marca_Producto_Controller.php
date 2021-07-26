@@ -41,4 +41,16 @@ if (isset($_POST['obtener_marca'])) {
     $data = MarcaModelo::obtener_marca_producto();
     echo json_encode($data);
 }
+//---------- Desactivar Marca Producto -------//
+if (isset($_POST['desactivarMarca'])) {
+
+    $respuesta = MarcaModelo::desactivarMarcaProducto($_POST['id_marca']);
+    echo json_encode(['respuesta' => $respuesta]);
+}
+//----------Activar Marca Producto -------//
+if (isset($_POST['activarMarca'])) {
+
+    $respuesta = MarcaModelo::activarMarcaProducto($_POST['id_marca']);
+    echo json_encode(['respuesta' => $respuesta]);
+}
 ?>

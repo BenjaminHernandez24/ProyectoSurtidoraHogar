@@ -7,6 +7,7 @@ class MarcaModelo
     private static $BORRAR_MARCA = "DELETE FROM marcas_producto WHERE id_marca = ?";
     private static $SELECT_ALL_MARCA = "SELECT * FROM marcas_producto";
     private static $VALIDAR_MARCA_EXISTENTE = "SELECT * FROM marcas_producto WHERE descripcion_marca = ? ";
+    private static $ESTATUS_MARCA = "UPDATE marcas_producto set estatus=? WHERE id_marca = ?";
 
 //-------- FUNCIÓN PARA AGREGAR MARCA DE PRODUCTO -------//
     public static function agregar_marca_producto($marca)
@@ -127,6 +128,71 @@ class MarcaModelo
              return $e->getMessage();
          }
      }
+    //-------- FUNCIÓN PARA DESACTIVAR MARCA DE PRODUCTO -------//
+public static function desactivarMarcaProducto($id)
+{
+    try {
+
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+
+        //Abro la transacción.
+        $conn->beginTransaction();
+
+        $pst = $conn->prepare(self::$ESTATUS_MARCA);
+        $resultado = $pst->execute([0, $id]);
+
+        if ($resultado == 1) {
+            $msg = "OK";
+            //Si todo esta correcto insertamos.
+            $conn->commit();
+        } else {
+            $msg = "Fallo al cambiar estatus";
+            //Si algo falla, reestablece la bd a como estaba en un inicio.
+            $conn->rollBack();
+        }
+
+        $conexion->closeConexion();
+        $conn = null;
+
+        return $msg;
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+}
+
+//-------- FUNCIÓN PARA ACTIVAR MARCA DE PRODUCTO -------//
+public static function activarMarcaProducto($id)
+{
+    try {
+
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+
+        //Abro la transacción.
+        $conn->beginTransaction();
+
+        $pst = $conn->prepare(self::$ESTATUS_MARCA);
+        $resultado = $pst->execute([1, $id]);
+
+        if ($resultado == 1) {
+            $msg = "OK";
+            //Si todo esta correcto insertamos.
+            $conn->commit();
+        } else {
+            $msg = "Fallo al cambiar estatus";
+            //Si algo falla, reestablece la bd a como estaba en un inicio.
+            $conn->rollBack();
+        }
+
+        $conexion->closeConexion();
+        $conn = null;
+
+        return $msg;
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+}
 
 }
 ?>

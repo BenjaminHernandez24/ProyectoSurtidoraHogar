@@ -7,7 +7,7 @@ class TipoModelo
     private static $BORRAR_TIPO = "DELETE FROM tipo_producto WHERE id_tipo = ?";
     private static $SELECT_ALL_TIPO = "SELECT * FROM tipo_producto";
     private static $VALIDAR_TIPO_EXISTENTE = "SELECT * FROM tipo_producto WHERE descripcion_tipo = ? ";
-
+    private static $ESTATUS_TIPO = "UPDATE tipo_producto set estatus=? WHERE id_tipo = ?";
 //-------- FUNCIÓN PARA AGREGAR TIPO DE PRODUCTO -------//
     public static function agregar_tipo_producto($tipo)
     {
@@ -130,5 +130,71 @@ class TipoModelo
          }
      }
 
+ //-------- FUNCIÓN PARA DESACTIVAR LOS TIPOS DE PRODUCTO -------//
+public static function desactivarTipoProducto($id)
+{
+    try {
+
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+
+        //Abro la transacción.
+        $conn->beginTransaction();
+
+        $pst = $conn->prepare(self::$ESTATUS_TIPO);
+        $resultado = $pst->execute([0, $id]);
+
+        if ($resultado == 1) {
+            $msg = "OK";
+            //Si todo esta correcto insertamos.
+            $conn->commit();
+        } else {
+            $msg = "Fallo al cambiar estatus";
+            //Si algo falla, reestablece la bd a como estaba en un inicio.
+            $conn->rollBack();
+        }
+
+        $conexion->closeConexion();
+        $conn = null;
+
+        return $msg;
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
 }
+
+//-------- FUNCIÓN PARA ACTIVAR LOS TIPOS DE PRODUCTO -------//
+public static function activarTipoProducto($id)
+{
+    try {
+
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+
+        //Abro la transacción.
+        $conn->beginTransaction();
+
+        $pst = $conn->prepare(self::$ESTATUS_TIPO);
+        $resultado = $pst->execute([1, $id]);
+
+        if ($resultado == 1) {
+            $msg = "OK";
+            //Si todo esta correcto insertamos.
+            $conn->commit();
+        } else {
+            $msg = "Fallo al cambiar estatus";
+            //Si algo falla, reestablece la bd a como estaba en un inicio.
+            $conn->rollBack();
+        }
+
+        $conexion->closeConexion();
+        $conn = null;
+
+        return $msg;
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+}
+}
+
 ?>

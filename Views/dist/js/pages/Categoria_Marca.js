@@ -21,6 +21,15 @@ async function init() {
             {"data": "id_marca"},
             {"data": "descripcion_marca"},
             {
+                "data": (s) => {
+                    if (s.estatus == 1) {
+                        return `<button class="btn btn-success btn-sm desactivar">Activo</button>`;
+                    } else {
+                        return `<button class="btn btn-danger btn-sm activar">Inactivo</button>`;
+                    }
+                }
+            },
+            {
               "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div>"
             }]
     });
@@ -114,7 +123,7 @@ $(document).on('click', ".btnBorrar", async function() {
 
     const result = await Swal.fire({
         title: '¿ESTÁ SEGURO(A) DE ELIMINAR ESTA MARCA DE PRODUCTO?',
-        text: "¡La eliminación es permanente!",
+        text: "¡Se eliminará en Módulo de: Productos !",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#5bc0de',
@@ -149,6 +158,85 @@ $(document).on('click', ".btnBorrar", async function() {
     }
 
 })
+$(document).on('click', '.desactivar', async function() {
+    try {
+        notificacionInactivoMarca('Usted, ha cambiado el estado de Marca de Producto a: "Inactivo"');
+        if (tabla_marca.row(this).child.isShown()) {
+            var data = tabla_marca.row(this).data();
+        } else {
+            var data = tabla_marca.row($(this).parents("tr")).data();
+        }
+
+        let datos = new FormData();
+        datos.append('desactivarMarca', 'OK');
+        datos.append('id_marca', data['id_marca']);
+        let peticion = await fetch('../Controllers/Marca_Producto_Controller.php', {
+            method: 'POST',
+            body: datos
+        });
+
+        let resjson = await peticion.json();
+
+        if (resjson.respuesta == "OK") {
+            tabla_marca.ajax.reload(null, false);
+        } else {
+            notificarError(resjson.respuesta);
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+$(document).on('click', '.activar', async function() {
+    try {
+        notificacionActivoMarca('Usted, ha cambiado el estado de Marca de producto a: "Activo"');
+        if (tabla_marca.row(this).child.isShown()) {
+            var data = tabla_marca.row(this).data();
+        } else {
+            var data = tabla_marca.row($(this).parents("tr")).data();
+        }
+
+        let datos = new FormData();
+        datos.append('activarMarca', 'OK');
+        datos.append('id_marca', data['id_marca']);
+        let peticion = await fetch('../Controllers/Marca_Producto_Controller.php', {
+            method: 'POST',
+            body: datos
+        });
+
+        let resjson = await peticion.json();
+
+        if (resjson.respuesta == "OK") {
+            tabla_marca.ajax.reload(null, false);
+        } else {
+            notificarError(resjson.respuesta);
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+// ------- Mensajes de Alert Estados -------//
+function notificacionActivoMarca(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 3000
+    })
+}
+
+function notificacionInactivoMarca(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 3000
+    })
+}
 // ------- Mensajes de Alert -------//
 function notificacionExitosa(mensaje) {
     Swal.fire(

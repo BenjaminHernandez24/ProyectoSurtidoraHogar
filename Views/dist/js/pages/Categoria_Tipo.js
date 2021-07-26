@@ -21,6 +21,15 @@ async function init() {
             {"data": "id_tipo"},
             {"data": "descripcion_tipo"},
             {
+                "data": (s) => {
+                    if (s.estatus == 1) {
+                        return `<button class="btn btn-success btn-sm desactivar">Activo</button>`;
+                    } else {
+                        return `<button class="btn btn-danger btn-sm activar">Inactivo</button>`;
+                    }
+                }
+            },
+            {
               "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div>"
             }]
     });
@@ -114,7 +123,7 @@ $(document).on('click', ".btnBorrar", async function() {
 
     const result = await Swal.fire({
         title: '¿ESTÁ SEGURO(A) DE ELIMINAR ESTE TIPO DE PRODUCTO?',
-        text: "¡La eliminación es permanente!",
+        text: "¡Se eliminará en Módulo de: Productos!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#5bc0de',
@@ -149,7 +158,85 @@ $(document).on('click', ".btnBorrar", async function() {
     }
 
 })
+$(document).on('click', '.desactivar', async function() {
+    try {
+        notificacionInactivoTipo('Usted, ha cambiado el estado del Tipo de Producto a: "Inactivo"');
+        if (tabla_tipo.row(this).child.isShown()) {
+            var data = tabla_tipo.row(this).data();
+        } else {
+            var data = tabla_tipo.row($(this).parents("tr")).data();
+        }
+
+        let datos = new FormData();
+        datos.append('desactivarTipo', 'OK');
+        datos.append('id_tipo', data['id_tipo']);
+        let peticion = await fetch('../Controllers/Tipo_Producto_Controller.php', {
+            method: 'POST',
+            body: datos
+        });
+
+        let resjson = await peticion.json();
+
+        if (resjson.respuesta == "OK") {
+            tabla_tipo.ajax.reload(null, false);
+        } else {
+            notificarError(resjson.respuesta);
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+$(document).on('click', '.activar', async function() {
+    try {
+        notificacionActivoTipo('Usted, ha cambiado el estado del Tipo de producto a: "Activo"');
+        if (tabla_tipo.row(this).child.isShown()) {
+            var data = tabla_tipo.row(this).data();
+        } else {
+            var data = tabla_tipo.row($(this).parents("tr")).data();
+        }
+
+        let datos = new FormData();
+        datos.append('activarTipo', 'OK');
+        datos.append('id_tipo', data['id_tipo']);
+        let peticion = await fetch('../Controllers/Tipo_Producto_Controller.php', {
+            method: 'POST',
+            body: datos
+        });
+
+        let resjson = await peticion.json();
+
+        if (resjson.respuesta == "OK") {
+            tabla_tipo.ajax.reload(null, false);
+        } else {
+            notificarError(resjson.respuesta);
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+})
 // ------- Mensajes de Alert -------//
+function notificacionActivoTipo(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 3000
+    })
+}
+
+function notificacionInactivoTipo(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 3000
+    })
+}
 function notificacionExitosa(mensaje) {
     Swal.fire(
         mensaje,

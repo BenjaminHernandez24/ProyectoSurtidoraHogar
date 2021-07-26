@@ -24,6 +24,7 @@
                                         <tr class="table table-dark">
                                             <th>Id</th>
                                             <th>Marca Producto</th>
+                                            <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>

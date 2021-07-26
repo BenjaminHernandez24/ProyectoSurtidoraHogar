@@ -103,7 +103,8 @@ CREATE TABLE `inventario` (
 
 CREATE TABLE `marcas_producto` (
   `id_marca` int(11) NOT NULL,
-  `descripcion_marca` varchar(200) NOT NULL
+  `descripcion_marca` varchar(200) NOT NULL,
+ `estatus` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -201,7 +202,8 @@ CREATE TABLE `productos` (
   `nombre_producto` varchar(350) NOT NULL,
   `id_tipo` int(11) NOT NULL,
   `id_marca` int(11) NOT NULL,
-  `precio_publico` decimal(10,2) NOT NULL
+  `precio_publico` decimal(10,2) NOT NULL,
+  `estatus` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -276,7 +278,8 @@ CREATE TABLE `salida_venta` (
 
 CREATE TABLE `tipo_producto` (
   `id_tipo` int(11) NOT NULL,
-  `descripcion_tipo` varchar(200) NOT NULL
+  `descripcion_tipo` varchar(200) NOT NULL,
+  `estatus` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --

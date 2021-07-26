@@ -41,4 +41,16 @@ if (isset($_POST['obtener_tipo'])) {
     $data = TipoModelo::obtener_tipo_producto();
     echo json_encode($data);
 }
+//---------- Desactivar Tipo Producto -------//
+if (isset($_POST['desactivarTipo'])) {
+
+    $respuesta = TipoModelo::desactivarTipoProducto($_POST['id_tipo']);
+    echo json_encode(['respuesta' => $respuesta]);
+}
+//----------Activar Tipo Producto -------//
+if (isset($_POST['activarTipo'])) {
+
+    $respuesta = TipoModelo::activarTipoProducto($_POST['id_tipo']);
+    echo json_encode(['respuesta' => $respuesta]);
+}
 ?>

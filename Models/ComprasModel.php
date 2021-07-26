@@ -6,9 +6,9 @@ class ComprasModelo{
 
 //-------------------- Función para llenar Tabla Compras -----------------//
 private static $SELECT_ALL_COMPRAS = "SELECT ec.id_entrada_compra,prov.nom_empresa, prod.nombre_producto, ec.num_piezas, ec.precio_unitario,ec.subtotal, ec.fecha, ec.hora
-FROM entrada_compra ec INNER JOIN proveedores prov ON ec.id_prov=prov.id_prov INNER JOIN inventario i ON i.id_inventario=ec.id_inventario INNER JOIN productos prod ON i.id_producto=prod.id_producto ";
+FROM entrada_compra ec INNER JOIN proveedores prov ON ec.id_prov=prov.id_prov INNER JOIN inventario i ON i.id_inventario=ec.id_inventario INNER JOIN productos prod ON i.id_producto=prod.id_producto";
 //-------------------- Funciones  para llenar Select de Productos y Proveedores --------------------//
-private static $SELECT_ALL_PRODUCTOS = "SELECT i.id_producto as id_producto,  p.nombre_producto as nombre_producto  FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto";
+private static $SELECT_ALL_PRODUCTOS = "SELECT i.id_producto as id_producto,  p.nombre_producto as nombre_producto  FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto WHERE p.estatus=1";
 private static $SELECT_ALL_PROVEEDORES = "SELECT id_prov, nom_empresa FROM proveedores WHERE estatus=1";
 //-------------------- Funciones para agregar Compras -----------------------------//
 private static $SELECT_ID_INVENTARIO_PRODUCTO_AND_STOCK = "SELECT id_inventario, stock FROM inventario WHERE id_producto= ? ";
@@ -21,14 +21,13 @@ private static $UPDATE1_STOCK="UPDATE inventario set stock=(stock-?) WHERE id_in
 private static $SELECT_ID_INVENTARIO_PRODUCTO = "SELECT id_inventario FROM inventario WHERE id_producto= ? ";
 private static $SELECT_ID_PRODUCTO = "SELECT id_producto FROM productos WHERE nombre_producto=?";
 private static $SELECT_ID_PROVEEDOR = "SELECT id_prov FROM proveedores WHERE nom_empresa=?";
+private static $SELECT_NUM_PIEZAS_EDITAR = "SELECT  num_piezas FROM  entrada_compra WHERE id_entrada_compra=? AND fecha = CURDATE()";
 //------------ Función para Eliminar una Compra-----------//
 private static $BORRAR_COMPRA ="DELETE FROM entrada_compra WHERE id_entrada_compra = ?";
 private static $ACTUALIZAR_STOCK_B ="UPDATE inventario set stock=(stock-?) WHERE id_inventario=?";
-private static $SELECT_ID_INVENTARIO_AND_NUM_PIEZAS ="SELECT id_inventario, num_piezas FROM  entrada_compra WHERE id_entrada_compra=?";
+private static $SELECT_ID_INVENTARIO_AND_NUM_PIEZAS ="SELECT id_inventario, num_piezas FROM  entrada_compra WHERE id_entrada_compra=? AND fecha = CURDATE()";
 private static $SELECT_NUM_PIEZAS = "SELECT  num_piezas FROM  entrada_compra WHERE id_entrada_compra=?";
 
-private static $obtenerIDProducto = "SELECT * FROM productos WHERE nombre_producto=?";
-private static $obtenerIDProveedor = "SELECT * FROM proveedores WHERE nom_empresa=?";
 //-------- FUNCIÓN PARA OBTENER  COMPRAS -------//
 public static function obtener_compras_inv()
 {
@@ -170,12 +169,14 @@ public static function editar_compras($Compras_editar)
         $res = $pst->fetch();
         $res_id_inventario = $res['id_inventario'];
         
-         // ---------- Consultamos las piezas que se había registrado ------------//
-         $pst = $conn->prepare(self::$SELECT_NUM_PIEZAS);
+         // ---------- Consultamos las piezas que se había registrado y se Valida la fecha de la Compra------------//
+         $pst = $conn->prepare(self::$SELECT_NUM_PIEZAS_EDITAR);
          $pst->execute([$Compras_editar['id_entrada_compra']]);
          $piezas = $pst->fetchAll(PDO::FETCH_ASSOC);
-         $res_piezas=$piezas[0]["num_piezas"];
-            
+         
+         if (!empty($piezas)) {
+            $res_piezas=$piezas[0]["num_piezas"];
+
          // --- Le quitamos al stock del inventario las piezas que se registraron con anterioridad---//
       $pst = $conn->prepare(self::$UPDATE1_STOCK);
       $pst->execute([$res_piezas, $res_id_inventario]);
@@ -202,6 +203,13 @@ public static function editar_compras($Compras_editar)
          $conn = null;
          $conexion->closeConexion();
          return $msg;  
+        } else {
+            return $msg="NO";
+        }
+    
+        $conn = null;
+        $conexion->closeConexion();
+    
     } catch (PDOException $e) {
         return $e->getMessage();
     }
@@ -215,12 +223,16 @@ public static function eliminar_compras($id)
         $conn = $conexion->getConexion();
         //Se abre la transacción.
         $conn->beginTransaction();
+         //---------- Se valida fecha actual de Compra -----------//
         //-------- OBTENEMOS EL ID DE INVENTARIO DEL QUE NECESITAMOS SELECCIONAR STOCK-------//
         $pst = $conn->prepare(self::$SELECT_ID_INVENTARIO_AND_NUM_PIEZAS);
        $pst->execute([$id]);
        $result = $pst->fetchAll(PDO::FETCH_ASSOC);
+       if (!empty($result)) {
+
        $id_inventario = $result[0]["id_inventario"];
        $res_piezas=$result[0]["num_piezas"];
+    
 
     $pst = $conn->prepare(self::$ACTUALIZAR_STOCK_B);
     $resultado = $pst->execute([$res_piezas,$id_inventario]);
@@ -242,6 +254,14 @@ public static function eliminar_compras($id)
      $conn = null;
      $conexion->closeConexion();
      return $msg;  
+
+    } else {
+        return $msg="NO";
+    }
+
+    $conn = null;
+    $conexion->closeConexion();
+
     } catch (PDOException $e) {
         return $e->getMessage();
     }

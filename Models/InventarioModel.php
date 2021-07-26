@@ -7,15 +7,12 @@ private static $SELECT_ALL_INVENTARIO = "SELECT i.id_inventario, p.nombre_produc
 FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto; SELECT stock, estatus_aceptable, estatus_alerta from inventario ";
 private static $INSERTAR_PRODUCTO_INVENTARIO = "INSERT INTO inventario (id_producto, estatus_aceptable, estatus_alerta, stock) values (?, ?, ?, ?)";
 private static $VALIDAR_PRODUCTO_EXISTENTE = "SELECT * FROM inventario WHERE id_producto = ? ";
-private static $SELECT_PRODUCTOS =  "SELECT id_producto, nombre_producto FROM productos";
+private static $SELECT_PRODUCTOS =  "SELECT id_producto, nombre_producto FROM productos WHERE estatus = 1";
 private static $EDITAR_PRODUCTO_INVENTARIO = "UPDATE inventario set id_producto = ?, estatus_aceptable = ?, estatus_alerta =?, stock=? WHERE id_inventario = ?";
 private static $BORRAR_PRODUCTO_INVENTARIO = "DELETE FROM inventario WHERE id_inventario = ?";
 
-private static $OBTENER_ESTATUS_COMPARAR2 ="SELECT estatus_aceptable from inventario WHERE id_inventario = ?";
-private static $OBTENER_ESTATUS_COMPARAR1 ="SELECT stock, estatus_aceptable from inventario WHERE id_inventario = ?";
-private static $INSERTAR_ESTATUS ="UPDATE inventario set  estatus=? WHERE id_producto=?";
-private static $VALIDAR_EDITAR = "SELECT DISTINCT id_producto=? FROM inventario";
 
+private static $OBTENER_ESTATUS_COMPARAR ="SELECT stock, estatus_aceptable from inventario WHERE id_inventario = ?";
 private static $obtenerIDProducto = "SELECT * FROM productos WHERE nombre_producto=?";
 //-------- FUNCIÓN PARA OBTENER  PRODUCTOS EN INVENTARIO -------//
  public static function obtener_inventario_producto()
@@ -179,7 +176,7 @@ public static function editar_productos_inventario($producto_edi)
          $conexion = new Conexion();
          $conn = $conexion->getConexion();
 
-         $pst = $conn->prepare(self::$OBTENER_ESTATUS_COMPARAR1 );
+         $pst = $conn->prepare(self::$OBTENER_ESTATUS_COMPARAR);
          $pst->execute([$id]);
          $resultado = $pst->fetchAll(PDO::FETCH_ASSOC);
          $stock_p = $resultado[0]["stock"];

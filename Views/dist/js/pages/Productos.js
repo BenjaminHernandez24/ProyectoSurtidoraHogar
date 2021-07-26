@@ -14,6 +14,7 @@ async function tab_Productos() {
             "data": {
                 "obtener_producto": "OK"
             },
+           
             "dataSrc": ""
         },
         "columns": [
@@ -22,6 +23,15 @@ async function tab_Productos() {
             {"data": "precio_publico"},
             {"data": "descripcion_tipo"},
             {"data": "descripcion_marca"},
+            {
+                "data": (s) => {
+                    if (s.estatus == 1) {
+                        return `<button class="btn btn-success btn-sm desactivar">Activo</button>`;
+                    } else {
+                        return `<button class="btn btn-danger btn-sm activar">Inactivo</button>`;
+                    }
+                }
+            },
             {
             "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div>"
               
@@ -248,7 +258,65 @@ $(document).on('click', ".btnBorrar", async function() {
 
 })
 //---------- Fin Borrar un Producto ---------//
+$(document).on('click', '.desactivar', async function() {
+    try {
+        notificacionInactivoProducto('Usted, ha cambiado el estado del Producto a: "Inactivo"');
+        if (tabla_productos.row(this).child.isShown()) {
+            var data = tabla_productos.row(this).data();
+        } else {
+            var data = tabla_productos.row($(this).parents("tr")).data();
+        }
 
+        let datos = new FormData();
+        datos.append('desactivarProducto', 'OK');
+        datos.append('id_producto', data['id_producto']);
+        let peticion = await fetch('../Controllers/Productos_Controller.php', {
+            method: 'POST',
+            body: datos
+        });
+
+        let resjson = await peticion.json();
+
+        if (resjson.respuesta == "OK") {
+            tabla_productos.ajax.reload(null, false);
+        } else {
+            notificarError(resjson.respuesta);
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+$(document).on('click', '.activar', async function() {
+    try {
+        notificacionActivoProducto('Usted, ha cambiado el estado del producto a: "Activo"');
+        if (tabla_productos.row(this).child.isShown()) {
+            var data = tabla_productos.row(this).data();
+        } else {
+            var data = tabla_productos.row($(this).parents("tr")).data();
+        }
+
+        let datos = new FormData();
+        datos.append('activarProducto', 'OK');
+        datos.append('id_producto', data['id_producto']);
+        let peticion = await fetch('../Controllers/ProductosController.php', {
+            method: 'POST',
+            body: datos
+        });
+
+        let resjson = await peticion.json();
+
+        if (resjson.respuesta == "OK") {
+            tabla_productos.ajax.reload(null, false);
+        } else {
+            notificarError(resjson.respuesta);
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+}) 
 //---------- Validar números negativos-registro---------//
 document.getElementById('precio_pub').addEventListener('keyup', () => {
     if (!document.getElementById('precio_pub').value == "") {
@@ -267,6 +335,27 @@ document.getElementById('precio_pub_editar').addEventListener('keyup', () => {
         }
     }
 })
+
+// ------- Mensajes de Alert Estados -------//
+function notificacionActivoProducto(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 3000
+    })
+}
+
+function notificacionInactivoProducto(mensaje) {
+    Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: mensaje,
+        showConfirmButton: false,
+        timer: 3000
+    })
+}
 // ------- Mensajes de Alert -------//
 
 function notificarError(mensaje) {

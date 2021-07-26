@@ -61,4 +61,17 @@ if (isset($_POST['obtener_id'])) {
     $id = ProductoModelo::obtener_id_producto($_POST['id_producto']);
     echo json_encode($id);
 }
+//---------- Desactivar Producto -------//
+if (isset($_POST['desactivarProducto'])) {
+
+    $respuesta = ProductoModelo::desactivarProductos($_POST['id_producto']);
+    echo json_encode(['respuesta' => $respuesta]);
+}
+//----------Activar Producto -------//
+if (isset($_POST['activarProducto'])) {
+
+    $respuesta = ProductoModelo::activarProductos($_POST['id_producto']);
+    echo json_encode(['respuesta' => $respuesta]);
+}
+
 ?>

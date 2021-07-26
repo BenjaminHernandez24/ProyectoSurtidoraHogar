@@ -6,13 +6,15 @@ class ProductoModelo
     private static $EDITAR_PRODUCTO = "UPDATE productos set nombre_producto = ?, id_tipo = ?, id_marca =?, precio_publico=? WHERE id_producto = ?";
     private static $BORRAR_PRODUCTO = "DELETE FROM productos WHERE id_producto = ?";
     private static $VALIDAR_PRODUCTO_EXISTENTE = "SELECT * FROM productos WHERE nombre_producto = ? ";
-    private static $SELECT_ALL_TIPO_PRODUCTO = "SELECT * FROM tipo_producto";
-    private static $SELECT_ALL_MARCA_PRODUCTO = "SELECT * FROM marcas_producto";
-    private static $SELECT_PRODUCTOS_TIPO_MARCA = "SELECT p.id_producto, p.nombre_producto, p.precio_publico, tp.descripcion_tipo, mp.descripcion_marca FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca  ";
+    private static $SELECT_ALL_TIPO_PRODUCTO = "SELECT * FROM tipo_producto WHERE estatus = 1";
+    private static $SELECT_ALL_MARCA_PRODUCTO = "SELECT * FROM marcas_producto WHERE estatus = 1";
+    private static $SELECT_PRODUCTOS_TIPO_MARCA = "SELECT p.id_producto, p.nombre_producto, p.precio_publico, tp.descripcion_tipo, mp.descripcion_marca, p.estatus as estatus FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca  ";
     private static $SELECT_ID_PRODUCTO = "SELECT id_producto  FROM productos WHERE id_producto= ?";
-
+    private static $ESTATUS_PRODUCTO = "UPDATE productos set estatus=? WHERE id_producto = ?";
     private static $obtenerIdMarca = "SELECT * FROM marcas_producto WHERE descripcion_marca = ?";
     private static $obtenerIDProducto = "SELECT * FROM tipo_producto WHERE descripcion_tipo=?";
+
+    private static $OBTENER_ESTATADO = "SELECT estatus FROM productos";
 //-------- FUNCIÓN PARA AGREGAR TIPO DE PRODUCTO -------//
     public static function agregar_productos($producto)
     {
@@ -174,6 +176,7 @@ class ProductoModelo
               return $e->getMessage();
           }
       }
+  
        //-------- FUNCIÓN PARA OBTENER LAS MARCAS DE PRODUCTO -------//
        public static function obtener_marca_productos()
        {
@@ -211,7 +214,71 @@ class ProductoModelo
                return $e->getMessage();
            }
        }
- 
+  //-------- FUNCIÓN PARA DESACTIVAR LOS  PRODUCTOS -------//
+public static function desactivarProductos($id)
+{
+    try {
+
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+
+        //Abro la transacción.
+        $conn->beginTransaction();
+
+        $pst = $conn->prepare(self::$ESTATUS_PRODUCTO);
+        $resultado = $pst->execute([0, $id]);
+
+        if ($resultado == 1) {
+            $msg = "OK";
+            //Si todo esta correcto insertamos.
+            $conn->commit();
+        } else {
+            $msg = "Fallo al cambiar estatus";
+            //Si algo falla, reestablece la bd a como estaba en un inicio.
+            $conn->rollBack();
+        }
+
+        $conexion->closeConexion();
+        $conn = null;
+
+        return $msg;
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+}
+
+//-------- FUNCIÓN PARA ACTIVAR LOS PRODUCTOS -------//
+public static function activarProductos($id)
+{
+    try {
+
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+
+        //Abro la transacción.
+        $conn->beginTransaction();
+
+        $pst = $conn->prepare(self::$ESTATUS_PRODUCTO);
+        $resultado = $pst->execute([1, $id]);
+
+        if ($resultado == 1) {
+            $msg = "OK";
+            //Si todo esta correcto insertamos.
+            $conn->commit();
+        } else {
+            $msg = "Fallo al cambiar estatus";
+            //Si algo falla, reestablece la bd a como estaba en un inicio.
+            $conn->rollBack();
+        }
+
+        $conexion->closeConexion();
+        $conn = null;
+
+        return $msg;
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+}
 
 }
 ?>
