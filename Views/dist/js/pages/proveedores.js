@@ -85,7 +85,7 @@ formaddProveedor.addEventListener('submit', async(e) => {
             notificarError('Ocurrio un Error');
         }
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 })
 
@@ -113,7 +113,7 @@ formupdateProveedor.addEventListener('submit', async(e) => {
             notificarError('Ocurrio un Error');
         }
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 })
 
@@ -152,7 +152,7 @@ $(document).on('click', ".btnBorrar", async function() {
 
     const result = await Swal.fire({
         title: '¿ESTÁ SEGURO DE ELIMINAR ESTE PROVEEDOR?',
-        text: "¡La eliminación es permanente!",
+        text: "¡Támbien Eliminada Todo los Registros de compras con este Proveedor!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#5bc0de',
@@ -182,7 +182,7 @@ $(document).on('click', ".btnBorrar", async function() {
             }
 
         } catch (error) {
-            console.log(error);
+            notificarError(error);
         }
     }
 
@@ -215,7 +215,7 @@ $(document).on('click', '.desactivar', async function() {
         }
 
     } catch (error) {
-        console.log(error)
+        notificarError(error);
     }
 })
 
@@ -245,7 +245,7 @@ $(document).on('click', '.activar', async function() {
         }
 
     } catch (error) {
-        console.log(error)
+        notificarError(error);
     }
 })
 

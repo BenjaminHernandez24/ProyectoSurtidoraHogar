@@ -23,7 +23,7 @@ formUsuario.addEventListener('submit', async(e) => {
 
         if (resjson.respuesta == "OK") {
             notificacionExitosa('Contraseña Cambiada Correctamente');
-            document.getElementById('usuario').value = "";
+            document.getElementById('repetirpassword').value = "";
             document.getElementById('newpassword').value = "";
         } else if (resjson.respuesta == "Caracteres no admitidos") {
             notificarError('No Se Admiten Caracteres Especiales');

@@ -83,7 +83,7 @@ frmClientes.addEventListener('submit', async(e) => {
             notificarError('No se pudo registrar');
         }
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 })
 
@@ -186,12 +186,12 @@ $(document).ready(async function autocompletado() {
                         document.getElementById('cantidad').disabled = false;
                     }
                 } catch (error) {
-                    console.log(error);
+                    notificarError(error);
                 }
             }
         });
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 });
 
@@ -513,7 +513,7 @@ $('#tbody').on("click", ".btnEditar", async function() {
         $("#stockEditar").val(datos[0]['STOCK']);
         $("#cantidadEditar").val(cantidad_editar);
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 
 

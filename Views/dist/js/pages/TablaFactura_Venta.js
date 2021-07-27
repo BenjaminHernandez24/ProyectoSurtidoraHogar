@@ -96,7 +96,7 @@ $(document).on('click', '.ticket', async function() {
                 }
             }
         } catch (error) {
-            console.log(error);
+            notificarError(error);
         }
     }
 })
@@ -161,7 +161,7 @@ $(document).on('click', '.factura', async function() {
                 }
             }
         } catch (error) {
-            console.log(error);
+            notificarError(error);
         }
     }
 })
@@ -202,7 +202,7 @@ $(document).on('click', '.ambos', async function() {
                 notificarError(res.respuesta);
             }
         } catch (error) {
-            console.log(error);
+            notificarError(error);
         }
     }
 })
@@ -210,8 +210,8 @@ $(document).on('click', '.ambos', async function() {
 /* FUNCION PARA ABRIR EL MODAL DE LA TABLA DE CLIENTES */
 document.getElementById('boton_factura').addEventListener('click', (e) => {
     e.preventDefault();
+    tablaVentas.ajax.reload(null, false);
     $("#ModalVentasTicket").modal("show");
-    console.log("hola")
 })
 
 

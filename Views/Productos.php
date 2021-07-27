@@ -32,6 +32,7 @@ if (
     </div>
     <!-- ./wrapper -->
     <?php include("Include/scripts.php"); ?>
+    <?php include("Include/tabla.php"); ?>
     <script src="dist/js/pages/Productos.js"></script>
 
     </body>

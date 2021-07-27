@@ -105,6 +105,7 @@ if (!isset($_SESSION['user']) ) {
     <!-- ./wrapper -->
 
     <?php include('Include/scripts.php'); ?>
+    <?php include("Include/tabla.php"); ?>
     <script src="dist/js/jspdf.min.js"></script>
     <script src="dist/js/jspdf.plugin.autotable.min.js"></script>
     <!-- Gráficas--> 

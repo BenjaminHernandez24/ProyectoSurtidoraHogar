@@ -136,6 +136,7 @@ $ctr = new EstadisticasControlador();
     <!-- ./wrapper -->
     
     <?php include('Include/scripts.php'); ?>
+    <?php include("Include/tabla.php"); ?>
     <script src="dist/js/pages/Estadistica.js"></script>
 </body>
 

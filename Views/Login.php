@@ -47,7 +47,7 @@
     </div>
   </main>
 
-  <?php include("Include/scripts.php"); ?>
+  <?php include("Include/scripts.php");?>
   <script src="dist/js/pages/Login.js"></script>
 
 </body>

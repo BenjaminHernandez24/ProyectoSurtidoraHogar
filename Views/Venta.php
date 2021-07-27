@@ -27,6 +27,7 @@ if (!isset($_SESSION['user'])) {
     <!-- ./wrapper -->
 
     <?php include("Include/scripts.php"); ?>
+    <?php include("Include/tabla.php"); ?>
     <script src="dist/js/pages/Ventas.js"></script>
     <script src="dist/js/pages/Venta_Impresiones.js"></script>
 
