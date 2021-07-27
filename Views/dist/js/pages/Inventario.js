@@ -184,7 +184,7 @@ $(document).on('click', ".btnBorrar", async function() {
     id_inventario = data[0];
     const result = await Swal.fire({
         title: '¿ESTÁ SEGURO(A) DE ELIMINAR ESTE PRODUCTO DEL INVENTARIO?',
-        text: "¡La eliminación es permanente!",
+        text: "¡Se eliminará en Módulo: Ventas !",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#5bc0de',

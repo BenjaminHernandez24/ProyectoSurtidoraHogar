@@ -2,7 +2,7 @@
 require_once "Conexion.php";
 class MarcaModelo
 {
-    private static $INSERTAR_MARCA = "INSERT INTO marcas_producto (descripcion_marca) values (?)";
+    private static $INSERTAR_MARCA = "INSERT INTO marcas_producto (descripcion_marca, estatus) values (?,?)";
     private static $EDITAR_MARCA = "UPDATE marcas_producto set descripcion_marca = ? WHERE id_marca = ?";
     private static $BORRAR_MARCA = "DELETE FROM marcas_producto WHERE id_marca = ?";
     private static $SELECT_ALL_MARCA = "SELECT * FROM marcas_producto";
@@ -24,7 +24,7 @@ class MarcaModelo
 
             if (empty($validar)) {
                 $pst = $conn->prepare(self::$INSERTAR_MARCA);
-                $resultado =$pst->execute([$marca ['descripcion_marca']]);
+                $resultado =$pst->execute([$marca ['descripcion_marca'],1]);
                 if ($resultado == 1) {
                     $msg = "OK";
                     //Si todo está correcto se inserta.

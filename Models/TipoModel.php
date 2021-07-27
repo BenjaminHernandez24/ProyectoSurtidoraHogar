@@ -2,7 +2,7 @@
 require_once "Conexion.php";
 class TipoModelo
 {
-    private static $INSERTAR_TIPO = "INSERT INTO tipo_producto (descripcion_tipo) values (?)";
+    private static $INSERTAR_TIPO = "INSERT INTO tipo_producto (descripcion_tipo, estatus) values (?,?)";
     private static $EDITAR_TIPO = "UPDATE tipo_producto set descripcion_tipo = ? WHERE id_tipo = ?";
     private static $BORRAR_TIPO = "DELETE FROM tipo_producto WHERE id_tipo = ?";
     private static $SELECT_ALL_TIPO = "SELECT * FROM tipo_producto";
@@ -23,7 +23,7 @@ class TipoModelo
 
             if (empty($validar)) {
                 $pst = $conn->prepare(self::$INSERTAR_TIPO);
-                $resultado =$pst->execute([$tipo ['descripcion_tipo']]);
+                $resultado =$pst->execute([$tipo ['descripcion_tipo'], 1]);
                 if ($resultado == 1) {
                     $msg = "OK";
                     //Si todo está correcto se inserta.

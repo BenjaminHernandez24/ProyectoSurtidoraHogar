@@ -25,7 +25,7 @@
                                             <th>Estatus aceptable</th>
                                             <th>Estatus Alerta</th>
                                             <th>Stock</th>
-                                            <th>Status</th>
+                                            <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>

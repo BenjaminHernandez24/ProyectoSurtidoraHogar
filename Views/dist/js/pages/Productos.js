@@ -222,7 +222,7 @@ $(document).on('click', ".btnBorrar", async function() {
     id_producto = data[0];
     const result = await Swal.fire({
         title: '¿ESTÁ SEGURO(A) DE ELIMINAR ESTE PRODUCTO?',
-        text: "¡Se eliminará en: Ventas, Compras e Inventario!",
+        text: "¡Afectará las Ventas y se eliminará en: Ventas, Compras e Inventario!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#5bc0de',
@@ -267,12 +267,12 @@ $(document).on('click', '.desactivar', async function() {
             var data = tabla_productos.row($(this).parents("tr")).data();
         }
 
-        let datos = new FormData();
-        datos.append('desactivarProducto', 'OK');
-        datos.append('id_producto', data['id_producto']);
+        let datosP = new FormData();
+        datosP.append('desactivarProducto', 'OK');
+        datosP.append('id_producto', data['id_producto']);
         let peticion = await fetch('../Controllers/Productos_Controller.php', {
             method: 'POST',
-            body: datos
+            body: datosP
         });
 
         let resjson = await peticion.json();
@@ -297,12 +297,12 @@ $(document).on('click', '.activar', async function() {
             var data = tabla_productos.row($(this).parents("tr")).data();
         }
 
-        let datos = new FormData();
-        datos.append('activarProducto', 'OK');
-        datos.append('id_producto', data['id_producto']);
+        let datosP = new FormData();
+        datosP.append('activarProducto', 'OK');
+        datosP.append('id_producto', data['id_producto']);
         let peticion = await fetch('../Controllers/ProductosController.php', {
             method: 'POST',
-            body: datos
+            body: datosP
         });
 
         let resjson = await peticion.json();

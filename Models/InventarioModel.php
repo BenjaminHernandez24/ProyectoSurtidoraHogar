@@ -4,10 +4,10 @@ require_once "Conexion.php";
 class InventarioModelo{
 
 private static $SELECT_ALL_INVENTARIO = "SELECT i.id_inventario, p.nombre_producto, i.estatus_aceptable, i.estatus_alerta, i.stock
-FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto; SELECT stock, estatus_aceptable, estatus_alerta from inventario ";
+FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto";
 private static $INSERTAR_PRODUCTO_INVENTARIO = "INSERT INTO inventario (id_producto, estatus_aceptable, estatus_alerta, stock) values (?, ?, ?, ?)";
 private static $VALIDAR_PRODUCTO_EXISTENTE = "SELECT * FROM inventario WHERE id_producto = ? ";
-private static $SELECT_PRODUCTOS =  "SELECT id_producto, nombre_producto FROM productos WHERE estatus = 1";
+private static $SELECT_PRODUCTOS =  "SELECT id_producto, nombre_producto FROM productos WHERE estatus = 1 order by nombre_producto";
 private static $EDITAR_PRODUCTO_INVENTARIO = "UPDATE inventario set id_producto = ?, estatus_aceptable = ?, estatus_alerta =?, stock=? WHERE id_inventario = ?";
 private static $BORRAR_PRODUCTO_INVENTARIO = "DELETE FROM inventario WHERE id_inventario = ?";
 

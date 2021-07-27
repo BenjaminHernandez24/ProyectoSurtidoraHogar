@@ -8,8 +8,8 @@ class ComprasModelo{
 private static $SELECT_ALL_COMPRAS = "SELECT ec.id_entrada_compra,prov.nom_empresa, prod.nombre_producto, ec.num_piezas, ec.precio_unitario,ec.subtotal, ec.fecha, ec.hora
 FROM entrada_compra ec INNER JOIN proveedores prov ON ec.id_prov=prov.id_prov INNER JOIN inventario i ON i.id_inventario=ec.id_inventario INNER JOIN productos prod ON i.id_producto=prod.id_producto";
 //-------------------- Funciones  para llenar Select de Productos y Proveedores --------------------//
-private static $SELECT_ALL_PRODUCTOS = "SELECT i.id_producto as id_producto,  p.nombre_producto as nombre_producto  FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto WHERE p.estatus=1";
-private static $SELECT_ALL_PROVEEDORES = "SELECT id_prov, nom_empresa FROM proveedores WHERE estatus=1";
+private static $SELECT_ALL_PRODUCTOS = "SELECT i.id_producto as id_producto,  p.nombre_producto as nombre_producto  FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto WHERE p.estatus=1 ORDER BY p.nombre_producto ";
+private static $SELECT_ALL_PROVEEDORES = "SELECT id_prov, nom_empresa FROM proveedores WHERE estatus=1 ORDER BY nom_empresa";
 //-------------------- Funciones para agregar Compras -----------------------------//
 private static $SELECT_ID_INVENTARIO_PRODUCTO_AND_STOCK = "SELECT id_inventario, stock FROM inventario WHERE id_producto= ? ";
 private static $ACTUALIZAR_STOCK = "UPDATE inventario set stock=? WHERE id_producto=?";

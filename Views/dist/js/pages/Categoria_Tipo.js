@@ -123,7 +123,7 @@ $(document).on('click', ".btnBorrar", async function() {
 
     const result = await Swal.fire({
         title: '¿ESTÁ SEGURO(A) DE ELIMINAR ESTE TIPO DE PRODUCTO?',
-        text: "¡Se eliminará en Módulo de: Productos!",
+        text: "¡Afectará las Ventas y se eliminará en Módulo Productos!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#5bc0de',
