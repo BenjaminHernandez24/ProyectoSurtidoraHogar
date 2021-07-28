@@ -8,11 +8,12 @@ class ProductoModelo
     private static $VALIDAR_PRODUCTO_EXISTENTE = "SELECT * FROM productos WHERE nombre_producto = ? ";
     private static $SELECT_ALL_TIPO_PRODUCTO = "SELECT * FROM tipo_producto WHERE estatus = 1 ORDER BY descripcion_tipo ";
     private static $SELECT_ALL_MARCA_PRODUCTO = "SELECT * FROM marcas_producto WHERE estatus = 1 ORDER BY descripcion_marca";
-    private static $SELECT_PRODUCTOS_TIPO_MARCA = "SELECT p.id_producto, p.nombre_producto, p.precio_publico, tp.descripcion_tipo, mp.descripcion_marca, p.estatus FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca  ";
+    private static $SELECT_PRODUCTOS_TIPO_MARCA = "SELECT p.id_producto, p.nombre_producto, p.precio_publico, tp.descripcion_tipo, mp.descripcion_marca, p.estatus FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca";
     private static $SELECT_ID_PRODUCTO = "SELECT id_producto  FROM productos WHERE id_producto= ?";
     private static $ESTATUS_PRODUCTO = "UPDATE productos set estatus=? WHERE id_producto = ?";
     private static $obtenerIdMarca = "SELECT * FROM marcas_producto WHERE descripcion_marca = ?";
     private static $obtenerIDProducto = "SELECT * FROM tipo_producto WHERE descripcion_tipo=?";
+    private static $SELECT_ESTATUS_PRODUCTOS = "SELECT estatus FROM productos";
 
    
 //-------- FUNCIÓN PARA AGREGAR TIPO DE PRODUCTO -------//
@@ -279,6 +280,26 @@ public static function activarProductos($id)
         return $e->getMessage();
     }
 }
+
+ //-------- FUNCIÓN PARA OBTENER ESTATUS DE PRODUCTO -------//
+ public static function obtener_estatus_productos()
+ {
+     try {
+         $conexion = new Conexion();
+         $conn = $conexion->getConexion();
+
+         $pst = $conn->prepare(self::$SELECT_ESTATUS_PRODUCTOS);
+         $pst->execute();
+
+         $estatus = $pst->fetchAll();
+         $conn = null;
+         $conexion->closeConexion();
+
+         return $estatus;
+     } catch (PDOException $e) {
+         return $e->getMessage();
+     }
+ }
 
 }
 ?>

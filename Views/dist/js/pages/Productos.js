@@ -267,12 +267,12 @@ $(document).on('click', '.desactivar', async function() {
             var data = tabla_productos.row($(this).parents("tr")).data();
         }
 
-        let datosP = new FormData();
-        datosP.append('desactivarProducto', 'OK');
-        datosP.append('id_producto', data['id_producto']);
+        let dato = new FormData();
+        dato.append('desactivarProducto', 'OK');
+        dato.append('id_producto', data['id_producto']);
         let peticion = await fetch('../Controllers/Productos_Controller.php', {
             method: 'POST',
-            body: datosP
+            body: dato
         });
 
         let resjson = await peticion.json();
@@ -297,12 +297,12 @@ $(document).on('click', '.activar', async function() {
             var data = tabla_productos.row($(this).parents("tr")).data();
         }
 
-        let datosP = new FormData();
-        datosP.append('activarProducto', 'OK');
-        datosP.append('id_producto', data['id_producto']);
+        let dato = new FormData();
+        dato.append('activarProducto', 'OK');
+        dato.append('id_producto', data['id_producto']);
         let peticion = await fetch('../Controllers/ProductosController.php', {
             method: 'POST',
-            body: datosP
+            body: dato
         });
 
         let resjson = await peticion.json();

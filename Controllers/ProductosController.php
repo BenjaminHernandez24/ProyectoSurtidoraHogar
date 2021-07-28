@@ -73,5 +73,11 @@ if (isset($_POST['activarProducto'])) {
     $respuesta = ProductoModelo::activarProductos($_POST['id_producto']);
     echo json_encode(['respuesta' => $respuesta]);
 }
+//---------- Obtener Estatus de Producto -------//
+if (isset($_POST['obtener_estatus'])) {
+
+    $data = ProductoModelo::obtener_estatus_productos();
+    echo json_encode($data);
+}
 
 ?>

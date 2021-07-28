@@ -5,7 +5,7 @@
                     <form method="post" id="frm_registro_producto">
                     <!----------------------- HEADER------------------------>
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto</h5>
+                        <i class="nav-icon fas fa-box" style="color:#F29F05; font-size: 30px;"> Nuevo Producto</i>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

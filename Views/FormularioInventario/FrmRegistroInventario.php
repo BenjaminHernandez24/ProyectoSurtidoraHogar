@@ -5,7 +5,7 @@
                     <form method="post" id="frm_registro_productoInv">
                     <!----------------------- HEADER------------------------>
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Nuevo Producto en Inventario</h5>
+                            <i class="fas fa-dolly-flatbed" style="color:#F29F05; font-size: 30px;"> Nuevo Producto en Inventario</i>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

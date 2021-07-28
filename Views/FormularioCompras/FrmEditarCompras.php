@@ -5,7 +5,7 @@
                     <form method="post" id="frm_editar_compras">
                          <!--------------------- HEADER ----------------------->
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Editar Compra</h5>
+                            <i class="fas fa-shopping-bag" style="color:#F29F05; font-size: 30px;"> Editar Compra</i>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
