@@ -380,7 +380,7 @@ $('#tbody').on('click', '.btnBorrar', async function() {
 formEditarDatosProducto.addEventListener('submit', async function(e) {
     e.preventDefault();
     var ID_inventario = fila_editar.getElementsByTagName("td")[0].getElementsByTagName("P")[0].innerHTML;
-    var cantidad = document.getElementById("cantidadEditar").value;
+    var cantidad = parseFloat(document.getElementById("cantidadEditar").value);
     var precio = fila_editar.getElementsByTagName("td")[3].getElementsByTagName("P")[0].innerHTML;
     var subtotal_actual = parseFloat(document.getElementById('subtotal').value);
     var total_editado;
@@ -389,108 +389,110 @@ formEditarDatosProducto.addEventListener('submit', async function(e) {
     var cantidad_a_enviar;
     let valor_pago = document.getElementById("nuevoMetodoPago").value;
 
-    if (cantidad > cantidad_editar) {
-        /*COMO SE AÑADE MAS, SE RESTA AL INVENTARIO*/
-        cantidad_a_enviar = parseFloat(cantidad) - parseFloat(cantidad_editar);
-        nuevo_subtotal = (cantidad_a_enviar * precio) + subtotal_actual;
-        $("#subtotal").val(nuevo_subtotal);
-        if (tipo_cliente == "") {
-            $("#total").val(nuevo_subtotal);
-        } else {
-            let descuento_aplicado;
-            let total;
-            let descuento_decimal
-            if (tipo_cliente == "Mayoreo") {
-                if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
-                    descuento_decimal = 9.5 / 100;
-                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                    total = nuevo_subtotal - descuento_aplicado;
-                } else {
-                    descuento_decimal = 12 / 100;
-                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                    total = nuevo_subtotal - descuento_aplicado;
-                }
-            } else if (tipo_cliente == "Tecnico" || tipo_cliente == "Empresa") {
-                if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
-                    descuento_decimal = 5.5 / 100;
-                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                    total = nuevo_subtotal - descuento_aplicado;
-                } else {
-                    descuento_decimal = 8 / 100;
-                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                    total = nuevo_subtotal - descuento_aplicado;
-                }
-            }
-            $("#total").val(total.toFixed(2));
-        }
-        try {
-            var restarInventario = new FormData();
-            restarInventario.append('restarInventario', 'OK');
-            restarInventario.append('idInventario', ID_inventario);
-            restarInventario.append('cantidad', cantidad_a_enviar);
 
-            var peticion = await fetch('../Controllers/VentasController.php', {
-                method: 'POST',
-                body: restarInventario
-            });
-        } catch (error) {
-            notificarError("Ocurrio un Error");
-        }
-
-    } else if (cantidad < cantidad_editar) {
-        /*COMO SE QUITA PRODUCTO, SE SUMA AL INVENTARIO*/
-        cantidad_a_enviar = parseFloat(cantidad_editar) - parseFloat(cantidad);
-        nuevo_subtotal = subtotal_actual - (cantidad_a_enviar * precio);
-        $("#subtotal").val(nuevo_subtotal);
-        if (tipo_cliente == "") {
-            $("#total").val(nuevo_subtotal);
-        } else {
-            let descuento_aplicado;
-            let total;
-            let descuento_decimal
-            if (tipo_cliente == "Mayoreo") {
-                if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
-                    descuento_decimal = 9.5 / 100;
-                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                    total = nuevo_subtotal - descuento_aplicado;
-                } else {
-                    descuento_decimal = 12 / 100;
-                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                    total = nuevo_subtotal - descuento_aplicado;
-                }
-            } else if (tipo_cliente == "Tecnico" || tipo_cliente == "Empresa") {
-                if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
-                    descuento_decimal = 5.5 / 100;
-                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                    total = nuevo_subtotal - descuento_aplicado;
-                } else {
-                    descuento_decimal = 8 / 100;
-                    descuento_aplicado = nuevo_subtotal * descuento_decimal;
-                    total = nuevo_subtotal - descuento_aplicado;
-                }
-            }
-            $("#total").val(total.toFixed(2));
-        }
-        try {
-            var sumarInventario = new FormData();
-            sumarInventario.append('sumarInventario', 'OK');
-            sumarInventario.append('idInventario', ID_inventario);
-            sumarInventario.append('cantidad', cantidad_a_enviar);
-
-            var peticion = await fetch('../Controllers/VentasController.php', {
-                method: 'POST',
-                body: sumarInventario
-            });
-        } catch (error) {
-            notificarError("Ocurrio un Error");
-        }
+    if (document.getElementById('stockEditar').value < 0) {
+        Error("Error, Cantidad ingresada mayor al stock actual");
     } else {
-        notificarError("Ocurrio un Error");
-    }
+        if (cantidad > cantidad_editar) {
+            /*COMO SE AÑADE MAS, SE RESTA AL INVENTARIO*/
+            cantidad_a_enviar = parseFloat(cantidad) - parseFloat(cantidad_editar);
+            nuevo_subtotal = (cantidad_a_enviar * precio) + subtotal_actual;
+            $("#subtotal").val(nuevo_subtotal);
+            if (tipo_cliente == "") {
+                $("#total").val(nuevo_subtotal);
+            } else {
+                let descuento_aplicado;
+                let total;
+                let descuento_decimal
+                if (tipo_cliente == "Mayoreo") {
+                    if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                        descuento_decimal = 9.5 / 100;
+                        descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                        total = nuevo_subtotal - descuento_aplicado;
+                    } else {
+                        descuento_decimal = 12 / 100;
+                        descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                        total = nuevo_subtotal - descuento_aplicado;
+                    }
+                } else if (tipo_cliente == "Tecnico" || tipo_cliente == "Empresa") {
+                    if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                        descuento_decimal = 5.5 / 100;
+                        descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                        total = nuevo_subtotal - descuento_aplicado;
+                    } else {
+                        descuento_decimal = 8 / 100;
+                        descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                        total = nuevo_subtotal - descuento_aplicado;
+                    }
+                }
+                $("#total").val(total.toFixed(2));
+            }
+            try {
+                var restarInventario = new FormData();
+                restarInventario.append('restarInventario', 'OK');
+                restarInventario.append('idInventario', ID_inventario);
+                restarInventario.append('cantidad', cantidad_a_enviar);
 
-    fila_editar.getElementsByTagName("td")[2].getElementsByTagName("P")[0].innerHTML = cantidad;
-    fila_editar.getElementsByTagName("td")[4].getElementsByTagName("P")[0].innerHTML = total_editado;
-    $('#modalEditarCantidad').modal('hide');
+                var peticion = await fetch('../Controllers/VentasController.php', {
+                    method: 'POST',
+                    body: restarInventario
+                });
+            } catch (error) {
+                notificarError("Ocurrio un Error");
+            }
+
+        } else if (cantidad < cantidad_editar) {
+            /*COMO SE QUITA PRODUCTO, SE SUMA AL INVENTARIO*/
+            cantidad_a_enviar = parseFloat(cantidad_editar) - parseFloat(cantidad);
+            nuevo_subtotal = subtotal_actual - (cantidad_a_enviar * precio);
+            $("#subtotal").val(nuevo_subtotal);
+            if (tipo_cliente == "") {
+                $("#total").val(nuevo_subtotal);
+            } else {
+                let descuento_aplicado;
+                let total;
+                let descuento_decimal
+                if (tipo_cliente == "Mayoreo") {
+                    if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                        descuento_decimal = 9.5 / 100;
+                        descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                        total = nuevo_subtotal - descuento_aplicado;
+                    } else {
+                        descuento_decimal = 12 / 100;
+                        descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                        total = nuevo_subtotal - descuento_aplicado;
+                    }
+                } else if (tipo_cliente == "Tecnico" || tipo_cliente == "Empresa") {
+                    if (valor_pago == "Tarjeta Crédito" || valor_pago == "Tarjeta Débito") {
+                        descuento_decimal = 5.5 / 100;
+                        descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                        total = nuevo_subtotal - descuento_aplicado;
+                    } else {
+                        descuento_decimal = 8 / 100;
+                        descuento_aplicado = nuevo_subtotal * descuento_decimal;
+                        total = nuevo_subtotal - descuento_aplicado;
+                    }
+                }
+                $("#total").val(total.toFixed(2));
+            }
+            try {
+                var sumarInventario = new FormData();
+                sumarInventario.append('sumarInventario', 'OK');
+                sumarInventario.append('idInventario', ID_inventario);
+                sumarInventario.append('cantidad', cantidad_a_enviar);
+
+                var peticion = await fetch('../Controllers/VentasController.php', {
+                    method: 'POST',
+                    body: sumarInventario
+                });
+            } catch (error) {
+                notificarError("Ocurrio un Error");
+            }
+        }
+        fila_editar.getElementsByTagName("td")[2].getElementsByTagName("P")[0].innerHTML = cantidad;
+        fila_editar.getElementsByTagName("td")[4].getElementsByTagName("P")[0].innerHTML = total_editado;
+        $('#modalEditarCantidad').modal('hide');
+    }
 })
 
 /* FUNCION PARA ABRIR EL MODAL DE EDITAR*/
@@ -670,18 +672,19 @@ document.getElementById('cantidad').addEventListener('keyup', () => {
 document.getElementById('cantidadEditar').addEventListener('keyup', () => {
     if (!document.getElementById('cantidadEditar').value == "") {
         let cantidad = parseFloat(document.getElementById('cantidadEditar').value);
-        if (cantidad > stock_editar) {
-            Error("Cantidad Ingresada Mayor al Stock");
-        } else {
-            if (cantidad > 0) {
-                var resta = stock_editar - cantidad
-                var resta_stock = resta + parseFloat(cantidad_editar);
-                document.getElementById('stockEditar').value = resta_stock;
-            } else {
-                Error("Error, Ingrese otra cantidad");
-            }
 
+        if (cantidad > 0) {
+            var resta = stock_editar - cantidad
+            var resta_stock = resta + parseFloat(cantidad_editar);
+            document.getElementById('stockEditar').value = resta_stock;
+            if (document.getElementById('stockEditar').value < 0) {
+                Error("Error, Cantidad ingresada mayo al stock actual");
+            }
+        } else {
+            Error("Error, Ingrese otra cantidad");
         }
+
+
     } else {
         document.getElementById('stockEditar').value = stock_editar;
     }

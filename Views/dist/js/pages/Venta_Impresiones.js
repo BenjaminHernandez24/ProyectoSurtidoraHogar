@@ -26,7 +26,7 @@ formDatosVenta.addEventListener('submit', async function(e) {
     } else {
 
         if (metodo_pago_venta == "Efectivo") {
-            if (cobro_venta == "" || cobro_venta <= 0) {
+            if (cobro_venta == "" || cobro_venta <= 0 || cobro_venta < total_venta) {
                 notificarError("Campos Erroneos");
             } else {
                 insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla, impresion);
@@ -88,6 +88,7 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
             k++;
         }
         lista = JSON.stringify(lista);
+        console.log(lista);
         var salida_venta = new FormData();
         salida_venta.append('AgregarSalidaVenta', 'OK');
         salida_venta.append('datos', lista);
@@ -104,7 +105,6 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
             validar_tabla2 = "ERROR";
         }
     }
-
     /* VALIDAMOS AMBAS INSERCIONES PARA SABER SI TODO ESTA CORRECTO */
     validar_impresion(validar_tabla1, validar_tabla2, impresion);
 }
