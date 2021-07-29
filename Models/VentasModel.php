@@ -5,7 +5,7 @@ class VentasModelo
 {
     private static $INSERTAR_CLIENTE = "INSERT INTO clientes(nombre_cli, tipo, telefono, Estatus) VALUES(?,?,?,1)";
     private static $INSERTAR_DETALLE_SALIDA_VENTA = "INSERT INTO detalle_salida_venta(cliente,metodo_pago,total,pago,cambio,impresiones,fecha,hora) values(?,?,?,?,?,?,(SELECT CURRENT_DATE),(SELECT CURRENT_TIME))";
-    private static $INSERTAR_SALIDA_VENTA = "INSERT INTO salida_venta(id_inventario,num_piezas,precio_a_vender,subtotal,id_detalle_salida_venta) VALUES(?,?,?,?,(Select max(id_detalle_salida_venta) from detalle_salida_venta))";
+    private static $INSERTAR_SALIDA_VENTA = "INSERT INTO salida_venta(id_inventario,num_piezas,precio_a_vender,subtotal,id_detalle_salida_venta) VALUES(?,?,?,?,?)";
     private static $SELECT_ALL = "SELECT p.nombre_producto FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto AND i.stock > 0";
     private static $SELECT_DATE_PRODUCTOS = "SELECT i.id_inventario, p.nombre_producto,i.stock,p.precio_publico FROM productos p INNER JOIN inventario i ON p.nombre_producto=? AND i.id_producto=p.id_producto ORDER BY (i.id_inventario) DESC LIMIT 1";
     private static $CLIENTES = "SELECT id_cli,nombre_cli,tipo,telefono FROM `clientes` WHERE Estatus = 1";
@@ -49,7 +49,7 @@ class VentasModelo
     /* ===========================
         FUNCION PARA AGREGAR SALIDA VENTA
      =============================*/
-    public static function AgregarSalidaVenta($datos)
+    public static function AgregarSalidaVenta($datos,$posicion)
     {
         try {
             $conexion = new Conexion();
@@ -57,9 +57,16 @@ class VentasModelo
 
             //Abro la transacción.
             $conn->beginTransaction();
+            
+            $pst = $conn->prepare("Select max(id_detalle_salida_venta) from detalle_salida_venta");
+            $resultado = $pst->execute();
+            $id_maximo = $pst-> fetch();
 
             $pst       = $conn->prepare(self::$INSERTAR_SALIDA_VENTA);
-            $resultado = $pst->execute([$datos['0'], $datos['2'], $datos['3'], $datos['4']]);
+
+            for($i = 0; $i < $posicion; $i++){            
+                $resultado = $pst->execute([$datos[$i]['Inventario'], $datos[$i]['Cantidad'], $datos[$i]['Precio'], $datos[$i]['Total'],$id_maximo['max(id_detalle_salida_venta)']]);
+            }
 
             if ($resultado == 1) {
                 $msg = "OK";

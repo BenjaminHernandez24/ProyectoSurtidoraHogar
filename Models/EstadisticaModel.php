@@ -55,7 +55,7 @@ class EstadisticaModelo
             $pst = $conn->prepare("SELECT COUNT(*) AS total FROM proveedores");
             $pst->execute();
             $proveedores = $pst->fetch();
-            echo $proveedores['total'];;
+            echo $proveedores['total'];
 
             $conexion->closeConexion();
             $conn = null;
