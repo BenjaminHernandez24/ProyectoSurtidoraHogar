@@ -15,7 +15,7 @@ class VentasModelo
     /* ===========================
         FUNCION PARA AGREGAR DETALLE SALIDA VENTA
      =============================*/
-    public static function AgregarDetalleSalidaVenta($venta)
+    public static function AgregarDetalleSalidaVenta($venta, $datos, $posicion)
     {
         try {
             $conexion = new Conexion();
@@ -25,16 +25,28 @@ class VentasModelo
             $conn->beginTransaction();
 
             $pst       = $conn->prepare(self::$INSERTAR_DETALLE_SALIDA_VENTA);
-            $resultado = $pst->execute([$venta['cliente'], $venta['pago'], $venta['total'], $venta['cobro'], $venta['cambio'],$venta['impresion']]);
+            $resultado = $pst->execute([$venta['cliente'], $venta['pago'], $venta['total'], $venta['cobro'], $venta['cambio'], $venta['impresion']]);
 
             $pst       = $conn->prepare("SELECT LAST_INSERT_ID();");
             $pst->execute();
-            $id = $pst -> fetch();
-            echo $id[0];
+            $id = $pst->fetch();
+
             if ($resultado == 1) {
-                $msg = "OK";
-                //Si todo esta correcto insertamos.
-                $conn->commit();
+                $pst       = $conn->prepare(self::$INSERTAR_SALIDA_VENTA);
+
+                for ($i = 0; $i < $posicion; $i++) {
+                    $resultado = $pst->execute([$datos[$i]['Inventario'], $datos[$i]['Cantidad'], $datos[$i]['Precio'], $datos[$i]['Total'], $id[0]]);
+                }
+
+                if ($resultado == 1) {
+                    $msg = "OK";
+                    //Si todo esta correcto insertamos.
+                    $conn->commit();
+                } else {
+                    $msg = "Fallo al insertar";
+                    //Si algo falla, reestablece la bd a como estaba en un inicio.
+                    $conn->rollBack();
+                }
             } else {
                 $msg = "Fallo al insertar";
                 //Si algo falla, reestablece la bd a como estaba en un inicio.
@@ -45,7 +57,6 @@ class VentasModelo
             $conexion->closeConexion();
 
             return $msg;
-            
         } catch (PDOException $e) {
             return $e->getMessage();
         }
@@ -54,7 +65,7 @@ class VentasModelo
     /* ===========================
         FUNCION PARA AGREGAR SALIDA VENTA
      =============================*/
-    public static function AgregarSalidaVenta($datos,$posicion)
+    public static function AgregarSalidaVenta($datos, $posicion)
     {
         try {
             $conexion = new Conexion();
@@ -62,15 +73,15 @@ class VentasModelo
 
             //Abro la transacción.
             $conn->beginTransaction();
-            
+
             $pst = $conn->prepare("Select max(id_detalle_salida_venta) from detalle_salida_venta");
             $resultado = $pst->execute();
-            $id_maximo = $pst-> fetch();
+            $id_maximo = $pst->fetch();
 
             $pst       = $conn->prepare(self::$INSERTAR_SALIDA_VENTA);
 
-            for($i = 0; $i < $posicion; $i++){            
-                $resultado = $pst->execute([$datos[$i]['Inventario'], $datos[$i]['Cantidad'], $datos[$i]['Precio'], $datos[$i]['Total'],$id_maximo['max(id_detalle_salida_venta)']]);
+            for ($i = 0; $i < $posicion; $i++) {
+                $resultado = $pst->execute([$datos[$i]['Inventario'], $datos[$i]['Cantidad'], $datos[$i]['Precio'], $datos[$i]['Total'], $id_maximo['max(id_detalle_salida_venta)']]);
             }
 
             if ($resultado == 1) {
@@ -243,7 +254,7 @@ class VentasModelo
                 if ($stock_verificar[0]["STOCK"] < 0) {
                     $msg = "ERROR";
                     $conn->rollBack();
-                }else{
+                } else {
                     $msg = "OK";
                     $conn->commit();
                 }

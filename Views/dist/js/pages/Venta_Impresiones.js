@@ -52,12 +52,33 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
     if (cliente == "") {
         cliente = "cliente";
     }
+
+    /* POSTERIORMENTE INSERTAMOS A LA TABLA DE AGREGAR_SALIDA_VENTA*/
+    for (var i = 0; i < filastabla.length - 1; i++) {
+        lista = {};
+        for (var j = 0; j < columnastabla.length - 1; j++) {
+            var valor_input = valorestabla[k].innerHTML;
+            lista[j] = valor_input;
+            k++;
+        }
+        lista1[i] = {
+            "Inventario": lista[0],
+            "Producto": lista[1],
+            "Cantidad": lista[2],
+            "Precio": lista[3],
+            "Total": lista[4]
+        };
+    }
+
+    lista2 = JSON.stringify(lista1);
+
     /* PRIMERO INSERTAMOS A LA BASE DE DATO AGREGAR_DETALLE_SALIDA_VENTA*/
     detalle_salida_venta.append('AgregarDetalleSalidaVenta', 'OK');
     detalle_salida_venta.append('cliente', cliente);
     detalle_salida_venta.append('pago', pago);
     detalle_salida_venta.append('total', total);
     detalle_salida_venta.append('impresion', impresion);
+    detalle_salida_venta.append('datos', lista2);
 
     if (pago == "Efectivo") {
         detalle_salida_venta.append('cobro', cobro);
@@ -82,26 +103,9 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
         validar_tabla1 = "ERROR";
     }
 
-    /* POSTERIORMENTE INSERTAMOS A LA TABLA DE AGREGAR_SALIDA_VENTA*/
-    for (var i = 0; i < filastabla.length - 1; i++) {
-        lista = {};
-        for (var j = 0; j < columnastabla.length - 1; j++) {
-            var valor_input = valorestabla[k].innerHTML;
-            lista[j] = valor_input;
-            k++;
-        }
-        lista1[i] = {
-            "Inventario": lista[0],
-            "Producto": lista[1],
-            "Cantidad": lista[2],
-            "Precio": lista[3],
-            "Total": lista[4]
-        };
-    }
 
-    lista2 = JSON.stringify(lista1);
 
-    var salida_venta = new FormData();
+    /*var salida_venta = new FormData();
     salida_venta.append('AgregarSalidaVenta', 'OK');
     salida_venta.append('datos', lista2);
     var peticion_salida_venta = await fetch('../Controllers/VentasController.php', {
@@ -115,14 +119,14 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
         validar_tabla2 = "OK"
     } else {
         validar_tabla2 = "ERROR";
-    }
+    }*/
 
     /* VALIDAMOS AMBAS INSERCIONES PARA SABER SI TODO ESTA CORRECTO */
-    validar_impresion(validar_tabla1, validar_tabla2, impresion);
+    validar_impresion(validar_tabla1, impresion);
 }
 
-function validar_impresion(validar_tabla1, validar_tabla2, impresion) {
-    if (validar_tabla1 == "OK" && validar_tabla2 == "OK") {
+function validar_impresion(validar_tabla1, impresion) {
+    if (validar_tabla1 == "OK") {
         if (impresion == "Ticket" || impresion == "Ambos") {
             //ACA VA LA FUTURA FUNCION PARA IMPRIMIR EL TICKET
             notificacionExitosa("Venta Exitosa \n Recoja su Ticket");

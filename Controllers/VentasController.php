@@ -9,6 +9,8 @@ if (isset($_POST['AgregarSalidaVenta'])) {
 }
 
 if (isset($_POST['AgregarDetalleSalidaVenta'])) {
+    $data = json_decode($_POST['datos'], true);
+    $posiciones = count($data);
     $venta = array(
         "cliente" => $_POST['cliente'],
         "pago"       => $_POST['pago'],
@@ -17,7 +19,7 @@ if (isset($_POST['AgregarDetalleSalidaVenta'])) {
         "cambio"   => $_POST['cambio'],
         "impresion"   => $_POST['impresion'],
     );
-    $respuesta = VentasModelo::AgregarDetalleSalidaVenta($venta);
+    $respuesta = VentasModelo::AgregarDetalleSalidaVenta($venta,$data,$posiciones);
     echo json_encode(['respuesta' => $respuesta]);
 }
 
