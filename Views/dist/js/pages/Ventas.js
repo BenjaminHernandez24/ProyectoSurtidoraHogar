@@ -17,6 +17,7 @@ var stock_inicial;
 var stock_editar;
 var cantidad_editar;
 var fila_editar;
+var resta_stock;
 
 /* ===========================
     FUNCIONES PARA INICIALIZAR
@@ -390,8 +391,8 @@ formEditarDatosProducto.addEventListener('submit', async function(e) {
     let valor_pago = document.getElementById("nuevoMetodoPago").value;
 
 
-    if (document.getElementById('stockEditar').value < 0) {
-        Error("Error, Cantidad ingresada mayor al stock actual");
+    if (resta_stock <= 0 || cantidad <= 0) {
+        Error("Error");
     } else {
         if (cantidad > cantidad_editar) {
             /*COMO SE AÑADE MAS, SE RESTA AL INVENTARIO*/
@@ -675,7 +676,7 @@ document.getElementById('cantidadEditar').addEventListener('keyup', () => {
 
         if (cantidad > 0) {
             var resta = stock_editar - cantidad
-            var resta_stock = resta + parseFloat(cantidad_editar);
+            resta_stock = resta + parseFloat(cantidad_editar);
             if (resta_stock < 0) {
                 Error("Error, Cantidad ingresada mayo al stock actual");
             } else {
@@ -759,5 +760,6 @@ function limpiarCampos(mensaje) {
         stock_editar = "";
         cantidad_editar = "";
         fila_editar = "";
+        resta_stock = "";
     }
 }
