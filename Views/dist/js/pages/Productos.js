@@ -270,7 +270,7 @@ $(document).on('click', '.desactivar', async function() {
         let dato = new FormData();
         dato.append('desactivarProducto', 'OK');
         dato.append('id_producto', data['id_producto']);
-        let peticion = await fetch('../Controllers/Productos_Controller.php', {
+        let peticion = await fetch('../Controllers/ProductosController.php', {
             method: 'POST',
             body: dato
         });
