@@ -57,7 +57,7 @@ async function inicializarGraficasProducto() {
                       maxRotation: 0,
                       minRotation: 0,
                       maxTicksLimit: 200,
-                      fontSize: 13.5,
+                      fontSize: 12.5,
                       fontColor: "#000000",
                     },
                     scaleLabel:{
@@ -112,7 +112,7 @@ function reporteComprasGeneral(datos,fechas,imagen){
         if(fechas.length == 2){ //¿Es de rango o unico?
           pdf.setDrawColor(0);
           pdf.setFillColor(253, 253, 150);
-          pdf.rect(5, 15.4, 108, 33,'F'); //
+          pdf.rect(5, 15.4, 108, 41,'F'); //
           pdf.setFontSize(13);
           pdf.setFontType("bold");
           pdf.text(7,22,"Fecha Inicial: " + fechas[0] + "."); //Fecha seleccionada.
@@ -121,7 +121,7 @@ function reporteComprasGeneral(datos,fechas,imagen){
         }else{
           pdf.setDrawColor(0);
           pdf.setFillColor(253, 253, 150);
-          pdf.rect(5, 15.4, 108, 25.2,'F'); //
+          pdf.rect(5, 15.4, 108, 33.2,'F'); //
           pdf.setFontSize(13);
           pdf.setFontType("bold");
           pdf.text(7,22,"Fecha: " + fechas + "."); //Fecha seleccionada.
@@ -191,7 +191,7 @@ function reporteComprasEspecifico(datos,fechas,imagen){
         if(fechas.length > 2){ //¿Es de rango o unico?
             pdf.setDrawColor(0);
             pdf.setFillColor(253, 253, 150);
-            pdf.rect(5, 15.4, 110, 48,'F'); //
+            pdf.rect(5, 15.4, 110, 55,'F'); //
             pdf.setFontSize(13);
             pdf.setFontType("bold");
             pdf.text(7,22,"Nombre del proveedor: "); //Fecha seleccionada
@@ -202,7 +202,7 @@ function reporteComprasEspecifico(datos,fechas,imagen){
           }else{
             pdf.setDrawColor(0);
             pdf.setFillColor(253, 253, 150);
-            pdf.rect(5, 15.4, 110, 41,'F'); //
+            pdf.rect(5, 15.4, 110, 48,'F'); //
             pdf.setFontSize(13);
           pdf.setFontType("bold");
             pdf.text(7,22,"Nombre del proveedor: "); //Fecha seleccionada
@@ -211,7 +211,7 @@ function reporteComprasEspecifico(datos,fechas,imagen){
             sumaTotalPagina(data,46);
           }
 
-        espacioFilas(5);
+        espacioFilas(8);
         lista = new Array();
         for(var i = 0; i < data.length; i++){
           lista.splice(0,lista.length);
@@ -300,7 +300,7 @@ function reporteVentas(datos,fechas,imagen){
             sumaTotalPaginaVentas(data,30,contadorCliente,contadorSumaTotales);
         }
 
-          espacioFilas(5);
+          espacioFilas(7);
           for(var i = 0; i < data.length; i++){
             lista.splice(0, data.length);
             contadorSumaDia = 0;
@@ -623,10 +623,14 @@ function guardarDatoDeFilaImpresion(columns,lista,drawCell){
 
 function sumaTotalPagina(data,pocision){
   var sumaTotal = 0;
+  var productos = 0;
   for(var i = 0; i < data.length; i++){
     sumaTotal = sumaTotal + parseFloat(data[i]["subtotal"]);
+    productos += parseInt(data[i]["piezas"]);
   }
-  pdf.text(7,pocision,"Productos comprados: " + data.length + ".");
+  pdf.text(7,pocision,"Numero de compras: " + data.length + ".");
+  pocision = pocision + 8;
+  pdf.text(7,pocision,"Productos comprados: " + productos + ".");
   pocision = pocision + 8;
   pdf.text(7,pocision,"Total de gastos: $" + sumaTotal.toFixed(2) + " pesos.");
   pocision = 0;

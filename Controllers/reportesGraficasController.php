@@ -14,7 +14,7 @@ if (isset($_POST['top5Productos'])) {
             $palabraCorta = $arrayPalabras[$j];
             if(strlen($palabraCorta) < 14){
                 $acumuladorCorto .= $palabraCorta." ";
-                if(strlen($acumuladorCorto) > 18){
+                if(strlen($acumuladorCorto) > 15){
                     $acumuladorCorto = rtrim($acumuladorCorto," ");
                     $cadena[] = substr($acumuladorCorto,0,(strlen($acumuladorCorto)-strlen($palabraCorta)-1));
                     $acumuladorCorto = $palabraCorta." ";
