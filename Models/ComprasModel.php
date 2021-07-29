@@ -26,7 +26,6 @@ private static $SELECT_NUM_PIEZAS_EDITAR = "SELECT  num_piezas FROM  entrada_com
 private static $BORRAR_COMPRA ="DELETE FROM entrada_compra WHERE id_entrada_compra = ?";
 private static $ACTUALIZAR_STOCK_B ="UPDATE inventario set stock=(stock-?) WHERE id_inventario=?";
 private static $SELECT_ID_INVENTARIO_AND_NUM_PIEZAS ="SELECT id_inventario, num_piezas FROM  entrada_compra WHERE id_entrada_compra=? AND fecha = CURDATE()";
-private static $SELECT_NUM_PIEZAS = "SELECT  num_piezas FROM  entrada_compra WHERE id_entrada_compra=?";
 
 //-------- FUNCIÓN PARA OBTENER  COMPRAS -------//
 public static function obtener_compras_inv()
@@ -123,12 +122,12 @@ public static function agregar_compras($compras)
                     //Si todo está correcto se inserta.
                     $conn->commit();
                 } else {
-                    $msg = "Falló al eliminar";
+                    $msg = "Falló al insertar";
                     //Si algo falla, reestablece la bd a como estaba en un inicio.
                     $conn->rollBack();
                 }
             }else{
-                $msg = "Falló al eliminar";
+                $msg = "Falló al insertar";
                 //Si algo falla, reestablece la bd a como estaba en un inicio.
                 $conn->rollBack();
             }
@@ -195,21 +194,20 @@ public static function editar_compras($Compras_editar)
             //Si todo está correcto se inserta.
             $conn->commit();
         } else {
-            $msg = "Falló al eliminar";
+            $msg = "Falló al editar";
             //Si algo falla, reestablece la bd a como estaba en un inicio.
             $conn->rollBack();
         }
     
          $conn = null;
          $conexion->closeConexion();
-         return $msg;  
+         return $msg; 
+          //------ Si la compra no es actual, no se permite realizar cambios. -----// 
         } else {
             return $msg="NO";
         }
-    
         $conn = null;
         $conexion->closeConexion();
-    
     } catch (PDOException $e) {
         return $e->getMessage();
     }
@@ -254,7 +252,7 @@ public static function eliminar_compras($id)
      $conn = null;
      $conexion->closeConexion();
      return $msg;  
-
+       //------ Si la compra no es actual, no se permite realizar cambios. -----//
     } else {
         return $msg="NO";
     }

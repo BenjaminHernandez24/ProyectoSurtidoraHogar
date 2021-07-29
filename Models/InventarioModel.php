@@ -109,15 +109,12 @@ public static function editar_productos_inventario($producto_edi)
         //Se abre la transacción.
         $conn->beginTransaction();
         //-------- Se verifica si ya existe el producto en inventario-------//
-        
-        
         $pst = $conn->prepare(self::$obtenerIDProducto); 
         $pst->execute([$producto_edi['id_producto']]); 
         $resultado = $pst->fetchAll(PDO::FETCH_ASSOC); 
         $id_p = $resultado[0]["id_producto"];
        
         $pst = $conn->prepare(self::$EDITAR_PRODUCTO_INVENTARIO);
-
         $resultado =$pst->execute([$id_p,$producto_edi ['estatus_aceptable'],$producto_edi['estatus_alerta'],$producto_edi['stock'], $producto_edi ['id_inventario']]);
         
 
@@ -130,8 +127,6 @@ public static function editar_productos_inventario($producto_edi)
             //Si algo falla, se reestablece la bd a como estaba en un inicio.
             $conn->rollBack();
         }
-
-    
         $conn = null;
         $conexion->closeConexion();
         return $msg;

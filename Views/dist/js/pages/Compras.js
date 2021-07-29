@@ -68,7 +68,7 @@ async function llenar_Proveedor(){
         }
         
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 }
 llenar_Proveedor();
@@ -100,7 +100,7 @@ async function llenar_Producto(){
         }
         
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 }
 llenar_Producto();
@@ -134,7 +134,7 @@ form_agregar_compra.addEventListener('submit', async(e) => {
         }
     
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
    }
 })
@@ -173,7 +173,7 @@ form_editar_compra.addEventListener('submit', async (e) => {
             }
             
         } catch (error) {
-            console.log(error);
+            notificarError(error);
         }
     }
 });
@@ -243,7 +243,7 @@ $(document).on('click', ".btnBorrar", async function() {
             }
 
         } catch (error) {
-            console.log(error);
+            notificarError(error);
         }
     }
 

@@ -98,7 +98,7 @@ class MarcaModelo
                 //Si todo está correcto se inserta.
                 $conn->commit();
             } else {
-                $msg = "Falló al editar";
+                $msg = "Falló al eliminar";
                 //Si algo falla, reestablece la bd a como estaba en un inicio.
                 $conn->rollBack();
             }

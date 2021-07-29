@@ -56,11 +56,7 @@ if (isset($_POST['obtener_marca_producto'])) {
     $marca = ProductoModelo::obtener_marca_productos();
     echo json_encode($marca);
 }
-if (isset($_POST['obtener_id'])) {
 
-    $id = ProductoModelo::obtener_id_producto($_POST['id_producto']);
-    echo json_encode($id);
-}
 //---------- Desactivar Producto -------//
 if (isset($_POST['desactivarProducto'])) {
 
@@ -72,12 +68,6 @@ if (isset($_POST['activarProducto'])) {
 
     $respuesta = ProductoModelo::activarProductos($_POST['id_producto']);
     echo json_encode(['respuesta' => $respuesta]);
-}
-//---------- Obtener Estatus de Producto -------//
-if (isset($_POST['obtener_estatus'])) {
-
-    $data = ProductoModelo::obtener_estatus_productos();
-    echo json_encode($data);
 }
 
 ?>

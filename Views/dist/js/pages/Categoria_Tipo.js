@@ -62,7 +62,7 @@ form_agregar_tipo.addEventListener('submit', async(e) => {
             notificarError(resjson.respuesta);
         }
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 })
 //------- Evento para botón de Editar el Tipo Producto ------//
@@ -89,7 +89,7 @@ form_editar_tipo.addEventListener('submit', async(e) => {
             notificarError(resjson.respuesta);
         }
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 })
 
@@ -153,7 +153,7 @@ $(document).on('click', ".btnBorrar", async function() {
             }
 
         } catch (error) {
-            console.log(error);
+            notificarError(error);
         }
     }
 
@@ -184,7 +184,7 @@ $(document).on('click', '.desactivar', async function() {
         }
 
     } catch (error) {
-        console.log(error)
+        notificarError(error)
     }
 })
 
@@ -214,7 +214,7 @@ $(document).on('click', '.activar', async function() {
         }
 
     } catch (error) {
-        console.log(error)
+        notificarError(error)
     }
 })
 // ------- Mensajes de Alert -------//

@@ -69,7 +69,7 @@ async function llenar_Tipo_Producto(){
         }
         
     } catch (error) {
-        console.log(error);
+       notificarError(error);
     }
 }
 llenar_Tipo_Producto();
@@ -104,7 +104,7 @@ async function llenar_Marca_Producto(){
         }
         
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 }
 llenar_Marca_Producto();
@@ -145,7 +145,7 @@ form_agregar_producto.addEventListener('submit', async(e) => {
         }
     
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 }
 })
@@ -183,7 +183,7 @@ form_editar_producto.addEventListener('submit', async (e) => {
             }
             
         } catch (error) {
-            console.log(error);
+            notificarError(error);
         }
     }
 });
@@ -222,7 +222,7 @@ $(document).on('click', ".btnBorrar", async function() {
     id_producto = data[0];
     const result = await Swal.fire({
         title: '¿ESTÁ SEGURO(A) DE ELIMINAR ESTE PRODUCTO?',
-        text: "¡Afectará las Ventas y se eliminará en: Ventas, Compras e Inventario!",
+        text: "¡Afectará las Ventas y se eliminará en: Compras, Ventas e Inventario!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#5bc0de',
@@ -252,7 +252,7 @@ $(document).on('click', ".btnBorrar", async function() {
             }
 
         } catch (error) {
-            console.log(error);
+            notificarError(error);
         }
     }
 
@@ -284,7 +284,7 @@ $(document).on('click', '.desactivar', async function() {
         }
 
     } catch (error) {
-        console.log(error)
+        notificarError(error)
     }
 })
 
@@ -314,7 +314,7 @@ $(document).on('click', '.activar', async function() {
         }
 
     } catch (error) {
-        console.log(error)
+        notificarError(error)
     }
 }) 
 //---------- Validar números negativos-registro---------//
