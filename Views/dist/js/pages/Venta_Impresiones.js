@@ -99,7 +99,7 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
         };
     }
 
-    lista2 = JSON.stringify(lista1);;
+    lista2 = JSON.stringify(lista1);
 
     var salida_venta = new FormData();
     salida_venta.append('AgregarSalidaVenta', 'OK');
@@ -116,43 +116,7 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
     } else {
         validar_tabla2 = "ERROR";
     }
-    /*for (var i = 0; i < filastabla.length - 1; i++) {
 
-
-
-            lista1[i] = {
-                "Inventario": valorestabla[0].innerHTML,
-                "Producto": valorestabla[1].innerHTML,
-                "Cantidad": valorestabla[2].innerHTML,
-                "Precio": valorestabla[3].innerHTML,
-                "Total": valorestabla[4].innerHTML
-            };
-
-
-        lista = {};
-        for (var j = 0; j < columnastabla.length - 1; j++) {
-            var valor_input = valorestabla[k].innerHTML;
-            lista[j] = valor_input;
-            k++;
-        }
-        lista = JSON.stringify(lista);
-        console.log(lista);
-        var salida_venta = new FormData();
-        salida_venta.append('AgregarSalidaVenta', 'OK');
-        salida_venta.append('datos', lista);
-        var peticion_salida_venta = await fetch('../Controllers/VentasController.php', {
-            method: 'POST',
-            body: salida_venta
-        });
-
-        var respuesta_json = await peticion_salida_venta.json();
-
-        if (respuesta_json.respuesta == "OK") {
-            validar_tabla2 = "OK"
-        } else {
-            validar_tabla2 = "ERROR";
-        }
-    }*/
     /* VALIDAMOS AMBAS INSERCIONES PARA SABER SI TODO ESTA CORRECTO */
     validar_impresion(validar_tabla1, validar_tabla2, impresion);
 }
