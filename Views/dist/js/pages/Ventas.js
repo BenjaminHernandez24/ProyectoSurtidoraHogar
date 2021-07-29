@@ -676,9 +676,10 @@ document.getElementById('cantidadEditar').addEventListener('keyup', () => {
         if (cantidad > 0) {
             var resta = stock_editar - cantidad
             var resta_stock = resta + parseFloat(cantidad_editar);
-            document.getElementById('stockEditar').value = resta_stock;
-            if (document.getElementById('stockEditar').value < 0) {
+            if (resta_stock < 0) {
                 Error("Error, Cantidad ingresada mayo al stock actual");
+            } else {
+                document.getElementById('stockEditar').value = resta_stock;
             }
         } else {
             Error("Error, Ingrese otra cantidad");
