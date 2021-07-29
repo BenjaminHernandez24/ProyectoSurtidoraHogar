@@ -1,17 +1,20 @@
 
 async function grafica_1(){
+    try{
+        let formato = new FormData();
+        formato.append('frecuenciaClientes', 'OK');
 
-    let formato = new FormData();
-    formato.append('frecuenciaClientes', 'OK');
+        let peticion = await fetch('../Controllers/GraficasController.php', {
+          method: 'POST',
+          body: formato
+        });
 
-    let peticion = await fetch('../Controllers/GraficasController.php', {
-      method: 'POST',
-      body: formato
-    });
-
-    let respuesta = await peticion.json();
-    if(respuesta.parametros !== "F"){
-        grafica_1_Resguardo(respuesta);
+        let respuesta = await peticion.json();
+        if(respuesta.parametros !== "F"){
+            grafica_1_Resguardo(respuesta);
+        }
+    }catch(error){
+        console.log(error);
     }
 }
 
@@ -89,18 +92,21 @@ grafica_1();
 
 
 async function grafica_2(){
+    try{
+        let formato = new FormData();
+        formato.append('ventasTotalesPorMes', 'OK');
 
-    let formato = new FormData();
-    formato.append('ventasTotalesPorMes', 'OK');
+        let peticion = await fetch('../Controllers/GraficasController.php', {
+          method: 'POST',
+          body: formato
+        });
 
-    let peticion = await fetch('../Controllers/GraficasController.php', {
-      method: 'POST',
-      body: formato
-    });
-
-    let respuesta = await peticion.json();
-    if(respuesta.parametros !== "F"){
-        grafica_2_Resguardo(respuesta);
+        let respuesta = await peticion.json();
+        if(respuesta.parametros !== "F"){
+            grafica_2_Resguardo(respuesta);
+        }
+    }catch(error){
+        
     }
 }
 

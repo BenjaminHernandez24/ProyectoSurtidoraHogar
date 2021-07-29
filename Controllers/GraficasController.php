@@ -7,6 +7,7 @@ if (isset($_POST['frecuenciaClientes'])) {
     $palabraCorta="";
     $acumuladorCorto = "";
     $cadena = [];
+    $parametros = [];
     for ($i = 0; $i < sizeof($data); $i++) {
         $arrayPalabras = explode(" ",$data[$i]['clientes']);
         for($j = 0; $j < sizeof($arrayPalabras); $j++){
