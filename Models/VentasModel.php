@@ -63,47 +63,6 @@ class VentasModelo
     }
 
     /* ===========================
-        FUNCION PARA AGREGAR SALIDA VENTA
-     =============================*/
-    public static function AgregarSalidaVenta($datos, $posicion)
-    {
-        try {
-            $conexion = new Conexion();
-            $conn     = $conexion->getConexion();
-
-            //Abro la transacción.
-            $conn->beginTransaction();
-
-            $pst = $conn->prepare("Select max(id_detalle_salida_venta) from detalle_salida_venta");
-            $resultado = $pst->execute();
-            $id_maximo = $pst->fetch();
-
-            $pst       = $conn->prepare(self::$INSERTAR_SALIDA_VENTA);
-
-            for ($i = 0; $i < $posicion; $i++) {
-                $resultado = $pst->execute([$datos[$i]['Inventario'], $datos[$i]['Cantidad'], $datos[$i]['Precio'], $datos[$i]['Total'], $id_maximo['max(id_detalle_salida_venta)']]);
-            }
-
-            if ($resultado == 1) {
-                $msg = "OK";
-                //Si todo esta correcto insertamos.
-                $conn->commit();
-            } else {
-                $msg = "Fallo al insertar";
-                //Si algo falla, reestablece la bd a como estaba en un inicio.
-                $conn->rollBack();
-            }
-
-            $conn = null;
-            $conexion->closeConexion();
-
-            return $msg;
-        } catch (PDOException $e) {
-            return $e->getMessage();
-        }
-    }
-
-    /* ===========================
         FUNCION PARA AGREGAR CLIENTES
      =============================*/
     public static function AgregarCliente($cliente)

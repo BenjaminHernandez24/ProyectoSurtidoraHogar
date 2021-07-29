@@ -1,13 +1,6 @@
 <?php
 require_once "../Models/VentasModel.php";
 
-if (isset($_POST['AgregarSalidaVenta'])) {
-    $data = json_decode($_POST['datos'], true);
-    $posiciones = count($data);
-    $respuesta = VentasModelo::AgregarSalidaVenta($data,$posiciones);
-    echo json_encode(['respuesta' => $respuesta]);
-}
-
 if (isset($_POST['AgregarDetalleSalidaVenta'])) {
     $data = json_decode($_POST['datos'], true);
     $posiciones = count($data);

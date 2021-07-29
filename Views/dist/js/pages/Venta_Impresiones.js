@@ -18,7 +18,7 @@ formDatosVenta.addEventListener('submit', async function(e) {
     let cliente_venta = document.getElementById("nombre_cliente").value;
     let metodo_pago_venta = document.getElementById("nuevoMetodoPago").value;
     let impresion = document.getElementById("generar").value;
-    let cobro_venta = document.getElementById("cobro").value;
+    let cobro_venta = parseFloat(document.getElementById("cobro").value);
     let cambio_venta = document.getElementById("cambio").value;
 
     if (valorestabla.length == 0 && subtotal_venta == "" && total_venta == "") {
@@ -26,7 +26,7 @@ formDatosVenta.addEventListener('submit', async function(e) {
     } else {
 
         if (metodo_pago_venta == "Efectivo") {
-            if (cobro_venta == "" || cobro_venta <= 0 || cobro_venta < total_venta) {
+            if (document.getElementById("cobro").value == "" || cobro_venta <= 0 || cobro_venta < total_venta) {
                 notificarError("Campos Erroneos");
             } else {
                 insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla, impresion);
@@ -102,24 +102,6 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
     } else {
         validar_tabla1 = "ERROR";
     }
-
-
-
-    /*var salida_venta = new FormData();
-    salida_venta.append('AgregarSalidaVenta', 'OK');
-    salida_venta.append('datos', lista2);
-    var peticion_salida_venta = await fetch('../Controllers/VentasController.php', {
-        method: 'POST',
-        body: salida_venta
-    });
-
-    var respuesta_json = await peticion_salida_venta.json();
-
-    if (respuesta_json.respuesta == "OK") {
-        validar_tabla2 = "OK"
-    } else {
-        validar_tabla2 = "ERROR";
-    }*/
 
     /* VALIDAMOS AMBAS INSERCIONES PARA SABER SI TODO ESTA CORRECTO */
     validar_impresion(validar_tabla1, impresion);
