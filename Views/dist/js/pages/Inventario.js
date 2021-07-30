@@ -24,18 +24,8 @@ async function inventario() {
             {"data": "estatus_aceptable"},
             {"data": "estatus_alerta"},
             {"data": "stock"},
-          
-            { "data": (s) => {
-                if (s.stock > s.estatus_aceptable ) {
-                    return `<button class="btn btn-success">Aceptable</button>`;
-                } else  if (s.stock <= s.estatus_aceptable && s.stock >= s.estatus_alerta ){
-                    return `<button class="btn btn-warning ">Advertencia</button>`;
-                } else if (s.stock < s.estatus_alerta ){ 
 
-                    return `<button class="btn btn-danger ">Alerta</button>`;
-                }
-              }
-            },
+            {"defaultContent": "<button class='btn btn-success btn-sm btnVerStatus'>Ver</button>"},
            
             {
                 "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-info btn-sm btnEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div> "
@@ -220,6 +210,43 @@ $(document).on('click', ".btnBorrar", async function() {
 
 })
 //---------- Fin Borrar un Producto de Inventario ---------//
+
+//---------- Funcion para Ver Estado del Stock en Inventario ---------//
+$(document).on('click', '.btnVerStatus', async function(){
+    
+    try {
+        if (tabla_inventario.row(this).child.isShown()) {
+            var data = tabla_inventario.row(this).data();
+        } else {
+            var data = tabla_inventario.row($(this).parents("tr")).data();
+        }
+        id_inventario = data[0];
+        var datosPro = new FormData();
+        datosPro.append('obtener_estatus', 'OK');
+        datosPro.append('id_inventario', id_inventario);
+
+        var peticion = await fetch('../Controllers/InventarioController.php', {
+            method: 'POST',
+            body: datosPro
+        });
+//---------- Esperamos la respuesta que obtiene nuestro controlador para hacer la consulta. ---------//
+        var resjson = await peticion.json();
+
+        if (resjson.respuesta == "ACEPTABLE") {
+            mensajeStockAceptable('El stock es aceptable');
+           
+        } else if (resjson.respuesta == "ALERTA"){
+            mensajeStockBajo('El stock es bajo!!');
+        } else {
+            notificarError(resjson.respuesta);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+     
+});
+//---------- Fin Ver Estado de Stock en inventario ---------//
+
 
 //---------- Validar números negativos-estatus aceptable en Registro---------//
 document.getElementById('estatus_acept').addEventListener('keyup', () => {

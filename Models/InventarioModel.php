@@ -11,7 +11,6 @@ private static $SELECT_PRODUCTOS =  "SELECT id_producto, nombre_producto FROM pr
 private static $EDITAR_PRODUCTO_INVENTARIO = "UPDATE inventario set id_producto = ?, estatus_aceptable = ?, estatus_alerta =?, stock=? WHERE id_inventario = ?";
 private static $BORRAR_PRODUCTO_INVENTARIO = "DELETE FROM inventario WHERE id_inventario = ?";
 
-
 private static $OBTENER_ESTATUS_COMPARAR ="SELECT stock, estatus_aceptable from inventario WHERE id_inventario = ?";
 private static $obtenerIDProducto = "SELECT * FROM productos WHERE nombre_producto=?";
 //-------- FUNCIÓN PARA OBTENER  PRODUCTOS EN INVENTARIO -------//
@@ -20,7 +19,7 @@ private static $obtenerIDProducto = "SELECT * FROM productos WHERE nombre_produc
      try {
          $conexion = new Conexion();
          $conn = $conexion->getConexion();
-
+         
          $pst = $conn->prepare(self::$SELECT_ALL_INVENTARIO);
          $pst->execute();
          $inventario = $pst->fetchAll();
