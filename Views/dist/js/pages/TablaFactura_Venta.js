@@ -59,6 +59,7 @@ $(document).on('click', '.ticket', async function() {
             var impresion = new FormData();
             impresion.append('obtenerimpresion', 'OK');
             impresion.append('idVenta', data[0]);
+            impresion.append('estatus', "Ticket");
 
             var peticion = await fetch('../Controllers/ImpresionController.php', {
                 method: 'POST',
@@ -77,9 +78,11 @@ $(document).on('click', '.ticket', async function() {
                 /*POR AQUI GENERARE EL TICKET*/
                 if (resjson == "Factura") {
                     //cambiare a ambos porque ya tiene factura y ahora tendra tambien ticket
+                    Cambiarimpresion.append('estatus', "Factura");
                     Cambiarimpresion.append('impresiones', 'Ambos');
                 } else if (resjson == "Ninguno") {
                     //cambiare a ticket porque se generada ticket
+                    Cambiarimpresion.append('estatus', "Ticket");
                     Cambiarimpresion.append('impresiones', 'Ticket');
                 }
 
@@ -124,7 +127,7 @@ $(document).on('click', '.factura', async function() {
             var impresion = new FormData();
             impresion.append('obtenerimpresion', 'OK');
             impresion.append('idVenta', data[0]);
-
+            impresion.append('estatus', "Factura");
             var peticion = await fetch('../Controllers/ImpresionController.php', {
                 method: 'POST',
                 body: impresion
@@ -141,9 +144,11 @@ $(document).on('click', '.factura', async function() {
 
                 /*POR AQUI GENERARE EL TICKET*/
                 if (resjson == "Ticket") {
+                    Cambiarimpresion.append('estatus', "Factura");
                     //cambiare a ambos porque ya tiene ticket y ahora tendra tambien factura
                     Cambiarimpresion.append('impresiones', 'Ambos');
                 } else if (resjson == "Ninguno") {
+                    Cambiarimpresion.append('estatus', "Factura");
                     //cambiare a factura porque se generada factura
                     Cambiarimpresion.append('impresiones', 'Factura');
                 }
@@ -189,6 +194,7 @@ $(document).on('click', '.ambos', async function() {
             Cambiarimpresion.append('cambiarimpresion', 'OK');
             Cambiarimpresion.append('idVenta', data[0]);
             Cambiarimpresion.append('impresiones', 'Ambos');
+            Cambiarimpresion.append('estatus', "Ambos");
 
             var peticiones = await fetch('../Controllers/ImpresionController.php', {
                 method: 'POST',
@@ -219,4 +225,12 @@ function notificacionExitosa(mensaje) {
     Swal.fire(mensaje, '', 'success').then(result => {
         $("#ModalVentasTicket").modal("hide");
     });
+}
+
+function notificarError(mensaje) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Ops...',
+        text: mensaje
+    })
 }

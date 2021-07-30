@@ -78,7 +78,7 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
     detalle_salida_venta.append('total', total);
     detalle_salida_venta.append('impresion', impresion);
     detalle_salida_venta.append('datos', lista2);
-
+    detalle_salida_venta.append('subtotal', subtotal_venta);
     if (pago == "Efectivo") {
         detalle_salida_venta.append('cobro', cobro);
         detalle_salida_venta.append('cambio', cambio);
@@ -99,7 +99,7 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
 
     if (resjson.respuesta == "OK") {
         if (impresion == "Ticket" || impresion == "Ambos") {
-            imprimir(pago, total, cobro, cambio, lista2, subtotal_venta);
+            notificacionExitosa("Venta Exitosa");
         } else if (impresion == "Factura" || impresion == "Ninguno") {
             notificacionExitosa("Venta Exitosa");
         }
@@ -108,27 +108,4 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
         notificarError("No Se Pudo Realizar la Venta");
     }
 
-}
-
-async function imprimir(tipo_pago, total, cobro, cambio, lista_productos, subtotal) {
-    let datos_imprimir = new FormData();
-    let peticion;
-    datos_imprimir.append('ImprimirTicket', 'OK');
-    datos_imprimir.append('tipo_pago', tipo_pago);
-    datos_imprimir.append('total', total);
-    datos_imprimir.append('subtotal', subtotal);
-    datos_imprimir.append('cobro', cobro);
-    datos_imprimir.append('cambio', cambio);
-    datos_imprimir.append('productos', lista_productos);
-    peticion = await fetch('../Controllers/Imprimir.php', {
-        method: 'POST',
-        body: datos_imprimir
-    });
-
-    var resjson = await peticion.json();
-    if (resjson.respuesta == "OK") {
-        notificacionExitosa("Venta Exitosa \n Recoja su Ticket");
-    } else {
-        notificarError("No Se Pudo Generar Ticket");
-    }
 }

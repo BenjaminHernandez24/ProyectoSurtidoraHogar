@@ -740,7 +740,7 @@ function limpiarCampos(mensaje) {
         document.getElementById('buscar_cliente').disabled = true;
         document.getElementById('cobro').disabled = true;
         document.getElementById('generar').disabled = true;
-        $("#generar").val("Ticket");
+        $("#generar").val("Ninguno");
         document.getElementById('nuevoMetodoPago').disabled = true;
         $("#nuevoMetodoPago").val("Efectivo");
         $("#fila_cobro").slideDown();

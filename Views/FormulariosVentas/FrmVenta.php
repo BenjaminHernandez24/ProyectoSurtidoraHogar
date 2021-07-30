@@ -135,10 +135,11 @@ require_once "../Controllers/EstadisticaController.php";
                                         <div class="col">
                                             <label for="nom_empresa">Seleccione una opción</label>
                                             <select class="form-control mb-3" id="generar" name="generar" disabled="" required>
+                                                <option value="Ninguno">Ninguno</option>
                                                 <option value="Ticket">Ticket</option>
                                                 <option value="Factura">Factura</option>
                                                 <option value="Ambos">Ambos</option>
-                                                <option value="Ninguno">Ninguno</option>
+
                                             </select>
                                         </div>
                                     </div>

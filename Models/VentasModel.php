@@ -4,7 +4,7 @@ require_once "Conexion.php";
 class VentasModelo
 {
     private static $INSERTAR_CLIENTE = "INSERT INTO clientes(nombre_cli, tipo, telefono, Estatus) VALUES(?,?,?,1)";
-    private static $INSERTAR_DETALLE_SALIDA_VENTA = "INSERT INTO detalle_salida_venta(cliente,metodo_pago,total,pago,cambio,impresiones,fecha,hora) values(?,?,?,?,?,?,(SELECT CURRENT_DATE),(SELECT CURRENT_TIME));";
+    private static $INSERTAR_DETALLE_SALIDA_VENTA = "INSERT INTO detalle_salida_venta(cliente,metodo_pago,total,pago,cambio,impresiones,fecha,hora,folio) values(?,?,?,?,?,?,(SELECT CURRENT_DATE),(SELECT CURRENT_TIME),?);";
     private static $INSERTAR_SALIDA_VENTA = "INSERT INTO salida_venta(id_inventario,num_piezas,precio_a_vender,subtotal,id_detalle_salida_venta) VALUES(?,?,?,?,?)";
     private static $SELECT_ALL = "SELECT p.nombre_producto FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto AND i.stock > 0";
     private static $SELECT_DATE_PRODUCTOS = "SELECT i.id_inventario, p.nombre_producto,i.stock,p.precio_publico FROM productos p INNER JOIN inventario i ON p.nombre_producto=? AND i.id_producto=p.id_producto ORDER BY (i.id_inventario) DESC LIMIT 1";
@@ -25,7 +25,7 @@ class VentasModelo
             $conn->beginTransaction();
 
             $pst       = $conn->prepare(self::$INSERTAR_DETALLE_SALIDA_VENTA);
-            $resultado = $pst->execute([$venta['cliente'], $venta['pago'], $venta['total'], $venta['cobro'], $venta['cambio'], $venta['impresion']]);
+            $resultado = $pst->execute([$venta['cliente'], $venta['pago'], $venta['total'], $venta['cobro'], $venta['cambio'], $venta['impresion'],$venta['folio']]);
 
             $pst       = $conn->prepare("SELECT LAST_INSERT_ID();");
             $pst->execute();
@@ -260,6 +260,39 @@ class VentasModelo
             $conexion->closeConexion();
 
             return "OK";
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public static function ContarVentas()
+    {
+        try {
+            $conexion = new Conexion();
+            $conn = $conexion->getConexion();
+
+            $pst = $conn->prepare("SELECT COUNT(*) AS total FROM detalle_salida_venta");
+            $pst->execute();
+            $ventas = $pst->fetch();
+
+            $pst = $conn->prepare("SELECT MAX(folio) FROM detalle_salida_venta WHERE impresiones = 'Ticket' or impresiones= 'Ambos'");
+            $pst->execute();
+            $maximo = $pst->fetch();
+
+            $pst = $conn->prepare("SELECT COUNT(impresiones) FROM detalle_salida_venta WHERE impresiones = 'Ticket' or impresiones= 'Ambos'");
+            $pst->execute();
+            $contador = $pst->fetch();
+
+            $resultado_consultas =[
+                "ventas" => $ventas['total'],
+                "maximo"       => $maximo['MAX(folio)'],
+                "contador"       => $contador['COUNT(impresiones)'],
+            ];
+
+            return $resultado_consultas;
+
+            $conexion->closeConexion();
+            $conn = null;
         } catch (PDOException $e) {
             return $e->getMessage();
         }

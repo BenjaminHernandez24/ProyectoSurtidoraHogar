@@ -1,7 +1,18 @@
 <?php
 require_once "../Models/VentasModel.php";
+require_once "../Controllers/Imprimir.php";
 
 if (isset($_POST['AgregarDetalleSalidaVenta'])) {
+    if ($_POST['impresion'] == "Ticket" || $_POST['impresion'] == "Ambos") {
+        $consulta = VentasModelo::ContarVentas();
+        if ($consulta['ventas'] == 0 || $consulta['contador'] == 0) {
+            $folio = 80001;
+        } else {
+            $folio = $consulta['maximo'] + 1;
+        }
+    } else {
+        $folio = 0;
+    }
     $data = json_decode($_POST['datos'], true);
     $posiciones = count($data);
     $venta = array(
@@ -11,8 +22,15 @@ if (isset($_POST['AgregarDetalleSalidaVenta'])) {
         "cobro"       => $_POST['cobro'],
         "cambio"   => $_POST['cambio'],
         "impresion"   => $_POST['impresion'],
+        "folio"   => $folio,
     );
-    $respuesta = VentasModelo::AgregarDetalleSalidaVenta($venta,$data,$posiciones);
+    $respuesta = VentasModelo::AgregarDetalleSalidaVenta($venta, $data, $posiciones);
+
+    if ($_POST['impresion'] == "Ticket" || $_POST['impresion'] == "Ambos") {
+        if($respuesta == "OK"){
+            Imprimir::datosimprimir($_POST['pago'], $_POST['total'], $_POST['cobro'], $_POST['cambio'], $_POST['datos'], $_POST['subtotal'], $folio);
+        }
+    }
     echo json_encode(['respuesta' => $respuesta]);
 }
 
@@ -57,12 +75,12 @@ if (isset($_POST['ExtraerStock'])) {
 }
 
 if (isset($_POST['restarInventario'])) {
-    $respuesta = VentasModelo::restarInventario($_POST['idInventario'],$_POST['cantidad']);
+    $respuesta = VentasModelo::restarInventario($_POST['idInventario'], $_POST['cantidad']);
     echo json_encode($respuesta);
 }
 
 if (isset($_POST['sumarInventario'])) {
-    $respuesta = VentasModelo::sumarInventario($_POST['idInventario'],$_POST['cantidad']);
+    $respuesta = VentasModelo::sumarInventario($_POST['idInventario'], $_POST['cantidad']);
     echo json_encode($respuesta);
 }
 
