@@ -12,13 +12,14 @@
                         </div>
                    <!------------------------ BODY ------------------------->
                    <div class="modal-body">
-                        <label for="producto_inventario">Producto</label>
-                        <div class="input-group mb-3">
-                           <span class="input-group-text" id="addon-wrapping"><i class="fas fa-blender"></i></span>
-                             <select class="form-control" name="producto" id="producto">
-                              <option value="default">Selecciona un producto</option>
-                            </select>
+                   <label for="nom_producto">Buscar Producto</label>
+                         <div class="input-group mb-3">
+                         <input id="buscar" name="buscar" type="text" class="form-control" placeholder="Nombre del Producto" aria-label="Recipient's username" aria-describedby="button-addon2">
+                         <style> .ui-autocomplete { position: absolute; z-index: 2150000000 !important; cursor: default; border: 2px solid #ccc; padding: 5px 0; border-radius: 2px; } </style> 
                         </div>
+
+                        <label for="nom_producto">Producto</label>
+                        <input id="nombre_producto" name="nombre_producto" autocomplete="off" class="form-control mb-3" type="text" placeholder="Nombre del Producto" readonly required>
                     </div>
                         <div class="modal-body">
                                 <label for="estatus_acept">Estatus Aceptable</label>
