@@ -62,17 +62,14 @@ class Imprimir
         $printer->setJustification(Printer::JUSTIFY_RIGHT);
         if ($tipo_pago == "Efectivo") {
             $printer->text("METODO DE PAGO: $tipo_pago\n");
-            $printer->text("SUBTOTAL $ $subtotal\n");
             $printer->text("TOTAL $ $total\n");
             $printer->text("EFECTIVO $ $cobro\n");
             $printer->text("CAMBIO $ $cambio\n");
         } else if ($tipo_pago == "Tarjeta Crédito") {
             $printer->text("METODO DE PAGO: Tarjeta Credito\n");
-            $printer->text("SUBTOTAL $ $subtotal\n");
             $printer->text("TOTAL $ $total\n");
         } else {
             $printer->text("METODO DE PAGO: Tarjeta Debito\n");
-            $printer->text("SUBTOTAL $ $subtotal\n");
             $printer->text("TOTAL $ $total\n");
         }
 
@@ -84,7 +81,9 @@ class Imprimir
         $printer->text("factura global del dia\n");
         $printer->text("EN PARTES ELECTRICAS\n");
         $printer->text("NO HAY GARANTIA\n");
-        $printer->text("Muchas gracias por su compra\n");
+        $printer->text("Salida la Mercancia no se\n");
+        $printer->text("Acepta Devoluciones\n");
+        $printer->text("gracias por su compra\n");
 
 
 
@@ -175,7 +174,9 @@ class Imprimir
         $printer->text("factura global del dia\n");
         $printer->text("EN PARTES ELECTRICAS\n");
         $printer->text("NO HAY GARANTIA\n");
-        $printer->text("Muchas gracias por su compra\n");
+        $printer->text("Salida la Mercancia no se\n");
+        $printer->text("Acepta Devoluciones\n");
+        $printer->text("gracias por su compra\n");
 
 
 
