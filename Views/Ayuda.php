@@ -11,9 +11,9 @@ if (
   $_SESSION['user'] != "Administrador2")
 {
   header("Content-Disposition: inline; filename= EmpleadoSurtidoraHogar.pdf");
-  readfile("Ayuda_Pdf/LaSurtidoraAyudaEmpleado.pdf");
+  readfile("Ayuda_Pdf/LaSurtidoraAyudaEmpleado_1.pdf");
 }else{
    header("Content-Disposition: inline; filename= ManualSurtidoraHogar.pdf");
-   readfile("Ayuda_Pdf/LaSurtidoraAyudaAdministrador.pdf");
+   readfile("Ayuda_Pdf/LaSurtidoraAyudaAdministrador_1.pdf");
 }  
 ?>
