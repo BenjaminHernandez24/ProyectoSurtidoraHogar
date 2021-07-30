@@ -12,7 +12,7 @@ if (!isset($_SESSION['user']) ) {
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper" style="width:1349px;">
+    <div class="wrapper" style="width:1349px;" >
 
         <!-- navegacion -->
 
