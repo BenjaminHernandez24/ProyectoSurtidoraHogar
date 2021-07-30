@@ -161,24 +161,18 @@ $(document).on('click', '.btnEditar', async function(){
             body: datosProducto
         });
 //---------- Esperamos la respuesta que obtiene nuestro controlador para hacer la consulta. ---------//
-        var respuesta = await peticion.json();
-       
-        $("#estatus_acept_editar").val(respuesta.estatus_aceptable);
-        $("estatus_alert_editar").val(respuesta.estatus_alerta);
-
-       console.log(respuesta);
+        let respuesta = await peticion.json();
+        var array = new Array();
+        array = Object.values(respuesta);
+        $("#estatus_acept_editar").val(array[0]["estatus_aceptable"]);
+        $("#estatus_alert_editar").val(array[0]["estatus_alerta"]);
         
 
     } catch (error) {
         notificarError(error);
     }
 
-    console.log(data);
-     // Cargamos datos de la tabla del producto elegido //
-    id_inventario = data['id_inventario'];
     document.querySelector("#producto_editar").value = data['nombre_producto'];
-    $("#estatus_acept_editar").val(respuesta.estatus_aceptable);
-    $("estatus_alert_editar").val(respuesta.estatus_alerta);
 
     $("#stock_editar").val(data['stock']);
     // -----Mostramos el modal -----//
