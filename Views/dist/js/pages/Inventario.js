@@ -149,12 +149,37 @@ $(document).on('click', '.btnEditar', async function(){
     }else{
         var data = tabla_inventario.row($(this).parents("tr")).data();
     }
+    id_inventario = data['id_inventario'];
+    try {
+
+        var datosProducto = new FormData();
+        datosProducto.append('obtener_acept_alert', 'OK');
+        datosProducto.append('id_inventario', id_inventario);
+
+        var peticion = await fetch('../Controllers/InventarioController.php', {
+            method: 'POST',
+            body: datosProducto
+        });
+//---------- Esperamos la respuesta que obtiene nuestro controlador para hacer la consulta. ---------//
+        var respuesta = await peticion.json();
+       
+        $("#estatus_acept_editar").val(respuesta.estatus_aceptable);
+        $("estatus_alert_editar").val(respuesta.estatus_alerta);
+
+       console.log(respuesta);
+        
+
+    } catch (error) {
+        notificarError(error);
+    }
+
     console.log(data);
      // Cargamos datos de la tabla del producto elegido //
     id_inventario = data['id_inventario'];
     document.querySelector("#producto_editar").value = data['nombre_producto'];
-    $("#estatus_acept_editar").val(data[2]);
-    $("#estatus_alert_editar").val(data[3]);
+    $("#estatus_acept_editar").val(respuesta.estatus_aceptable);
+    $("estatus_alert_editar").val(respuesta.estatus_alerta);
+
     $("#stock_editar").val(data['stock']);
     // -----Mostramos el modal -----//
     $('#editar_producto_inventario').modal('show');
@@ -170,7 +195,7 @@ $(document).on('click', ".btnBorrar", async function() {
         var data = tabla_inventario.row($(this).parents("tr")).data();
     }
 
-    id_inventario = data[0];
+    id_inventario = data['id_inventario'];
     const result = await Swal.fire({
         title: '¿ESTÁ SEGURO(A) DE ELIMINAR ESTE PRODUCTO DEL INVENTARIO?',
         text: "¡Se eliminará en Módulo: Ventas !",
@@ -219,7 +244,7 @@ $(document).on('click', '.btnVerStatus', async function(){
         } else {
             var data = tabla_inventario.row($(this).parents("tr")).data();
         }
-        id_inventario = data[0];
+        id_inventario = data['id_inventario'];
         var datosPro = new FormData();
         datosPro.append('obtener_estatus', 'OK');
         datosPro.append('id_inventario', id_inventario);

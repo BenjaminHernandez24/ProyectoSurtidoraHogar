@@ -65,4 +65,18 @@ if (isset($_POST['obtener_estatus'])) {
     echo json_encode(['respuesta' => $respuesta]);
 }
 
+if (isset($_POST['obtener_acept_alert'])) {
+
+    
+    $estatus = InventarioModelo::obtener_acept_alert($_POST['id_inventario']);
+    $respuesta = [];
+    $respuesta = 
+    [
+        "estatus_alerta" => $estatus[0]["estatus_alerta"],
+        "estatus_aceptable" => $estatus[0]["estatus_aceptable"]
+    ];
+    
+    echo json_encode(['respuesta' => $respuesta]);
+    }
+
 ?>

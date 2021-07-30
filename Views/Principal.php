@@ -16,7 +16,7 @@ $ctr = new EstadisticasControlador();
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
+<div class="wrapper" style="width:1349px;">
 
         <!-- navegacion -->
 
