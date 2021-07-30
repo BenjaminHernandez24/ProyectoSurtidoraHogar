@@ -1,12 +1,19 @@
 <?php
+header("Content-type: application/pdf");
 session_start();
 
 if (!isset($_SESSION['user'])) {
    header('Location: Login.php');
 }
 
-
-header("Content-type: application/pdf");
-header("Content-Disposition: inline; filename= ManualSurtidoraHogar.pdf");
-readfile("Ayuda_Pdf/LaSurtidoraAyuda_1.pdf");
+if (
+  $_SESSION['user'] != "Administrador1" && 
+  $_SESSION['user'] != "Administrador2")
+{
+  header("Content-Disposition: inline; filename= EmpleadoSurtidoraHogar.pdf");
+  readfile("Ayuda_Pdf/LaSurtidoraAyudaEmpleado.pdf");
+}else{
+   header("Content-Disposition: inline; filename= ManualSurtidoraHogar.pdf");
+   readfile("Ayuda_Pdf/LaSurtidoraAyudaAdministrador.pdf");
+}  
 ?>
