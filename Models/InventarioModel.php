@@ -22,7 +22,7 @@ private static $obtenerIDProducto = "SELECT * FROM productos WHERE nombre_produc
          
          $pst = $conn->prepare(self::$SELECT_ALL_INVENTARIO);
          $pst->execute();
-         $inventario = $pst->fetchAll();
+         $inventario = $pst->fetchAll(PDO::FETCH_ASSOC);
 
          
          $conn = null;

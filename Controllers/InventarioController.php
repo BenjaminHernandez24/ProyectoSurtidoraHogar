@@ -4,7 +4,7 @@ require_once "../Models/InventarioModel.php";
 if (isset($_POST['obtener_inventario'])) {
 
 $inventario = InventarioModelo::obtener_inventario_producto();
-echo json_encode($inventario);
+echo json_encode($inventario,JSON_UNESCAPED_UNICODE);
 }
 //---------- Agregar Producto en Inventario -------//
 if (isset($_POST['agregar_producto_inv'])) {

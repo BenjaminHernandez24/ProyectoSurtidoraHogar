@@ -21,8 +21,6 @@ async function inventario() {
         "columns": [
             {"data": "id_inventario"},
             {"data": "nombre_producto"},
-            {"data": "estatus_aceptable"},
-            {"data": "estatus_alerta"},
             {"data": "stock"},
 
             {"defaultContent": "<button class='btn btn-success btn-sm btnVerStatus'>Ver</button>"},
@@ -151,12 +149,13 @@ $(document).on('click', '.btnEditar', async function(){
     }else{
         var data = tabla_inventario.row($(this).parents("tr")).data();
     }
+    console.log(data);
      // Cargamos datos de la tabla del producto elegido //
-    id_inventario = data[0];
-    document.querySelector("#producto_editar").value = data[1];
+    id_inventario = data['id_inventario'];
+    document.querySelector("#producto_editar").value = data['nombre_producto'];
     $("#estatus_acept_editar").val(data[2]);
     $("#estatus_alert_editar").val(data[3]);
-    $("#stock_editar").val(data[4]);
+    $("#stock_editar").val(data['stock']);
     // -----Mostramos el modal -----//
     $('#editar_producto_inventario').modal('show');
 

@@ -22,8 +22,6 @@
                                         <tr class="table table-dark">
                                             <th>ID Inventario</th>
                                             <th>Producto</th>
-                                            <th>Estatus aceptable</th>
-                                            <th>Estatus Alerta</th>
                                             <th>Stock</th>
                                             <th>Estado</th>
                                             <th>Acciones</th>
