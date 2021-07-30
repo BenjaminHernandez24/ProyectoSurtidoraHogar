@@ -11,19 +11,20 @@ private static $SELECT_PRODUCTOS =  "SELECT id_producto, nombre_producto FROM pr
 private static $EDITAR_PRODUCTO_INVENTARIO = "UPDATE inventario set id_producto = ?, estatus_aceptable = ?, estatus_alerta =?, stock=? WHERE id_inventario = ?";
 private static $BORRAR_PRODUCTO_INVENTARIO = "DELETE FROM inventario WHERE id_inventario = ?";
 
-
 private static $OBTENER_ESTATUS_COMPARAR ="SELECT stock, estatus_aceptable from inventario WHERE id_inventario = ?";
 private static $obtenerIDProducto = "SELECT * FROM productos WHERE nombre_producto=?";
+
+private static $SELECT_ACEPTABLE_ALERTA ="SELECT estatus_aceptable, estatus_alerta FROM inventario WHERE id_inventario=?";
 //-------- FUNCIÓN PARA OBTENER  PRODUCTOS EN INVENTARIO -------//
  public static function obtener_inventario_producto()
  {
      try {
          $conexion = new Conexion();
          $conn = $conexion->getConexion();
-
+         
          $pst = $conn->prepare(self::$SELECT_ALL_INVENTARIO);
          $pst->execute();
-         $inventario = $pst->fetchAll();
+         $inventario = $pst->fetchAll(PDO::FETCH_ASSOC);
 
          
          $conn = null;
@@ -196,6 +197,25 @@ public static function editar_productos_inventario($producto_edi)
          return $e->getMessage();
      }
  }
+ //-------- FUNCIÓN PARA OBTENER ESTATUS ACEPTABLE Y ALERTA -------//
+public static function obtener_acept_alert($id)
+{
+    try {
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+
+        $pst = $conn->prepare(self::$SELECT_ACEPTABLE_ALERTA);
+        $pst->execute([$id]);
+
+        $estatus = $pst->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        $conexion->closeConexion();
+
+        return $estatus;
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+}
 
 }
 ?>

@@ -16,7 +16,7 @@ $ctr = new EstadisticasControlador();
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
+<div class="wrapper" style="width:1349px;">
 
         <!-- navegacion -->
 
@@ -29,10 +29,10 @@ $ctr = new EstadisticasControlador();
             <!-- Main content -->
             <section class="content-header">
                 <div class="container-fluid">
-                <?php if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
+               
                     <!-- Small boxes (Stat box) -->
                     <div class="row mb-2">
-                     
+                    <?php if ($_SESSION['user'] == "Administrador1" || $_SESSION['user'] == "Administrador2") { ?>
                         <!-- PROVEEDORES -->
                         <div class="col-lg-3 col-6" class="small-box-footer">
                             <div class="small-box bg-green">
@@ -100,6 +100,7 @@ $ctr = new EstadisticasControlador();
                                 </a>
                             </div>
                         </div>
+
                         <?php } else if ($_SESSION['user'] == "Empleado") { ?>
                              <!-- VENTAS -->
                         <div class="col-lg-3 col-6" class="small-box-footer">
@@ -117,27 +118,28 @@ $ctr = new EstadisticasControlador();
                                 </a>
                             </div>
                         </div>
-                        <?php } ?>
+                        <?php } ?> 
+
+                        
                        
                     </div>
-                    
                 </div>
             </section>
            
 
             <?php include('FormulariosPrincipal/TablaVentasDia.php'); ?>
-
-                <?php include('FormulariosPrincipal/FormatoGraficas.php'); ?>
+            <?php include('FormulariosPrincipal/FormatoGraficas.php'); ?>
         </div>
         <!-- footer -->
         <?php include('Include/footer.php'); ?>
-      
+        
     </div>
     <!-- ./wrapper -->
-    
+   
     <?php include('Include/scripts.php'); ?>
     <?php include("Include/tabla.php"); ?>
     <script src="dist/js/pages/Estadistica.js"></script>
+    
 </body>
 
 </html>

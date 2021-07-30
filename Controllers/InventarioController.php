@@ -4,7 +4,7 @@ require_once "../Models/InventarioModel.php";
 if (isset($_POST['obtener_inventario'])) {
 
 $inventario = InventarioModelo::obtener_inventario_producto();
-echo json_encode($inventario);
+echo json_encode($inventario,JSON_UNESCAPED_UNICODE);
 }
 //---------- Agregar Producto en Inventario -------//
 if (isset($_POST['agregar_producto_inv'])) {
@@ -64,5 +64,19 @@ if (isset($_POST['obtener_estatus'])) {
     $respuesta = InventarioModelo::obtener_estatus($_POST['id_inventario']);
     echo json_encode(['respuesta' => $respuesta]);
 }
+
+if (isset($_POST['obtener_acept_alert'])) {
+
+    
+    $estatus = InventarioModelo::obtener_acept_alert($_POST['id_inventario']);
+    $respuesta = [];
+    $respuesta = 
+    [
+        "estatus_alerta" => $estatus[0]["estatus_alerta"],
+        "estatus_aceptable" => $estatus[0]["estatus_aceptable"]
+    ];
+    
+    echo json_encode(['respuesta' => $respuesta]);
+    }
 
 ?>

@@ -13,7 +13,6 @@ class Conexion
 	private $password = "";
 	private $bd_name = "lasurtidoradelhogar";
 	private $conn;
-
 /*private $servername = "169.254.223.37"; 
 private $username = "Maestro";
 private $password = "lasurtidora123"; 
