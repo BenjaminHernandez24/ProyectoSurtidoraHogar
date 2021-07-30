@@ -29,17 +29,17 @@ formDatosVenta.addEventListener('submit', async function(e) {
             if (document.getElementById("cobro").value == "" || cobro_venta <= 0 || cobro_venta < total_venta) {
                 notificarError("Campos Erroneos");
             } else {
-                insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla, impresion);
+                insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla, impresion, subtotal_venta);
             }
         } else {
             /*ES OTRO TIPO DE PAGO, NO VALIDAMOS CAMPOS DE COBRO NI CAMBIO*/
-            insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla, impresion);
+            insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla, impresion, subtotal_venta);
         }
     }
 })
 
 /* FUNCION PARA INSERTAR LOS DATOS DE VENTA A LA BASE DE DATOS*/
-async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, columnastabla, valorestabla, impresion) {
+async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, columnastabla, valorestabla, impresion, subtotal_venta) {
     var lista = {};
     var lista1 = new Array();
     var lista2 = new Array();
@@ -47,13 +47,12 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
     var k = 0;
     let detalle_salida_venta = new FormData();
     let peticion;
-    let validar_tabla1, validar_tabla2;
 
     if (cliente == "") {
         cliente = "cliente";
     }
 
-    /* POSTERIORMENTE INSERTAMOS A LA TABLA DE AGREGAR_SALIDA_VENTA*/
+    /* POSTERIORMENTE GUARDAMOS EN UNA LISTA DE ARREGLOS LOS PRODUCTOS AGREGADOS A LA VENTA*/
     for (var i = 0; i < filastabla.length - 1; i++) {
         lista = {};
         for (var j = 0; j < columnastabla.length - 1; j++) {
@@ -72,7 +71,7 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
 
     lista2 = JSON.stringify(lista1);
 
-    /* PRIMERO INSERTAMOS A LA BASE DE DATO AGREGAR_DETALLE_SALIDA_VENTA*/
+    /* MANDAMOS A LA BASE DE DATO TODO LOS DATOS QUE INSERTARAREMOS EN AMBAS TABLAS DE VENTAS*/
     detalle_salida_venta.append('AgregarDetalleSalidaVenta', 'OK');
     detalle_salida_venta.append('cliente', cliente);
     detalle_salida_venta.append('pago', pago);
@@ -95,28 +94,41 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
             body: detalle_salida_venta
         });
     }
+
     var resjson = await peticion.json();
 
     if (resjson.respuesta == "OK") {
-        validar_tabla1 = "OK";
-    } else {
-        validar_tabla1 = "ERROR";
-    }
-
-    /* VALIDAMOS AMBAS INSERCIONES PARA SABER SI TODO ESTA CORRECTO */
-    validar_impresion(validar_tabla1, impresion);
-}
-
-function validar_impresion(validar_tabla1, impresion) {
-    if (validar_tabla1 == "OK") {
         if (impresion == "Ticket" || impresion == "Ambos") {
-            //ACA VA LA FUTURA FUNCION PARA IMPRIMIR EL TICKET
-            notificacionExitosa("Venta Exitosa \n Recoja su Ticket");
+            imprimir(pago, total, cobro, cambio, lista2, subtotal_venta);
         } else if (impresion == "Factura" || impresion == "Ninguno") {
             notificacionExitosa("Venta Exitosa");
         }
         limpiarCampos("limpiarventa");
     } else {
         notificarError("No Se Pudo Realizar la Venta");
+    }
+
+}
+
+async function imprimir(tipo_pago, total, cobro, cambio, lista_productos, subtotal) {
+    let datos_imprimir = new FormData();
+    let peticion;
+    datos_imprimir.append('ImprimirTicket', 'OK');
+    datos_imprimir.append('tipo_pago', tipo_pago);
+    datos_imprimir.append('total', total);
+    datos_imprimir.append('subtotal', subtotal);
+    datos_imprimir.append('cobro', cobro);
+    datos_imprimir.append('cambio', cambio);
+    datos_imprimir.append('productos', lista_productos);
+    peticion = await fetch('../Controllers/Imprimir.php', {
+        method: 'POST',
+        body: datos_imprimir
+    });
+
+    var resjson = await peticion.json();
+    if (resjson.respuesta == "OK") {
+        notificacionExitosa("Venta Exitosa \n Recoja su Ticket");
+    } else {
+        notificarError("No Se Pudo Generar Ticket");
     }
 }
