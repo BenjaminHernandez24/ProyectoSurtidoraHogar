@@ -73,14 +73,14 @@ class Imprimir
             $printer->text("METODO DE PAGO: Tarjeta Debito\n");
             $printer->text("TOTAL $ $total\n");
         }
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
         $formatter = new NumeroALetras();
         //$variable contiene el valor de la cadena retornada...
-        $variable = $formatter->toMoney($total.toFixed(2),2, 'PESOS', 'CENTAVOS');
+        $variable = $formatter->toMoney($total,2, 'PESOS', 'CENTAVOS');
         $printer->text("$variable\n");
 
 
         /*Podemos poner también un pie de página*/
-        $printer->setJustification(Printer::JUSTIFY_CENTER);
         $printer->text("Este ticket forma parte de la\n");
         $printer->text("factura global del dia\n");
         $printer->text("EN PARTES ELECTRICAS\n");
@@ -170,13 +170,13 @@ class Imprimir
             $printer->text("TOTAL $ $total_tranformado\n");
         }
 
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
         $formatter = new NumeroALetras();
         //$variable contiene el valor de la cadena retornada...
-        $variable = $formatter->toMoney($total_tranformado.toFixed(2),2, 'PESOS', 'CENTAVOS');
+        $variable = $formatter->toMoney($total_tranformado,2, 'PESOS', 'CENTAVOS');
         $printer->text("$variable\n");
 
         /*Podemos poner también un pie de página*/
-        $printer->setJustification(Printer::JUSTIFY_CENTER);
         $printer->text("Este ticket forma parte de la\n");
         $printer->text("factura global del dia\n");
         $printer->text("EN PARTES ELECTRICAS\n");
