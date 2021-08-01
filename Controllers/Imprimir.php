@@ -1,7 +1,7 @@
 <?php
 
 require __DIR__ . '/ticket/autoload.php';
-require_once("../Controllers/Numeros_A_LetrasController.php");
+require_once("Numeros_A_LetrasController.php");
 
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\EscposImage;
@@ -75,7 +75,7 @@ class Imprimir
         }
         $formatter = new NumeroALetras();
         //$variable contiene el valor de la cadena retornada...
-        $variable = $formatter->toMoney($total, 'PESOS', 'CENTAVOS');
+        $variable = $formatter->toMoney($total.toFixed(2),2, 'PESOS', 'CENTAVOS');
         $printer->text("$variable\n");
 
 
@@ -172,7 +172,7 @@ class Imprimir
 
         $formatter = new NumeroALetras();
         //$variable contiene el valor de la cadena retornada...
-        $variable = $formatter->toMoney($total_tranformado, 'PESOS', 'CENTAVOS');
+        $variable = $formatter->toMoney($total_tranformado.toFixed(2),2, 'PESOS', 'CENTAVOS');
         $printer->text("$variable\n");
 
         /*Podemos poner también un pie de página*/
