@@ -1,7 +1,7 @@
 <?php
 
 /* Para mandar a llamar el método, se hace de la siguiente manera...
-   require_once("Numeros_A_LetrasModel.php");
+   require_once("Numeros_A_LetrasController.php");
    $formatter = new NumeroALetras();
 
    //$variable contiene el valor de la cadena retornada...
