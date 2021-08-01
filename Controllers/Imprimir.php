@@ -1,6 +1,7 @@
 <?php
 
 require __DIR__ . '/ticket/autoload.php';
+require_once("../Controllers/Numeros_A_LetrasController.php");
 
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\EscposImage;
@@ -34,7 +35,7 @@ class Imprimir
         $printer->text("\n" . "La Surtidora Del Hogar" . "\n");
         $printer->text("DAVID SALVADOR DOMINGUEZ LOPEZ" . "\n");
         $printer->text("RFC: DOLD711115BV9" . "\n");
-        $printer->text("Direccion: AV.CENTRAL NORTE  20 CENTRO" . "\n");
+        $printer->text("AV.CENTRAL NORTE  20 CENTRO" . "\n");
         $printer->text("CP. 30700 TAPACHULA,CHIAPAS" . "\n");
         $printer->text("Tel: 9621359650 y 9626285427" . "\n");
         $printer->text("FOLIO: $folio" . "\n");
@@ -72,7 +73,10 @@ class Imprimir
             $printer->text("METODO DE PAGO: Tarjeta Debito\n");
             $printer->text("TOTAL $ $total\n");
         }
-
+        $formatter = new NumeroALetras();
+        //$variable contiene el valor de la cadena retornada...
+        $variable = $formatter->toMoney($total, 'PESOS', 'CENTAVOS');
+        $printer->text("$variable\n");
 
 
         /*Podemos poner también un pie de página*/
@@ -123,7 +127,7 @@ class Imprimir
         $printer->text("\n" . "La Surtidora Del Hogar" . "\n");
         $printer->text("DAVID SALVADOR DOMINGUEZ LOPEZ" . "\n");
         $printer->text("RFC: DOLD711115BV9" . "\n");
-        $printer->text("Direccion: AV.CENTRAL NORTE  20 CENTRO" . "\n");
+        $printer->text("AV.CENTRAL NORTE  20 CENTRO" . "\n");
         $printer->text("CP. 30700 TAPACHULA,CHIAPAS" . "\n");
         $printer->text("Tel: 9621359650 y 9626285427" . "\n");
         $printer->text("FOLIO: $folio" . "\n");
@@ -166,7 +170,10 @@ class Imprimir
             $printer->text("TOTAL $ $total_tranformado\n");
         }
 
-
+        $formatter = new NumeroALetras();
+        //$variable contiene el valor de la cadena retornada...
+        $variable = $formatter->toMoney($total_tranformado, 'PESOS', 'CENTAVOS');
+        $printer->text("$variable\n");
 
         /*Podemos poner también un pie de página*/
         $printer->setJustification(Printer::JUSTIFY_CENTER);

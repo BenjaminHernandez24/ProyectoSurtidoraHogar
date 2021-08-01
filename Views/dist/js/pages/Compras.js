@@ -84,15 +84,9 @@ async function llenar_Producto(){
         });
 
         var resjson = await peticion.json();
-        var selectProducto = document.getElementById('producto_registro');
         var selectProductoEdi = document.getElementById('producto_editar');
        
         for(item of resjson){
-            let option = document.createElement('option');
-            option.value = item.id_producto;
-            option.text = item.nombre_producto;
-            selectProducto.appendChild(option);
-
             let option1 = document.createElement('option');
             option1.value = item.nombre_producto;
             option1.text = item.nombre_producto;
@@ -103,22 +97,68 @@ async function llenar_Producto(){
         notificarError(error);
     }
 }
-llenar_Producto();
+llenar_Producto(); 
+/* BUSQUEDA DE AUTOCOMPLETADO DE LOS PRODUCTOS */
+$(document).ready(async function autocompletado() {
+    try {
+        var Productos = new FormData();
+        Productos.append('obtenerProductos', 'OK');
+
+        var peticion = await fetch('../Controllers/ComprasController.php', {
+            method: 'POST',
+            body: Productos
+        });
+
+        var data = await peticion.json();
+
+        $('#buscar').autocomplete({
+
+            source: data,
+
+            select: async function(event, item) {
+                try {
+                    var DatosProductos = new FormData();
+                    DatosProductos.append('obtener_lista_productos', 'OK');
+                    DatosProductos.append('valor', item.item.value);
+
+                    var peticionDatos = await fetch('../Controllers/ComprasController.php', {
+                        method: 'POST',
+                        body: DatosProductos
+                    });
+
+                    var datos = await peticionDatos.json();
+                    
+                        id_inventario = datos.inventario;
+                        $("#nombre_producto").val(datos.productos);
+                    
+                } catch (error) {
+                    notificarError(error);
+                }
+            }
+        });
+    } catch (error) {
+        notificarError(error);
+    }
+});
 //------- Evento para botón de registro de Compras------//
 form_agregar_compra.addEventListener('submit', async(e) => {
     e.preventDefault();
-    let selectProducto = document.getElementById('producto_registro');
+    
     let selectProveedor = document.getElementById('proveedor_registro');
+    let nombre_producto = document.getElementById('nombre_producto').value;
+
     if(selectProveedor.value === "default"){
         notificarError('Seleccione un proveedor');
-    }else if(selectProducto.value === "default"){
+    
+    }else if (document.getElementById("nombre_producto").value === "") {
         notificarError('Seleccione un producto');
     }else{
+
     try {
         var datosCompra = new FormData(form_agregar_compra);
         datosCompra.append('agregar_compra', 'OK');
+        datosCompra.append('nombre_producto', nombre_producto);
         
-
         var peticion = await fetch('../Controllers/ComprasController.php', {
             method: 'POST',
             body: datosCompra
@@ -249,11 +289,6 @@ $(document).on('click', ".btnBorrar", async function() {
 
 })
 
-$(document).on('click', '.btnVer', async function(){
-
-
-});  
-   
 //---------- Validar números negativos-num_piezas en Registro---------//
 document.getElementById('piezas').addEventListener('keyup', () => {
     if (!document.getElementById('piezas').value == "") {

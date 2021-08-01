@@ -26,6 +26,9 @@ private static $SELECT_NUM_PIEZAS_EDITAR = "SELECT  num_piezas FROM  entrada_com
 private static $BORRAR_COMPRA ="DELETE FROM entrada_compra WHERE id_entrada_compra = ?";
 private static $ACTUALIZAR_STOCK_B ="UPDATE inventario set stock=(stock-?) WHERE id_inventario=?";
 private static $SELECT_ID_INVENTARIO_AND_NUM_PIEZAS ="SELECT id_inventario, num_piezas FROM  entrada_compra WHERE id_entrada_compra=? AND fecha = CURDATE()";
+//------------ Funciones para Autocompletado -----------//
+private static $SELECT_ALL = "SELECT p.nombre_producto FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto ";
+private static $SELECT_LISTA_PRODUCTOS ="SELECT i.id_inventario, p.nombre_producto FROM productos p INNER JOIN inventario i ON p.nombre_producto=? AND i.id_producto=p.id_producto ORDER BY (i.id_inventario) DESC LIMIT 1";
 
 //-------- FUNCIÓN PARA OBTENER  COMPRAS -------//
 public static function obtener_compras_inv()
@@ -85,7 +88,7 @@ public static function obtener_proveedores()
     }
 }
 //-------- FUNCIÓN PARA AGREGAR UNA COMPRA DE PRODUCTOS -------//
-public static function agregar_compras($compras)
+public static function agregar_compras($compras, $nombre_producto)
 {
     try {
         $conexion = new Conexion();
@@ -93,10 +96,13 @@ public static function agregar_compras($compras)
             //Se abre la transacción.
             $conn->beginTransaction();
             
-            //Recibo id de producto desde el desplegable de agregar producto.
-            $id_produc = $compras['id_producto'];
             //Recibo id proveedor desde el desplegable de agregar proveedor.
             $id_prov = $compras['id_prov'];
+        //-----Consultamos el id_producto con Nombre de Producto -----//
+            $pst = $conn->prepare(self::$SELECT_ID_PRODUCTO);
+            $pst->execute([$nombre_producto]);
+            $resultado_ID= $pst->fetchAll(PDO::FETCH_ASSOC);
+            $id_produc = $resultado_ID[0]["id_producto"];
 
             //-------- Se consulta el  ID de inventario, Y Stock del producto seleccionado-------//
             $pst = $conn->prepare(self::$SELECT_ID_INVENTARIO_PRODUCTO_AND_STOCK);
@@ -264,6 +270,44 @@ public static function eliminar_compras($id)
         return $e->getMessage();
     }
 }
+//--------------- FUNCIONES PARA AUTOCOMPLETADO DE PRODUCTOS -------------//
+public static function obtenerProductos()
+    {
+        try {
+            $conexion = new Conexion();
+            $conn = $conexion->getConexion();
+
+            $pst = $conn->prepare(self::$SELECT_ALL);
+            $pst->execute();
+
+            $productos = $pst->fetchAll(PDO::FETCH_ASSOC);
+            $conn = null;
+            $conexion->closeConexion();
+
+            return $productos;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+public static function obtener_lista_productos($nombre)
+{
+    try {
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+
+        $pst = $conn->prepare(self::$SELECT_LISTA_PRODUCTOS);
+        $pst->execute([$nombre]);
+
+        $datosProductos = $pst->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        $conexion->closeConexion();
+
+        return $datosProductos;
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+}
+
 
 }
 ?>

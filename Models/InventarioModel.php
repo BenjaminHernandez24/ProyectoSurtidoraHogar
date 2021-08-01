@@ -13,8 +13,11 @@ private static $BORRAR_PRODUCTO_INVENTARIO = "DELETE FROM inventario WHERE id_in
 
 private static $OBTENER_ESTATUS_COMPARAR ="SELECT stock, estatus_aceptable from inventario WHERE id_inventario = ?";
 private static $obtenerIDProducto = "SELECT * FROM productos WHERE nombre_producto=?";
-
 private static $SELECT_ACEPTABLE_ALERTA ="SELECT estatus_aceptable, estatus_alerta FROM inventario WHERE id_inventario=?";
+//------------ Funciones para Autocompletado -----------//
+private static $SELECT_ALL = "SELECT nombre_producto FROM productos WHERE estatus=1";
+private static $SELECT_LISTA_PRODUCTOS ="SELECT nombre_producto FROM productos WHERE estatus=1 AND nombre_producto=? ORDER BY (nombre_producto) DESC LIMIT 1";
+private static $SELECT_ID_PRODUCTO = "SELECT id_producto FROM productos WHERE nombre_producto=?";
 //-------- FUNCIÓN PARA OBTENER  PRODUCTOS EN INVENTARIO -------//
  public static function obtener_inventario_producto()
  {
@@ -37,22 +40,27 @@ private static $SELECT_ACEPTABLE_ALERTA ="SELECT estatus_aceptable, estatus_aler
  }
 
  //-------- FUNCIÓN PARA AGREGAR PRODUCTOS EN INVENTARIO -------//
- public static function agregar_producto_inventario($producto_inv)
+ public static function agregar_producto_inventario($producto_inv, $nombre_producto)
  {
      try {
          $conexion = new Conexion();
          $conn = $conexion->getConexion();
          //Se abre la transacción.
         $conn->beginTransaction();
+        //-----Consultamos el id_producto con Nombre de Producto -----//
+        $pst = $conn->prepare(self::$SELECT_ID_PRODUCTO);
+        $pst->execute([$nombre_producto]);
+        $resultado_ID= $pst->fetchAll(PDO::FETCH_ASSOC);
+        $id_produc = $resultado_ID[0]["id_producto"];
          
          //-------- Se verifica si ya existe el producto en inventario-------//
          $pst = $conn->prepare(self::$VALIDAR_PRODUCTO_EXISTENTE);
-         $pst->execute([$producto_inv ['id_producto']]);
+         $pst->execute([$id_produc]);
          $validar = $pst->fetchAll();
 
          if (empty($validar)) {
              $pst = $conn->prepare(self::$INSERTAR_PRODUCTO_INVENTARIO);
-             $resultado  = $pst->execute([$producto_inv ['id_producto'],$producto_inv ['estatus_aceptable'],$producto_inv['estatus_alerta'],$producto_inv ['stock'],]);
+             $resultado  = $pst->execute([$id_produc,$producto_inv ['estatus_aceptable'],$producto_inv['estatus_alerta'],$producto_inv ['stock'],]);
 
              if ($resultado == 1) {
                 
@@ -212,6 +220,43 @@ public static function obtener_acept_alert($id)
         $conexion->closeConexion();
 
         return $estatus;
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+}
+//--------------- FUNCIONES PARA AUTOCOMPLETADO DE PRODUCTOS -------------//
+public static function obtenerProductos()
+    {
+        try {
+            $conexion = new Conexion();
+            $conn = $conexion->getConexion();
+
+            $pst = $conn->prepare(self::$SELECT_ALL);
+            $pst->execute();
+
+            $productos = $pst->fetchAll(PDO::FETCH_ASSOC);
+            $conn = null;
+            $conexion->closeConexion();
+
+            return $productos;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+public static function obtener_lista_productos($nombre)
+{
+    try {
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+
+        $pst = $conn->prepare(self::$SELECT_LISTA_PRODUCTOS);
+        $pst->execute([$nombre]);
+
+        $datosProductos = $pst->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        $conexion->closeConexion();
+
+        return $datosProductos;
     } catch (PDOException $e) {
         return $e->getMessage();
     }

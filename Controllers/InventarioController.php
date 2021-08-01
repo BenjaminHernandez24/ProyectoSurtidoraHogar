@@ -15,13 +15,13 @@ if (isset($_POST['agregar_producto_inv'])) {
        ) {
     $Producto_Inv = array(
     
-        "id_producto" => $_POST['producto'], //Variables de input (name) //
+        //"id_producto" => $_POST['producto'], //Variables de input (name) //
         "estatus_aceptable" => $_POST['estatus_acept'],
         "estatus_alerta" => $_POST['estatus_alert'], 
         "stock" => $_POST['stock'],
         
     );
-    $respuesta = InventarioModelo::agregar_producto_inventario($Producto_Inv);
+    $respuesta = InventarioModelo::agregar_producto_inventario($Producto_Inv, $_POST['nombre_producto']);
     echo json_encode(['respuesta' => $respuesta]);
    } else {
     echo json_encode(['respuesta' => 'Error de escritura en los campos.']);
@@ -78,5 +78,27 @@ if (isset($_POST['obtener_acept_alert'])) {
     
     echo json_encode(['respuesta' => $respuesta]);
     }
+
+    //---- Funciones para autocompletado de Productos ------//
+if (isset($_POST['obtenerProductos'])) {
+    $data = InventarioModelo::obtenerProductos();
+    for ($i = 0; $i < sizeof($data); $i++) {
+        $productos[]    = $data[$i]['nombre_producto'];
+    }
+    echo json_encode($productos);
+}
+
+if (isset($_POST['obtener_lista_productos'])) {
+    $data = InventarioModelo::obtener_lista_productos($_POST['valor']);
+    for ($i = 0; $i < sizeof($data); $i++) {
+        $productos[]    = $data[$i]['nombre_producto'];
+    }
+
+    $respuesta = [
+        "productos" => $productos,
+    ];
+    echo json_encode($respuesta);
+}
+
 
 ?>

@@ -6,7 +6,7 @@ if (isset($_POST['AgregarDetalleSalidaVenta'])) {
     if ($_POST['impresion'] == "Ticket" || $_POST['impresion'] == "Ambos") {
         $consulta = VentasModelo::ContarVentas();
         if ($consulta['ventas'] == 0 || $consulta['contador'] == 0) {
-            $folio = 80001;
+            $folio = 60001;
         } else {
             $folio = $consulta['maximo'] + 1;
         }

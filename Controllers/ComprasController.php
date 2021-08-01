@@ -30,12 +30,12 @@ if (isset($_POST['agregar_compra'])) {
     $Compra = array(
         
         "id_prov" => $_POST['proveedor_registro'], //Variables de input (name) //
-        "id_producto" => $_POST['producto_registro'],
         "num_piezas" => $_POST['piezas'],
         "precio_unitario" => $_POST['precio_unit'], 
         
     );
-    $respuesta = ComprasModelo::agregar_compras($Compra);
+    $respuesta = ComprasModelo::agregar_compras($Compra, $_POST['nombre_producto']);
+    
     echo json_encode(['respuesta' => $respuesta]);
    } else {
     echo json_encode(['respuesta' => 'Error de escritura en los campos.']);
@@ -65,5 +65,29 @@ if (isset($_POST['eliminar_compra'])) {
     $respuesta = ComprasModelo::eliminar_compras($_POST['id_entrada_compra']);
     echo json_encode(['respuesta' => $respuesta]);
 }
+
+//---- Funciones para autocompletado de Productos ------//
+if (isset($_POST['obtenerProductos'])) {
+    $data = ComprasModelo::obtenerProductos();
+    for ($i = 0; $i < sizeof($data); $i++) {
+        $productos[]    = $data[$i]['nombre_producto'];
+    }
+    echo json_encode($productos);
+}
+
+if (isset($_POST['obtener_lista_productos'])) {
+    $data = ComprasModelo::obtener_lista_productos($_POST['valor']);
+    for ($i = 0; $i < sizeof($data); $i++) {
+        $inventario[] = $data[$i]['id_inventario'];
+        $productos[]    = $data[$i]['nombre_producto'];
+    }
+
+    $respuesta = [
+        "inventario" => $inventario,
+        "productos" => $productos,
+    ];
+    echo json_encode($respuesta);
+}
+
 
 ?>
