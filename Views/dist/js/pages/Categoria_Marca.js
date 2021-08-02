@@ -83,11 +83,14 @@ form_editar_marca.addEventListener('submit', async(e) => {
 
         if (resjson.respuesta == "OK") {
             notificacionExitosa('Marca Producto actualizado');
-            tabla_marca.ajax.reload(null, false);
+            
 
-        } else {
+        }else if (resjson.respuesta == "existe") {
+            notificarError('Ya existe una Marca con la misma Descripción');
+        }else {
             notificarError(resjson.respuesta);
         }
+        tabla_marca.ajax.reload(null, false);
     } catch (error) {
         notificarError(error);
     }
@@ -101,13 +104,17 @@ $(document).on("click", ".btnEditar", function() {
     } else {
         var data = tabla_marca.row($(this).parents("tr")).data();
     }
-
+    if (data[2] == 0) {
+        notificarError('Por favor, active esta Marca para realizar esta acción');
+    } else {
+     
     // ------ Obtenemos datos de inputs -------//
     idMarca = data[0];
     $("#des_marca").val(data[1]);
 
     // -----Mostramos el modal -----//
     $('#editar_marca_producto').modal('show');
+    }
 });
 
 //---- Evento para botón de Borrar la Marca de Producto ----//

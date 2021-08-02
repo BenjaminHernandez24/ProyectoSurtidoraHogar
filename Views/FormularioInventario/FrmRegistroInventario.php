@@ -21,13 +21,7 @@
                         <label for="nom_producto">Producto</label>
                         <input id="nombre_producto" name="nombre_producto" autocomplete="off" class="form-control mb-3" type="text" placeholder="Nombre del Producto" readonly required>
                     </div>
-                        <div class="modal-body">
-                                <label for="estatus_acept">Estatus Aceptable</label>
-                                <div class="input-group mb-3">
-                                <span class="input-group-text" id="addon-wrapping"><i class="fas fa-sort-amount-up"></i></span>
-                                <input class="form-control"  autocomplete="off"  id="estatus_acept" type="number" name="estatus_acept" placeholder="Introduzca Estatus Aceptable" required>
-                            </div>
-                        </div>
+                       
                         <div class="modal-body">
                                 <label for="estatus_alert">Estatus Alerta</label>
                                 <div class="input-group mb-3">   

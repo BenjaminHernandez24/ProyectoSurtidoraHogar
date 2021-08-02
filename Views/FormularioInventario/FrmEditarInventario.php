@@ -20,13 +20,7 @@
                            </select>
                            </div>
                         </div>
-                        <div class="modal-body">
-                                <label for="estatus">Estatus Aceptable</label>
-                                <div class="input-group mb-3">
-                                <span class="input-group-text" id="addon-wrapping"> <i class="fas fa-sort-amount-up"></i></span>
-                                <input class="form-control" type="number" id="estatus_acept_editar" name="estatus_acept_editar" placeholder="escribe estatus" required>
-                            </div>
-                        </div>
+                        
                         <div class="modal-body">
                                 <label for="estatus">Estatus Alerta</label>
                                 <div class="input-group mb-3">

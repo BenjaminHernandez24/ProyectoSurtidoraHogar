@@ -1,6 +1,6 @@
 <?php
 require_once "../Models/MarcaModel.php";
-
+require_once "../Models/ValidacionesMarca/ValidacionMarca.php";
 //---------- Agregar Marca Producto -------//
 if (isset($_POST['agregar_marca'])) {
     if ( preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\(\) ]+$/', $_POST['des_marca'])) {
@@ -21,7 +21,18 @@ if (isset($_POST['editar_marca'])) {
         "descripcion_marca" => $_POST['des_marca'], //Variables de input (name) //
 
     );
-    $respuesta = MarcaModelo::editar_marca_producto($Marca);
+    
+    $respuesta = ValidacionMarca::ValidarMarcaEditar($Marca);
+    if ($respuesta == true) {
+        $respuesta = ValidacionMarca::ValidarMarcaDescripcion($Marca);
+        if ($respuesta == true) {
+            $respuesta = "existe";
+        } else {
+            $respuesta = MarcaModelo::editar_marca_producto($Marca);
+        }
+    } else {
+        $respuesta = MarcaModelo::editar_marca_producto($Marca);
+    }
     echo json_encode(['respuesta' => $respuesta]);
  }else{
     echo json_encode(['respuesta' => 'Error de escritura.']);

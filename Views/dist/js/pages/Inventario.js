@@ -162,16 +162,18 @@ form_editar_productoInv.addEventListener('submit', async (e) => {
     
             if(resjson.respuesta == "OK"){
                 notificacionExitosa('Producto Actualizado');
-                tabla_inventario.ajax.reload(null,false);
+               
             } else if (resjson.respuesta == "NO") {
 
                 notificarError('Elige el producto correcto');
     
-            } else {
+            }else if (resjson.respuesta == "existe") {
+                notificarError('Ya existe un Producto con el mismo nombre');
+            }else {
                 notificarError(resjson.respuesta);
             }
         
-            
+            tabla_inventario.ajax.reload(null,false);
         } catch (error) {
             notificarError(error);
         }
@@ -189,7 +191,7 @@ $(document).on('click', '.btnEditar', async function(){
     try {
 
         var datosProducto = new FormData();
-        datosProducto.append('obtener_acept_alert', 'OK');
+        datosProducto.append('obtener_alert', 'OK');
         datosProducto.append('id_inventario', id_inventario);
 
         var peticion = await fetch('../Controllers/InventarioController.php', {
@@ -200,7 +202,6 @@ $(document).on('click', '.btnEditar', async function(){
         let respuesta = await peticion.json();
         var array = new Array();
         array = Object.values(respuesta);
-        $("#estatus_acept_editar").val(array[0]["estatus_aceptable"]);
         $("#estatus_alert_editar").val(array[0]["estatus_alerta"]);
         
 
@@ -302,15 +303,7 @@ $(document).on('click', '.btnVerStatus', async function(){
 //---------- Fin Ver Estado de Stock en inventario ---------//
 
 
-//---------- Validar números negativos-estatus aceptable en Registro---------//
-document.getElementById('estatus_acept').addEventListener('keyup', () => {
-    if (!document.getElementById('estatus_acept').value == "") {
-        let precio = parseFloat(document.getElementById('estatus_acept').value);
-        if (precio <= 0) {
-            Error("No Puede Ingresar Números Negativos o Cero");
-        }
-    }
-})
+
 //---------- Validar números negativos-estatus alerta en Registro---------//
 document.getElementById('estatus_alert').addEventListener('keyup', () => {
     if (!document.getElementById('estatus_alert').value == "") {
@@ -329,15 +322,7 @@ document.getElementById('stock').addEventListener('keyup', () => {
         }
     }
 })
-//---------- Validar números negativos-estatus aceptable en Editar---------//
-document.getElementById('estatus_acept_editar').addEventListener('keyup', () => {
-    if (!document.getElementById('estatus_acept_editar').value == "") {
-        let precio = parseFloat(document.getElementById('estatus_acept_editar').value);
-        if (precio <= 0) {
-            Error("No Puede Ingresar Números Negativos o Cero");
-        }
-    }
-})
+
 //---------- Validar números negativos-estatus alerta en Editar---------//
 document.getElementById('estatus_alert_editar').addEventListener('keyup', () => {
     if (!document.getElementById('estatus_alert_editar').value == "") {

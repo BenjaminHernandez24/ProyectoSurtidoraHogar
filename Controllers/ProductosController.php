@@ -1,6 +1,6 @@
 <?php
 require_once "../Models/ProductosModel.php";
-
+require_once "../Models/ValidacionesProductos/ValidacionProducto.php";
 //---------- Agregar Producto -------//
 if (isset($_POST['agregar_producto'])) {
     
@@ -26,7 +26,20 @@ if (isset($_POST['editar_producto'])) {
         "precio_publico" => $_POST['precio_pub_editar'], 
 
     );
-    $respuesta = ProductoModelo::editar_productos($producto_editar);
+    
+    $respuesta = ValidacionProducto::ValidarProductoEditar($producto_editar);
+
+    if ($respuesta == true) {
+        $respuesta = ValidacionProducto::ValidarProductoNombre($producto_editar);
+        if ($respuesta == true) {
+            $respuesta = "existe";
+        } else {
+            $respuesta = ProductoModelo::editar_productos($producto_editar);
+        }
+    } else {
+        $respuesta = ProductoModelo::editar_productos($producto_editar);
+    }
+
     echo json_encode(['respuesta' => $respuesta]);
 
 }

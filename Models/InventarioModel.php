@@ -3,17 +3,17 @@ require_once "Conexion.php";
 
 class InventarioModelo{
 
-private static $SELECT_ALL_INVENTARIO = "SELECT i.id_inventario, p.nombre_producto, i.estatus_aceptable, i.estatus_alerta, i.stock
+private static $SELECT_ALL_INVENTARIO = "SELECT i.id_inventario, p.nombre_producto, i.estatus_alerta, i.stock
 FROM inventario i INNER JOIN productos p ON i.id_producto=p.id_producto";
-private static $INSERTAR_PRODUCTO_INVENTARIO = "INSERT INTO inventario (id_producto, estatus_aceptable, estatus_alerta, stock) values (?, ?, ?, ?)";
+private static $INSERTAR_PRODUCTO_INVENTARIO = "INSERT INTO inventario (id_producto, estatus_alerta, stock) values (?, ?, ?)";
 private static $VALIDAR_PRODUCTO_EXISTENTE = "SELECT * FROM inventario WHERE id_producto = ? ";
 private static $SELECT_PRODUCTOS =  "SELECT id_producto, nombre_producto FROM productos WHERE estatus = 1 order by nombre_producto";
-private static $EDITAR_PRODUCTO_INVENTARIO = "UPDATE inventario set id_producto = ?, estatus_aceptable = ?, estatus_alerta =?, stock=? WHERE id_inventario = ?";
+private static $EDITAR_PRODUCTO_INVENTARIO = "UPDATE inventario set id_producto = ?, estatus_alerta =?, stock=? WHERE id_inventario = ?";
 private static $BORRAR_PRODUCTO_INVENTARIO = "DELETE FROM inventario WHERE id_inventario = ?";
 
-private static $OBTENER_ESTATUS_COMPARAR ="SELECT stock, estatus_aceptable from inventario WHERE id_inventario = ?";
+private static $OBTENER_ESTATUS_COMPARAR ="SELECT stock, estatus_alerta from inventario WHERE id_inventario = ?";
 private static $obtenerIDProducto = "SELECT * FROM productos WHERE nombre_producto=?";
-private static $SELECT_ACEPTABLE_ALERTA ="SELECT estatus_aceptable, estatus_alerta FROM inventario WHERE id_inventario=?";
+private static $SELECT_ALERTA ="SELECT  estatus_alerta FROM inventario WHERE id_inventario=?";
 //------------ Funciones para Autocompletado -----------//
 private static $SELECT_ALL = "SELECT nombre_producto FROM productos WHERE estatus=1";
 private static $SELECT_LISTA_PRODUCTOS ="SELECT nombre_producto FROM productos WHERE estatus=1 AND nombre_producto=? ORDER BY (nombre_producto) DESC LIMIT 1";
@@ -60,7 +60,7 @@ private static $SELECT_ID_PRODUCTO = "SELECT id_producto FROM productos WHERE no
 
          if (empty($validar)) {
              $pst = $conn->prepare(self::$INSERTAR_PRODUCTO_INVENTARIO);
-             $resultado  = $pst->execute([$id_produc,$producto_inv ['estatus_aceptable'],$producto_inv['estatus_alerta'],$producto_inv ['stock'],]);
+             $resultado  = $pst->execute([$id_produc,$producto_inv['estatus_alerta'],$producto_inv ['stock'],]);
 
              if ($resultado == 1) {
                 
@@ -124,7 +124,7 @@ public static function editar_productos_inventario($producto_edi)
         $id_p = $resultado[0]["id_producto"];
        
         $pst = $conn->prepare(self::$EDITAR_PRODUCTO_INVENTARIO);
-        $resultado =$pst->execute([$id_p,$producto_edi ['estatus_aceptable'],$producto_edi['estatus_alerta'],$producto_edi['stock'], $producto_edi ['id_inventario']]);
+        $resultado =$pst->execute([$id_p,$producto_edi['estatus_alerta'],$producto_edi['stock'], $producto_edi ['id_inventario']]);
         
 
         if ($resultado == 1) {
@@ -184,9 +184,9 @@ public static function editar_productos_inventario($producto_edi)
          $pst->execute([$id]);
          $resultado = $pst->fetchAll(PDO::FETCH_ASSOC);
          $stock_p = $resultado[0]["stock"];
-         $estatus_acep = $resultado[0]["estatus_aceptable"];
+         $estatus_alert = $resultado[0]["estatus_alerta"];
        
-        if ($stock_p >= $estatus_acep) {
+        if ($stock_p > $estatus_alert) {
            
             $conn = null;
           $conexion->closeConexion();
@@ -206,13 +206,13 @@ public static function editar_productos_inventario($producto_edi)
      }
  }
  //-------- FUNCIÓN PARA OBTENER ESTATUS ACEPTABLE Y ALERTA -------//
-public static function obtener_acept_alert($id)
+public static function obtener_alert($id)
 {
     try {
         $conexion = new Conexion();
         $conn = $conexion->getConexion();
 
-        $pst = $conn->prepare(self::$SELECT_ACEPTABLE_ALERTA);
+        $pst = $conn->prepare(self::$SELECT_ALERTA);
         $pst->execute([$id]);
 
         $estatus = $pst->fetchAll(PDO::FETCH_ASSOC);
