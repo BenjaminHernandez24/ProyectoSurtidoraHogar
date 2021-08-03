@@ -84,7 +84,11 @@ if (isset($_POST['restarInventario'])) {
 }
 
 if (isset($_POST['sumarInventario'])) {
-    $respuesta = VentasModelo::sumarInventario($_POST['idInventario'], $_POST['cantidad']);
+    if ($_POST['idInventario'] == 1141 || $_POST['idInventario'] == 1142) {
+        $respuesta = VentasModelo::sumarInventarioPaquetes($_POST['idInventario'], $_POST['cantidad']);
+    } else {
+        $respuesta = VentasModelo::sumarInventario($_POST['idInventario'], $_POST['cantidad']);
+    }
     echo json_encode($respuesta);
 }
 

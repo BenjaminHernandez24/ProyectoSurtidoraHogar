@@ -25,7 +25,7 @@ class VentasModelo
             $conn->beginTransaction();
 
             $pst       = $conn->prepare(self::$INSERTAR_DETALLE_SALIDA_VENTA);
-            $resultado = $pst->execute([$venta['cliente'], $venta['pago'], $venta['total'], $venta['cobro'], $venta['cambio'], $venta['impresion'],$venta['folio']]);
+            $resultado = $pst->execute([$venta['cliente'], $venta['pago'], $venta['total'], $venta['cobro'], $venta['cambio'], $venta['impresion'], $venta['folio']]);
 
             $pst       = $conn->prepare("SELECT LAST_INSERT_ID();");
             $pst->execute();
@@ -268,51 +268,170 @@ class VentasModelo
     /* ===========================
         FUNCION PARA RESTAR STOCK PARA PAQUETES
      =============================*/
-     public static function restarInventarioPaquetes($id, $cantidad)
-     {
-         try {
- 
-             $conexion = new Conexion();
-             $conn = $conexion->getConexion();
- 
-             //Abro la transacción.
-             $conn->beginTransaction();
- 
-             $pst = $conn->prepare(self::$RESTA_STOCK);
- 
-             $resultado = $pst->execute([$cantidad, $id]);
- 
-             if ($resultado == 1) {
-                 //Si todo esta correcto insertamos.
- 
-                 $pst = $conn->prepare(self::$STOCK);
-                 $pst->execute([$id]);
- 
-                 $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
- 
-                 if ($stock_verificar[0]["STOCK"] < 0) {
-                     $msg = "ERROR";
-                     $conn->rollBack();
-                 } else {
-                     $msg = "OK";
-                     $conn->commit();
-                     $pst = $conn->prepare(self::$RESTA_STOCK);
-                     $resultado = $pst->execute([$cantidad, $id]);
-                 }
-             } else {
-                 //Si algo falla, reestablece la bd a como estaba en un inicio.
-                 $msg = "ERROR";
-                 $conn->rollBack();
-             }
- 
-             $conn = null;
-             $conexion->closeConexion();
- 
-             return $msg;
-         } catch (PDOException $e) {
-             return $e->getMessage();
-         }
-     }
+    public static function restarInventarioPaquetes($id, $cantidad)
+    {
+        try {
+            $conexion = new Conexion();
+            $conn = $conexion->getConexion();
+
+            //Abro la transacción.
+            $conn->beginTransaction();
+
+            $pst = $conn->prepare(self::$RESTA_STOCK);
+
+            $resultado = $pst->execute([$cantidad, $id]);
+
+            if ($resultado == 1) {
+                //Si todo esta correcto insertamos.
+
+                $pst = $conn->prepare(self::$STOCK);
+                $pst->execute([$id]);
+
+                $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($stock_verificar[0]["STOCK"] < 0) {
+                    $msg = "ERROR";
+                    $conn->rollBack();
+                } else {
+                    if ($id == 1141) { //vaso clasico oster completo
+                        $array = [847, 447, 776, 806];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
+                        }
+                        $conn->commit();
+                    } else if($id == 1142){ //vaso cube oster completo
+                        $array = [0,0,0,0];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
+                        }
+                        $conn->commit();
+                    }else if($id == 0){ //vaso man mk completo
+                        $array = [0,0,0,0];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
+                        }
+                        $conn->commit();
+                    }else if($id == 0){ //cam cople #!
+                        $array = [57,59];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
+                        }
+                        $conn->commit();
+                    }else if($id == 0){ //cam cople #2
+                        $array = [57,59,0];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
+                        }
+                        $conn->commit();
+                    }else if($id == 0){ //cam cople #3
+                        $array = [57,59,0,776];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
+                        }
+                        $conn->commit();
+                    }else {
+                        $msg = "OK";
+                        $conn->commit();
+                    }
+                }
+            } else {
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $msg = "ERROR";
+                $conn->rollBack();
+            }
+
+            $conn = null;
+            $conexion->closeConexion();
+            return $msg;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    /* ===========================
+        FUNCION PARA SUMAR STOCK
+     =============================*/
+    public static function sumarInventarioPaquetes($id, $cantidad)
+    {
+        try {
+
+            $conexion = new Conexion();
+            $conn = $conexion->getConexion();
+
+            //Abro la transacción.
+            $conn->beginTransaction();
+
+            $pst = $conn->prepare(self::$SUMA_STOCK);
+
+            $resultado = $pst->execute([$cantidad, $id]);
+
+            if ($resultado == 1) {
+                if ($id == 1141) {
+                    $array = [847, 447, 776, 806];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
+                    }
+                    $conn->commit();
+                } else if($id == 1142){ //vaso cube oster completo
+                    $array = [0,0,0,0];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
+                    }
+                    $conn->commit();
+                }else if($id == 0){ //vaso man mk completo
+                    $array = [0,0,0,0];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
+                    }
+                    $conn->commit();
+                }else if($id == 0){ //cam cople #!
+                    $array = [57,59];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
+                    }
+                    $conn->commit();
+                }else if($id == 0){ //cam cople #2
+                    $array = [57,59,0];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
+                    }
+                    $conn->commit();
+                }else if($id == 0){ //cam cople #3
+                    $array = [57,59,0,776];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
+                    }
+                    $conn->commit();
+                }else {
+                    $msg = "OK";
+                    $conn->commit();
+                }
+            } else {
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $msg = "ERROR";
+                $conn->rollBack();
+            }
+
+            $conn = null;
+            $conexion->closeConexion();
+
+            return $msg;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
 
     public static function ContarVentas()
     {
@@ -332,7 +451,7 @@ class VentasModelo
             $pst->execute();
             $contador = $pst->fetch();
 
-            $resultado_consultas =[
+            $resultado_consultas = [
                 "ventas" => $ventas['total'],
                 "maximo"       => $maximo['MAX(folio)'],
                 "contador"       => $contador['COUNT(impresiones)'],
