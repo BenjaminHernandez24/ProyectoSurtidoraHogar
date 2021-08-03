@@ -58,7 +58,7 @@ class reportesGraficasModel
     AND ec.fecha = ?
     ORDER BY ec.fecha, ec.hora ASC";
 
-    private static $obtenerTodosLosProveedores = "SELECT nom_prov FROM proveedores";
+    private static $obtenerTodosLosProveedores = "SELECT prov.nom_prov FROM proveedores prov INNER JOIN entrada_compra ec ON prov.id_prov=ec.id_prov GROUP BY prov.id_prov";
     
     private static $ventasTotalesUnicas = "SELECT dsv.id_detalle_salida_venta as venta, dsv.cliente as cliente,p.nombre_producto as producto,sv.num_piezas as piezas,sv.precio_a_vender as precio_pub,sv.subtotal as subtotal,dsv.fecha as fecha,dsv.hora as hora, dsv.total as total FROM salida_venta sv 
     INNER JOIN detalle_salida_venta dsv ON dsv.fecha =?  AND sv.id_detalle_salida_venta=dsv.id_detalle_salida_venta

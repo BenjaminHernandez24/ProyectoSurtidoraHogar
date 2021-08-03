@@ -143,7 +143,7 @@ function reporteComprasGeneral(datos,fechas,imagen){
 
           cabeceraFecha(data[i]["fecha"]);
           columns = ["Proveedor", "Producto", "Piezas", "Precio C/U", "Subtotal", "Fecha", "Hora"];
-          lista.push(["","","","","","Compras","$"+contadorSumaDia.toFixed(2)]);
+          lista.push(["","","","","","Compras","$"+retornarNumerosAcomodados(contadorSumaDia.toFixed(2))]);
           let drawCell = function(data) {
               var doc = data.doc;
               var rows = data.table.body;
@@ -219,7 +219,7 @@ function reporteComprasEspecifico(datos,fechas,imagen){
           for(var j = i; j < data.length; j++){
             if(fecha === data[j]["fecha"]){
               contador++;
-              lista.push([data[j]["producto"],data[j]["piezas"],"$ " + data[j]["precio_unitario"],"$ " + data[j]["subtotal"],data[j]["fecha"],data[j]["hora"]]);
+              lista.push([data[j]["producto"],data[j]["piezas"],"$" + data[j]["precio_unitario"],"$ " + data[j]["subtotal"],data[j]["fecha"],data[j]["hora"]]);
               contadorSumaDia += parseFloat(data[j]["subtotal"]);
             }
           }
@@ -236,11 +236,12 @@ function reporteComprasEspecifico(datos,fechas,imagen){
                 doc.setFillColor(253, 253, 150);
             }
           };
-          lista.push(["","","","","Compras","$"+contadorSumaDia.toFixed(2)]);
+          lista.push(["","","","","Compras","$"+retornarNumerosAcomodados(contadorSumaDia.toFixed(2))]);
           guardarDatoDeFila(columns,lista,drawCell);
           
           i = i + (contador-1);
           contador = 0;
+          contadorSumaDia = 0;
         }
         pieDePagina();
         if(fechas.length > 2){
@@ -384,7 +385,7 @@ function reporteVentas(datos,fechas,imagen){
                 contador2 = 0;
             }
 
-            lista3.push(["","","","","","","Ventas por día","$ " + contadorSumaDia.toFixed(2)]);
+            lista3.push(["","","","","","","Ventas por día","$" + retornarNumerosAcomodados(contadorSumaDia.toFixed(2))]);
             
             contadorSumaDia = 0;
             let drawCell = function(data) {
@@ -393,7 +394,7 @@ function reporteVentas(datos,fechas,imagen){
               if (rows.length === 1) {
               } else if (data.row.index === rows.length - 1) {
                 doc.setFontStyle("bold");
-                doc.setFontSize("11.3");
+                doc.setFontSize("11.2");
                 doc.setFillColor(253, 253, 150);
               }
             };
@@ -492,7 +493,7 @@ function reporteImpresiones(datos,fechas,imagen){
 
             cabeceraFecha(data[i]["fecha"]);
             columns = ["Cliente","Fecha", "Hora","Total"];
-            lista.push(["","","Ventas por día","$"+contadorSumaDia.toFixed(2)]);
+            lista.push(["","","Ventas por día","$"+retornarNumerosAcomodados(contadorSumaDia.toFixed(2))]);
             contadorSumaTotales += contadorSumaDia;
             contadorSumaDia = 0;
 
@@ -630,9 +631,9 @@ function sumaTotalPagina(data,pocision){
   }
   pdf.text(7,pocision,"Numero de compras: " + data.length + ".");
   pocision = pocision + 8;
-  pdf.text(7,pocision,"Productos comprados: " + productos + ".");
+  pdf.text(7,pocision,"Productos comprados: " + retornarNumerosEnteros(productos) + ".");
   pocision = pocision + 8;
-  pdf.text(7,pocision,"Total de gastos: $" + sumaTotal.toFixed(2) + " pesos.");
+  pdf.text(7,pocision,"Total de gastos: $" + retornarNumerosAcomodados(sumaTotal.toFixed(2)) + " pesos.");
   pocision = 0;
 }
 
@@ -720,9 +721,9 @@ function sumaTotalPaginaVentas(data,pocision,clientes,total){
   pdf.setFontType("bold");
   pdf.text(7,pocision,"Numero de Ventas: " + contadorCliente + ".");
   pocision = pocision + 8;
-  pdf.text(7,pocision,"Productos vendidos: " + productosVendidos + ".");
+  pdf.text(7,pocision,"Productos vendidos: " + retornarNumerosEnteros(productosVendidos) + ".");
   pocision = pocision + 8;
-  pdf.text(7,pocision,"Total de ventas: $" + contadorSumaTotales.toFixed(2) + " pesos.");
+  pdf.text(7,pocision,"Total de ventas: $" + retornarNumerosAcomodados(contadorSumaTotales.toFixed(2)) + " pesos.");
   pocision = 0;
 }
 
@@ -736,7 +737,7 @@ function sumaTotalPaginaImpresion(data,pocision){
   pdf.setFontType("bold");
   pdf.text(7,pocision,"Numero de Ventas: " + data.length + ".");
   pocision = pocision + 8;
-  pdf.text(7,pocision,"Total de Ventas: $" + sumaTotal.toFixed(2) + " pesos.");
+  pdf.text(7,pocision,"Total de Ventas: $" + retornarNumerosAcomodados(sumaTotal.toFixed(2)) + " pesos.");
   pocision = 0;
 }
 
@@ -757,6 +758,70 @@ function pieDePagina(){
   }
 }
 
+function retornarNumerosAcomodados(numero){
+  var cadena = "";
+  var nuevaCadena = "";
+  var validador = 0;
+  var contador = 0;
+
+  cadena = numero;
+  validador = cadena.length - 3;
+  if(validador > 3){
+    var cadena = reverse(cadena);
+    nuevaCadena = cadena.charAt(0);
+    for(var p = 1; p < cadena.length; p++){
+      nuevaCadena += cadena.charAt(p);
+        if(p > 2){
+          contador++;
+          if(contador == 3){
+            nuevaCadena+= ",";
+            contador = 0;
+          }
+        }
+    }
+    if(nuevaCadena.charAt(nuevaCadena.length-1) === ','){
+      nuevaCadena = nuevaCadena.substring(0,nuevaCadena.length-1);
+    }
+    nuevaCadena = reverse(nuevaCadena);
+  }else{
+    nuevaCadena = cadena;
+  }
+  return nuevaCadena;
+}
+
+function retornarNumerosEnteros(numero){
+  var cadena = "";
+  var nuevaCadena = "";
+  var validador = 0;
+  var contador = 0;
+
+  cadena = ""+numero;
+  validador = cadena.length;
+  console.log(validador);
+  if(validador > 3){
+    var cadena = reverse(cadena);
+    for(var p = 0; p < cadena.length; p++){
+      nuevaCadena += cadena.charAt(p);
+      contador++;
+      if(contador == 3){
+          nuevaCadena+= ",";
+          contador = 0;
+      }
+        
+    }
+    if(nuevaCadena.charAt(nuevaCadena.length-1) === ','){
+        nuevaCadena = nuevaCadena.substring(0,nuevaCadena.length-1);
+    }
+    nuevaCadena = reverse(nuevaCadena);
+  }else{
+    nuevaCadena = cadena;
+  }
+  return nuevaCadena;
+}
+
+function reverse(s){
+  return s.split("").reverse().join("");
+}
  /*======================================
                 REPORTE 1
    ======================================*/
