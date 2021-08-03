@@ -157,7 +157,6 @@ $(document).ready(async function autocompletado() {
         });
 
         var data = await peticion.json();
-
         $('#buscar').autocomplete({
 
             source: data,

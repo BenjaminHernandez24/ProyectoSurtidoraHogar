@@ -46,18 +46,8 @@ if (isset($_POST['editar_producto_inv'])) {
         "stock" => $_POST['stock_editar'], 
 
     );
-    $respuesta = ValidacionInventario::ValidarProductoEditar($producto_editar);
-    if ($respuesta == true) {
-        $respuesta = ValidacionInventario::ValidarProductoNombre($producto_editar);
-        if ($respuesta == true) {
-            $respuesta = "existe";
-        } else {
-            $respuesta = InventarioModelo::editar_productos_inventario($producto_editar);
-        }
-    } else {
-        $respuesta = InventarioModelo::editar_productos_inventario($producto_editar);
-    }
-
+    
+    $respuesta = InventarioModelo::editar_productos_inventario($producto_editar);
 
     echo json_encode(['respuesta' => $respuesta]);
 } else {

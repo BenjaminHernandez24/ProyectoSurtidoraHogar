@@ -167,8 +167,6 @@ form_editar_productoInv.addEventListener('submit', async (e) => {
 
                 notificarError('Elige el producto correcto');
     
-            }else if (resjson.respuesta == "existe") {
-                notificarError('Ya existe un Producto con el mismo nombre');
             }else {
                 notificarError(resjson.respuesta);
             }

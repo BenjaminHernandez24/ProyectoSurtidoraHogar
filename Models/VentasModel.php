@@ -294,42 +294,42 @@ class VentasModelo
                     $conn->rollBack();
                 } else {
                     if ($id == 1141) { //vaso clasico oster completo
-                        $array = [847, 447, 776, 806];
+                        $array = [847,590, 776, 806];
                         //Recorro todos los elementos
                         for ($i = 0; $i < sizeof($array); $i++) {
                             $msg = VentasModelo::restarInventario($array[$i], $cantidad);
                         }
                         $conn->commit();
                     } else if($id == 1142){ //vaso cube oster completo
-                        $array = [0,0,0,0];
+                        $array = [1154,590,775,776];
                         //Recorro todos los elementos
                         for ($i = 0; $i < sizeof($array); $i++) {
                             $msg = VentasModelo::restarInventario($array[$i], $cantidad);
                         }
                         $conn->commit();
-                    }else if($id == 0){ //vaso man mk completo
-                        $array = [0,0,0,0];
+                    }else if($id == 1159){ //vaso man mk completo
+                        $array = [1144,779,778,741];
                         //Recorro todos los elementos
                         for ($i = 0; $i < sizeof($array); $i++) {
                             $msg = VentasModelo::restarInventario($array[$i], $cantidad);
                         }
                         $conn->commit();
-                    }else if($id == 0){ //cam cople #!
+                    }else if($id == 1160){ //cam cople #!
                         $array = [57,59];
                         //Recorro todos los elementos
                         for ($i = 0; $i < sizeof($array); $i++) {
                             $msg = VentasModelo::restarInventario($array[$i], $cantidad);
                         }
                         $conn->commit();
-                    }else if($id == 0){ //cam cople #2
-                        $array = [57,59,0];
+                    }else if($id == 1161){ //cam cople #2
+                        $array = [57,59,64];
                         //Recorro todos los elementos
                         for ($i = 0; $i < sizeof($array); $i++) {
                             $msg = VentasModelo::restarInventario($array[$i], $cantidad);
                         }
                         $conn->commit();
-                    }else if($id == 0){ //cam cople #3
-                        $array = [57,59,0,776];
+                    }else if($id == 1162){ //cam cople #3
+                        $array = [57,59,64,776];
                         //Recorro todos los elementos
                         for ($i = 0; $i < sizeof($array); $i++) {
                             $msg = VentasModelo::restarInventario($array[$i], $cantidad);
@@ -380,35 +380,35 @@ class VentasModelo
                     }
                     $conn->commit();
                 } else if($id == 1142){ //vaso cube oster completo
-                    $array = [0,0,0,0];
+                    $array = [1154,590,775,776];
                     //Recorro todos los elementos
                     for ($i = 0; $i < sizeof($array); $i++) {
                         $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
                     }
                     $conn->commit();
-                }else if($id == 0){ //vaso man mk completo
-                    $array = [0,0,0,0];
+                }else if($id == 1159){ //vaso man mk completo
+                    $array = [1144,779,778,741];
                     //Recorro todos los elementos
                     for ($i = 0; $i < sizeof($array); $i++) {
                         $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
                     }
                     $conn->commit();
-                }else if($id == 0){ //cam cople #!
+                }else if($id == 1160){ //cam cople #!
                     $array = [57,59];
                     //Recorro todos los elementos
                     for ($i = 0; $i < sizeof($array); $i++) {
                         $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
                     }
                     $conn->commit();
-                }else if($id == 0){ //cam cople #2
-                    $array = [57,59,0];
+                }else if($id == 1161){ //cam cople #2
+                    $array = [57,59,64];
                     //Recorro todos los elementos
                     for ($i = 0; $i < sizeof($array); $i++) {
                         $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
                     }
                     $conn->commit();
-                }else if($id == 0){ //cam cople #3
-                    $array = [57,59,0,776];
+                }else if($id == 1162){ //cam cople #3
+                    $array = [57,59,64,776];
                     //Recorro todos los elementos
                     for ($i = 0; $i < sizeof($array); $i++) {
                         $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
