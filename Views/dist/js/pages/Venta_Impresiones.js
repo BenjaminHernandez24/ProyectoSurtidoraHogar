@@ -1,9 +1,7 @@
 const formDatosVenta = document.getElementById('frmDatosVenta');
-
 /* ===========================
     FUNCIONES PARA LA CREACION DE VENTA
  =============================*/
-
 /* FUNCION PARA ADJUNTAR TODO LOS DATOS PARA MANDAR A LA BD */
 formDatosVenta.addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -11,7 +9,6 @@ formDatosVenta.addEventListener('submit', async function(e) {
     var valorestabla = document.getElementById("tblDetalleVenta").getElementsByTagName("p");
     var filastabla = document.getElementById("tblDetalleVenta").getElementsByTagName('tr');
     var columnastabla = document.getElementById("tblDetalleVenta").getElementsByTagName('th');
-
     /*Datos para mandar a la Base de datos*/
     let subtotal_venta = document.getElementById("subtotal").value;
     let total_venta = document.getElementById("total").value;
@@ -20,11 +17,9 @@ formDatosVenta.addEventListener('submit', async function(e) {
     let impresion = document.getElementById("generar").value;
     let cobro_venta = parseFloat(document.getElementById("cobro").value);
     let cambio_venta = document.getElementById("cambio").value;
-
     if (valorestabla.length == 0 && subtotal_venta == "" && total_venta == "") {
         notificarError("Campos Erroneos");
     } else {
-
         if (metodo_pago_venta == "Efectivo") {
             if (document.getElementById("cobro").value == "" || cobro_venta <= 0 || cobro_venta < total_venta) {
                 notificarError("Campos Erroneos");
@@ -37,21 +32,17 @@ formDatosVenta.addEventListener('submit', async function(e) {
         }
     }
 })
-
 /* FUNCION PARA INSERTAR LOS DATOS DE VENTA A LA BASE DE DATOS*/
 async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, columnastabla, valorestabla, impresion, subtotal_venta) {
     var lista = {};
     var lista1 = new Array();
     var lista2 = new Array();
-
     var k = 0;
     let detalle_salida_venta = new FormData();
     let peticion;
-
     if (cliente == "") {
         cliente = "cliente";
     }
-
     /* POSTERIORMENTE GUARDAMOS EN UNA LISTA DE ARREGLOS LOS PRODUCTOS AGREGADOS A LA VENTA*/
     for (var i = 0; i < filastabla.length - 1; i++) {
         lista = {};
@@ -68,9 +59,7 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
             "Total": lista[4]
         };
     }
-
     lista2 = JSON.stringify(lista1);
-
     /* MANDAMOS A LA BASE DE DATO TODO LOS DATOS QUE INSERTARAREMOS EN AMBAS TABLAS DE VENTAS*/
     detalle_salida_venta.append('AgregarDetalleSalidaVenta', 'OK');
     detalle_salida_venta.append('cliente', cliente);
@@ -94,9 +83,7 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
             body: detalle_salida_venta
         });
     }
-
     var resjson = await peticion.json();
-
     if (resjson.respuesta == "OK") {
         if (impresion == "Ticket" || impresion == "Ambos") {
             notificacionExitosa("Venta Exitosa");
@@ -107,5 +94,4 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
     } else {
         notificarError("No Se Pudo Realizar la Venta");
     }
-
 }

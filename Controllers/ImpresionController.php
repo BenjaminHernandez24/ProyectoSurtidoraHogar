@@ -21,7 +21,7 @@ if (isset($_POST['cambiarimpresion'])) {
     if($_POST['estatus'] == "Ticket" || $_POST['estatus'] == "Ambos"){
         $consulta = ImpresionModelo::ContarVentas();
         if ($consulta['ventas'] == 0 || $consulta['contador'] == 0) {
-            $folio = 60001;
+            $folio = 73614;
         } else {
             $folio = $consulta['maximo'] + 1;
         }
