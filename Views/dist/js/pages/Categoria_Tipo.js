@@ -83,11 +83,14 @@ form_editar_tipo.addEventListener('submit', async(e) => {
 
         if (resjson.respuesta == "OK") {
             notificacionExitosa('Tipo Producto actualizado');
-            tabla_tipo.ajax.reload(null, false);
+            
 
-        } else {
+        }else if (resjson.respuesta == "existe") {
+            notificarError('Ya existe un Tipo de Producto con la misma Descripción');
+        }else {
             notificarError(resjson.respuesta);
         }
+        tabla_tipo.ajax.reload(null, false);
     } catch (error) {
         notificarError(error);
     }
@@ -101,13 +104,16 @@ $(document).on("click", ".btnEditar", function() {
     } else {
         var data = tabla_tipo.row($(this).parents("tr")).data();
     }
-
+    if (data[2] == 0) {
+        notificarError('Por favor, active este Tipo de Producto para realizar esta acción');
+    } else {
     // ------ Obtenemos datos de inputs -------//
     idTipo = data[0];
     $("#des_tipo").val(data[1]);
 
     // -----Mostramos el modal -----//
     $('#editar_tipo_producto').modal('show');
+    }
 });
 
 //---- Evento para botón de Borrar el Tipo Producto ----//

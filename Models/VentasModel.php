@@ -297,8 +297,7 @@ class VentasModelo
                      $msg = "OK";
                      $conn->commit();
                      $pst = $conn->prepare(self::$RESTA_STOCK);
- 
-             $resultado = $pst->execute([$cantidad, $id]);
+                     $resultado = $pst->execute([$cantidad, $id]);
                  }
              } else {
                  //Si algo falla, reestablece la bd a como estaba en un inicio.

@@ -177,11 +177,13 @@ form_editar_producto.addEventListener('submit', async (e) => {
     
             if(resjson.respuesta == "OK"){
                 notificacionExitosa('Producto Actualizado');
-                tabla_productos.ajax.reload(null,false);
-            }else{
+               
+            }else if (resjson.respuesta == "existe") {
+                notificarError('Ya existe un Producto con el mismo nombre');
+            }else {
                 notificarError(resjson.respuesta);
             }
-            
+            tabla_productos.ajax.reload(null, false);
         } catch (error) {
             notificarError(error);
         }
@@ -195,6 +197,9 @@ $(document).on('click', '.btnEditar', async function(){
     }else{
         var data = tabla_productos.row($(this).parents("tr")).data();
     }
+    if (data[5] == 0) {
+        notificarError('Por favor, active el estado del Producto para realizar esta acción');
+    } else {
      
     console.log(data);
     id_producto = data[0];
@@ -206,6 +211,7 @@ $(document).on('click', '.btnEditar', async function(){
     document.querySelector("#marca_producto_editar").value = data[4];
     // -----Mostramos el modal -----//
     $('#editar_producto').modal('show');
+    }
 
 });  
 //---------- Fin Editar un Producto ---------//

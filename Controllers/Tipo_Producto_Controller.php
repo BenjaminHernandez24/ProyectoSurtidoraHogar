@@ -1,5 +1,6 @@
 <?php
 require_once "../Models/TipoModel.php";
+require_once "../Models/ValidacionesTipo/ValidacionTipo.php";
 
 //---------- Agregar Tipo Producto -------//
 if (isset($_POST['agregar_tipo'])) {
@@ -21,7 +22,20 @@ if (isset($_POST['editar_tipo'])) {
         "descripcion_tipo" => $_POST['des_tipo'], //Variables de input (name) //
 
     );
-    $respuesta = TipoModelo::editar_tipo_producto($Tipo);
+   
+    $respuesta = ValidacionTipo::ValidarTipoEditar($Tipo);
+
+    if ($respuesta == true) {
+        $respuesta = ValidacionTipo::ValidarTipoDescripcion($Tipo);
+        if ($respuesta == true) {
+            $respuesta = "existe";
+        } else {
+            $respuesta = TipoModelo::editar_tipo_producto($Tipo);
+        }
+    } else {
+        $respuesta = TipoModelo::editar_tipo_producto($Tipo);
+    }
+
     echo json_encode(['respuesta' => $respuesta]);
    }else {
     echo json_encode(['respuesta' => 'Error de escritura en los campos.']);
