@@ -86,7 +86,37 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
     var resjson = await peticion.json();
     if (resjson.respuesta == "OK") {
         if (impresion == "Ticket" || impresion == "Ambos") {
-            notificacionExitosa("Venta Exitosa");
+            const result = await Swal.fire({
+                title: 'Venta Exitosa \n ¿DESEA GENERAR UN TICKET?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#5bc0de',
+                cancelButtonColor: '#d9534f',
+                confirmButtonText: '¡Estoy seguro!'
+            });
+            if (result.value) {
+                let datos_imprimir = new FormData();
+                datos_imprimir.append('GenerarTicket', 'OK');
+                datos_imprimir.append('pago', pago);
+                datos_imprimir.append('total', total);
+                datos_imprimir.append('datos', lista2);
+                datos_imprimir.append('folio',resjson.folio);
+                if (pago == "Efectivo") {
+                    datos_imprimir.append('cobro', cobro);
+                    datos_imprimir.append('cambio', cambio);
+                    peticion = await fetch('../Controllers/VentasController.php', {
+                        method: 'POST',
+                        body: datos_imprimir
+                    });
+                } else {
+                    datos_imprimir.append('cobro', '0');
+                    datos_imprimir.append('cambio', '0');
+                    peticion = await fetch('../Controllers/VentasController.php', {
+                        method: 'POST',
+                        body: datos_imprimir
+                    });
+                }
+            }
         } else if (impresion == "Factura" || impresion == "Ninguno") {
             notificacionExitosa("Venta Exitosa");
         }

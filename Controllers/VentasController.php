@@ -31,7 +31,17 @@ if (isset($_POST['AgregarDetalleSalidaVenta'])) {
             Imprimir::datosimprimir($_POST['pago'], $_POST['total'], $_POST['cobro'], $_POST['cambio'], $_POST['datos'], $_POST['subtotal'], $folio);
         }
     }
-    echo json_encode(['respuesta' => $respuesta]);
+    $arreglo = [
+            "respuesta" => $respuesta,
+            "folio" => $folio,
+        ];
+    echo json_encode(['respuesta' => $arreglo]);
+}
+
+/* REDIRECCIÓN AL TICKET */
+if (isset($_POST['GenerarTicket'])) {
+    Imprimir::datosimprimir($_POST['pago'], $_POST['total'], $_POST['cobro'],
+        $_POST['cambio'], $_POST['datos'],$_POST['folio']);
 }
 
 /* REDIRECCIÓN AL MÉTODO AgregarClientes() */
