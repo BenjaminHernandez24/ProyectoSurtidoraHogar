@@ -91,7 +91,6 @@ CREATE TABLE `entrada_compra` (
 CREATE TABLE `inventario` (
   `id_inventario` int(11) NOT NULL,
   `id_producto` int(11) NOT NULL,
-  `estatus_aceptable` int(11) NOT NULL,
   `estatus_alerta` int(11) NOT NULL,
   `stock` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
