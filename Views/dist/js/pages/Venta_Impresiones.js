@@ -4,35 +4,35 @@ const formDatosVenta = document.getElementById('frmDatosVenta');
  =============================*/
 /* FUNCION PARA ADJUNTAR TODO LOS DATOS PARA MANDAR A LA BD */
 formDatosVenta.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    /*Datos tabla*/
-    var valorestabla = document.getElementById("tblDetalleVenta").getElementsByTagName("p");
-    var filastabla = document.getElementById("tblDetalleVenta").getElementsByTagName('tr');
-    var columnastabla = document.getElementById("tblDetalleVenta").getElementsByTagName('th');
-    /*Datos para mandar a la Base de datos*/
-    let subtotal_venta = document.getElementById("subtotal").value;
-    let total_venta = document.getElementById("total").value;
-    let cliente_venta = document.getElementById("nombre_cliente").value;
-    let metodo_pago_venta = document.getElementById("nuevoMetodoPago").value;
-    let impresion = document.getElementById("generar").value;
-    let cobro_venta = parseFloat(document.getElementById("cobro").value);
-    let cambio_venta = document.getElementById("cambio").value;
-    if (valorestabla.length == 0 && subtotal_venta == "" && total_venta == "") {
-        notificarError("Campos Erroneos");
-    } else {
-        if (metodo_pago_venta == "Efectivo") {
-            if (document.getElementById("cobro").value == "" || cobro_venta <= 0 || cobro_venta < total_venta) {
-                notificarError("Campos Erroneos");
+        e.preventDefault();
+        /*Datos tabla*/
+        var valorestabla = document.getElementById("tblDetalleVenta").getElementsByTagName("p");
+        var filastabla = document.getElementById("tblDetalleVenta").getElementsByTagName('tr');
+        var columnastabla = document.getElementById("tblDetalleVenta").getElementsByTagName('th');
+        /*Datos para mandar a la Base de datos*/
+        let subtotal_venta = document.getElementById("subtotal").value;
+        let total_venta = document.getElementById("total").value;
+        let cliente_venta = document.getElementById("nombre_cliente").value;
+        let metodo_pago_venta = document.getElementById("nuevoMetodoPago").value;
+        let impresion = document.getElementById("generar").value;
+        let cobro_venta = parseFloat(document.getElementById("cobro").value);
+        let cambio_venta = document.getElementById("cambio").value;
+        if (valorestabla.length == 0 && subtotal_venta == "" && total_venta == "") {
+            notificarError("Campos Erroneos");
+        } else {
+            if (metodo_pago_venta == "Efectivo") {
+                if (document.getElementById("cobro").value == "" || cobro_venta <= 0 || cobro_venta < total_venta) {
+                    notificarError("Campos Erroneos");
+                } else {
+                    insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla, impresion, subtotal_venta);
+                }
             } else {
+                /*ES OTRO TIPO DE PAGO, NO VALIDAMOS CAMPOS DE COBRO NI CAMBIO*/
                 insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla, impresion, subtotal_venta);
             }
-        } else {
-            /*ES OTRO TIPO DE PAGO, NO VALIDAMOS CAMPOS DE COBRO NI CAMBIO*/
-            insertar_tablas(cliente_venta, metodo_pago_venta, total_venta, cobro_venta, cambio_venta, filastabla, columnastabla, valorestabla, impresion, subtotal_venta);
         }
-    }
-})
-/* FUNCION PARA INSERTAR LOS DATOS DE VENTA A LA BASE DE DATOS*/
+    })
+    /* FUNCION PARA INSERTAR LOS DATOS DE VENTA A LA BASE DE DATOS*/
 async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, columnastabla, valorestabla, impresion, subtotal_venta) {
     var lista = {};
     var lista1 = new Array();
@@ -100,7 +100,7 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
                 datos_imprimir.append('pago', pago);
                 datos_imprimir.append('total', total);
                 datos_imprimir.append('datos', lista2);
-                datos_imprimir.append('folio',resjson.folio);
+                datos_imprimir.append('folio', resjson.folio);
                 if (pago == "Efectivo") {
                     datos_imprimir.append('cobro', cobro);
                     datos_imprimir.append('cambio', cambio);
