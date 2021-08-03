@@ -27,7 +27,7 @@ if (isset($_POST['AgregarDetalleSalidaVenta'])) {
     $respuesta = VentasModelo::AgregarDetalleSalidaVenta($venta, $data, $posiciones);
 
     if ($_POST['impresion'] == "Ticket" || $_POST['impresion'] == "Ambos") {
-        if($respuesta == "OK"){
+        if ($respuesta == "OK") {
             Imprimir::datosimprimir($_POST['pago'], $_POST['total'], $_POST['cobro'], $_POST['cambio'], $_POST['datos'], $_POST['subtotal'], $folio);
         }
     }
@@ -75,7 +75,10 @@ if (isset($_POST['ExtraerStock'])) {
 }
 
 if (isset($_POST['restarInventario'])) {
-    $respuesta = VentasModelo::restarInventario($_POST['idInventario'], $_POST['cantidad']);
+    if ($_POST['idInventario'] == 1141 || $_POST['idInventario'] == 1142) {
+    } else {
+        $respuesta = VentasModelo::restarInventario($_POST['idInventario'], $_POST['cantidad']);
+    }
     echo json_encode($respuesta);
 }
 

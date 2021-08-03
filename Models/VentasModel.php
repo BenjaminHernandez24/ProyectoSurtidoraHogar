@@ -265,6 +265,56 @@ class VentasModelo
         }
     }
 
+    /* ===========================
+        FUNCION PARA RESTAR STOCK PARA PAQUETES
+     =============================*/
+     public static function restarInventarioPaquetes($id, $cantidad)
+     {
+         try {
+ 
+             $conexion = new Conexion();
+             $conn = $conexion->getConexion();
+ 
+             //Abro la transacción.
+             $conn->beginTransaction();
+ 
+             $pst = $conn->prepare(self::$RESTA_STOCK);
+ 
+             $resultado = $pst->execute([$cantidad, $id]);
+ 
+             if ($resultado == 1) {
+                 //Si todo esta correcto insertamos.
+ 
+                 $pst = $conn->prepare(self::$STOCK);
+                 $pst->execute([$id]);
+ 
+                 $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
+ 
+                 if ($stock_verificar[0]["STOCK"] < 0) {
+                     $msg = "ERROR";
+                     $conn->rollBack();
+                 } else {
+                     $msg = "OK";
+                     $conn->commit();
+                     $pst = $conn->prepare(self::$RESTA_STOCK);
+ 
+             $resultado = $pst->execute([$cantidad, $id]);
+                 }
+             } else {
+                 //Si algo falla, reestablece la bd a como estaba en un inicio.
+                 $msg = "ERROR";
+                 $conn->rollBack();
+             }
+ 
+             $conn = null;
+             $conexion->closeConexion();
+ 
+             return $msg;
+         } catch (PDOException $e) {
+             return $e->getMessage();
+         }
+     }
+
     public static function ContarVentas()
     {
         try {
