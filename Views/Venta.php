@@ -22,6 +22,7 @@ if (!isset($_SESSION['user'])) {
         <?php include("FormulariosVentas/FrmAgregarCliente.php"); ?>
         <?php include("FormulariosVentas/FrmAgregarNuevoCliente.php"); ?>
         <?php include("FormulariosVentas/FrmEditarVenta.php"); ?>
+        <?php include('FormulariosVentas/FrmVentaCambio.php'); ?>
         <?php include("Include/footer.php") ?>
     </div>
     <!-- ./wrapper -->
@@ -30,6 +31,7 @@ if (!isset($_SESSION['user'])) {
     <?php include("Include/tabla.php"); ?>
     <script src="dist/js/pages/Ventas.js"></script>
     <script src="dist/js/pages/Venta_Impresiones.js"></script>
+    <script src="dist/js/pages/CambioVenta.js"></script>
 
 </body>
 

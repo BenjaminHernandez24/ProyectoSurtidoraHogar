@@ -13,6 +13,7 @@ require_once "../Controllers/EstadisticaController.php";
                 <div class="card">
                     <div class="card-body">
                         <i class="nav-icon fas fa-truck" style="color:#F29F05; font-size: 30px;"> Ventas</i>
+                         <button class="col-md-2 float-right btn btn-outline-primary" type="button" id="EditarVenta"><font size="4">Editar Venta</font></button>
                     </div>
                 </div>
                 <!--=====================================
