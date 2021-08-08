@@ -465,4 +465,70 @@ class VentasModelo
             return $e->getMessage();
         }
     }
+
+    public static function SumaProductosCambio($datos, $posicion)
+    {
+        try {
+
+            $conexion = new Conexion();
+            $conn = $conexion->getConexion();
+
+            //Abro la transacción.
+            $conn->beginTransaction();
+
+            $pst = $conn->prepare(self::$SUMA_STOCK);
+
+            for ($i = 0; $i < $posicion; $i++) {
+                $resultado = $pst->execute([$datos[$i]['Cantidad'],$datos[$i]['Inventario']]);
+            }
+
+            if ($resultado == 1) {
+                //Si todo esta correcto insertamos.
+                $conn->commit();
+            } else {
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
+            }
+
+            $conn = null;
+            $conexion->closeConexion();
+
+            return "OK";
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public static function RestaProductosCambio($datos, $posicion)
+    {
+        try {
+
+            $conexion = new Conexion();
+            $conn = $conexion->getConexion();
+
+            //Abro la transacción.
+            $conn->beginTransaction();
+
+            $pst = $conn->prepare(self::$RESTA_STOCK);
+
+            for ($i = 0; $i < $posicion; $i++) {
+                $resultado = $pst->execute([$datos[$i]['Cantidad'],$datos[$i]['Inventario']]);
+            }
+
+            if ($resultado == 1) {
+                //Si todo esta correcto insertamos.
+                $conn->commit();
+            } else {
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
+            }
+
+            $conn = null;
+            $conexion->closeConexion();
+
+            return "OK";
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
 }

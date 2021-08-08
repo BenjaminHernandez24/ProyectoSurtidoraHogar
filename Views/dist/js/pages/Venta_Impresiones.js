@@ -84,6 +84,7 @@ async function insertar_tablas(cliente, pago, total, cobro, cambio, filastabla, 
         });
     }
     var resjson = await peticion.json();
+
     if (resjson.respuesta == "OK") {
         if (impresion == "Ticket" || impresion == "Ambos") {
             const result = await Swal.fire({

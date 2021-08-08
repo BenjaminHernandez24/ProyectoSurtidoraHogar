@@ -123,3 +123,21 @@ if (isset($_POST['obtenerDatosProductos'])) {
     ];
     echo json_encode($respuesta);
 }
+
+if (isset($_POST['SumarProductosCambio'])) {
+    $data = json_decode($_POST['productos'], true);
+    $posiciones = count($data);
+
+    $respuesta = VentasModelo::SumaProductosCambio($data, $posiciones);
+
+    echo json_encode(['respuesta' => $respuesta]);
+}
+
+if (isset($_POST['RestarProductosCambio'])) {
+    $data = json_decode($_POST['productos'], true);
+    $posiciones = count($data);
+
+    $respuesta = VentasModelo::RestaProductosCambio($data, $posiciones);
+
+    echo json_encode(['respuesta' => $respuesta]);
+}
