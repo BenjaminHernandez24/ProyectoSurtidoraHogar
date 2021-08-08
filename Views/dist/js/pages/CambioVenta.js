@@ -37,7 +37,6 @@ $(document).ready(async function autocompletado() {
                                 notificarError("El Producto No Tiene Stock");
                                 $("#buscar_devuelve").val("");
                             } else {
-                                $('#productos_devuelve').DataTable().destroy();
                                 $('#productos_devuelve').find('tbody').append(`<tr id="">
                                 <td class="row-index">
                                  <p>${data.inventario}</p>
@@ -55,7 +54,6 @@ $(document).ready(async function autocompletado() {
                                   <button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button>
                                     </td>
                                   </tr>`);
-                                $('#productos_devuelve').DataTable().draw();
 
                                 if (document.getElementById('total_devuelve').value == "") {
                                     $("#total_devuelve").val(data.precio);
@@ -105,7 +103,6 @@ $(document).ready(async function autocompletado() {
                                 notificarError("El Producto No Tiene Stock");
                                 $("#buscar_cambia").val("");
                             } else {
-                                $('#productos_cambia').DataTable().destroy();
                                 $('#productos_cambia').find('tbody').append(`<tr id="">
                             <td class="row-index">
                              <p>${data.inventario}</p>
@@ -123,7 +120,6 @@ $(document).ready(async function autocompletado() {
                               <button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button>
                                 </td>
                               </tr>`);
-                                $('#productos_cambia').DataTable().draw();
 
                                 if (document.getElementById('total_cambia').value == "") {
                                     $("#total_cambia").val(data.precio);
@@ -177,10 +173,7 @@ $('#tbody_devuelve').on('click', '.btnBorrar', async function() {
         $("#diferencia_cobro").val("");
     }
 
-    //datos_tabla = [ID_inventario, producto, cantidad, precio, total];
-    $('#productos_devuelve').DataTable().destroy();
     $(this).closest('tr').remove();
-    $('#productos_devuelve').DataTable().draw();
 
 })
 
@@ -205,11 +198,7 @@ $('#tbody_cambia').on('click', '.btnBorrar', async function() {
         $("#diferencia_cobro").val("");
     }
 
-
-    //datos_tabla = [ID_inventario, producto, cantidad, precio, total];
-    $('#productos_cambia').DataTable().destroy();
     $(this).closest('tr').remove();
-    $('#productos_cambia').DataTable().draw();
 
 })
 
@@ -379,21 +368,15 @@ async function insertar_cambio(cliente, pago, total, cobro, cambio, filastabla, 
 }
 
 $("#EditarVenta").click(function() {
-    //$("#buscar_devuelve").DataTable().clear().draw();
-    //$("#buscar_devuelvea").DataTable().clear().draw();
-    //$("#buscar_devuelve").DataTable().destroy();
-    //$('#buscar_devuelve').DataTable().draw();
+    limpiarcamposcambio();
     $('#modalFrmVentaCambio').modal('show');
-    //$('#buscar_devuelve').DataTable().draw();
 });
 
 function limpiarcamposcambio() {
-    $("#productos_cambia").DataTable().clear().draw();
-    $("#productos_cambia").DataTable().destroy();
-    $('#productos_cambia').DataTable().draw();
     $("#productos_devuelve").DataTable().clear().draw();
     $("#productos_devuelve").DataTable().destroy();
-    $('#productos_devuelve').DataTable().draw();
+    $("#productos_cambia").DataTable().clear().draw();
+    $('#productos_cambia').DataTable().destroy();
     $("#total_cambia").val("");
     $("#total_devuelve").val("");
     $("#diferencia_cobro").val("");
