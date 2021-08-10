@@ -231,6 +231,7 @@ $("#CambiosVentas").click(function() {
             sumar_restar_inventario(valorestabla_devuelve, filastabla_devuelve, columnastabla_devuelve, valorestabla_cambia, filastabla_cambia, columnastabla_cambia);
             insertar_cambio("cliente", "Efectivo", total_cambio, "0", "0", filastabla_cambia, columnastabla_cambia, valorestabla_cambia, "Ninguno", total_cambio);
         }
+        $('#modalFrmVentaCambio').modal('hide');
         notificacionExitosa("Cambio Realizado Correctamente");
     }
 });
@@ -380,4 +381,6 @@ function limpiarcamposcambio() {
     $("#total_cambia").val("");
     $("#total_devuelve").val("");
     $("#diferencia_cobro").val("");
+    $("#buscar_cambia").val("");
+    $("#buscar_devuelve").val("");
 }
