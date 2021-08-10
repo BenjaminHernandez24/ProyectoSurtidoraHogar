@@ -469,7 +469,6 @@ class VentasModelo
     public static function SumaProductosCambio($datos, $posicion)
     {
         try {
-
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
 
@@ -483,8 +482,52 @@ class VentasModelo
             }
 
             if ($resultado == 1) {
-                //Si todo esta correcto insertamos.
-                $conn->commit();
+                if ($datos[$i]['Inventario'] == 1141) {
+                    $array = [847, 447, 776, 806];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i],$datos[$i]['Cantidad']);
+                    }
+                    $conn->commit();
+                } else if($datos[$i]['Inventario'] == 1142){ //vaso cube oster completo
+                    $array = [1154,590,775,776];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i],$datos[$i]['Cantidad']);
+                    }
+                    $conn->commit();
+                }else if($datos[$i]['Inventario'] == 1159){ //vaso man mk completo
+                    $array = [1144,779,778,741];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i],$datos[$i]['Cantidad']);
+                    }
+                    $conn->commit();
+                }else if($datos[$i]['Inventario'] == 1160){ //cam cople #!
+                    $array = [57,59];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i],$datos[$i]['Cantidad']);
+                    }
+                    $conn->commit();
+                }else if($datos[$i]['Inventario'] == 1161){ //cam cople #2
+                    $array = [57,59,64];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i],$datos[$i]['Cantidad']);
+                    }
+                    $conn->commit();
+                }else if($datos[$i]['Inventario'] == 1162){ //cam cople #3
+                    $array = [57,59,64,776];
+                    //Recorro todos los elementos
+                    for ($i = 0; $i < sizeof($array); $i++) {
+                        $msg = VentasModelo::sumarInventario($array[$i],$datos[$i]['Cantidad']);
+                    }
+                    $conn->commit();
+                }else {
+                    $msg = "OK";
+                    $conn->commit();
+                }
             } else {
                 //Si algo falla, reestablece la bd a como estaba en un inicio.
                 $conn->rollBack();
@@ -493,7 +536,7 @@ class VentasModelo
             $conn = null;
             $conexion->closeConexion();
 
-            return "OK";
+            return $msg;
         } catch (PDOException $e) {
             return $e->getMessage();
         }
@@ -502,7 +545,6 @@ class VentasModelo
     public static function RestaProductosCambio($datos, $posicion)
     {
         try {
-
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
 
@@ -517,7 +559,62 @@ class VentasModelo
 
             if ($resultado == 1) {
                 //Si todo esta correcto insertamos.
-                $conn->commit();
+                $pst = $conn->prepare(self::$STOCK);
+                $pst->execute([$datos[$i]['Inventario']]);
+
+                $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($stock_verificar[0]["STOCK"] < 0) {
+                    $msg = "ERROR";
+                    $conn->rollBack();
+                } else {
+                    if ($datos[$i]['Inventario'] == 1141) { //vaso clasico oster completo
+                        $array = [847,590, 776, 806];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i],$datos[$i]['Cantidad']);
+                        }
+                        $conn->commit();
+                    } else if($datos[$i]['Inventario'] == 1142){ //vaso cube oster completo
+                        $array = [1154,590,775,776];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i],$datos[$i]['Cantidad']);
+                        }
+                        $conn->commit();
+                    }else if($datos[$i]['Inventario'] == 1159){ //vaso man mk completo
+                        $array = [1144,779,778,741];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i],$datos[$i]['Cantidad']);
+                        }
+                        $conn->commit();
+                    }else if($datos[$i]['Inventario'] == 1160){ //cam cople #!
+                        $array = [57,59];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i],$datos[$i]['Cantidad']);
+                        }
+                        $conn->commit();
+                    }else if($datos[$i]['Inventario'] == 1161){ //cam cople #2
+                        $array = [57,59,64];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i],$datos[$i]['Cantidad']);
+                        }
+                        $conn->commit();
+                    }else if($datos[$i]['Inventario'] == 1162){ //cam cople #3
+                        $array = [57,59,64,776];
+                        //Recorro todos los elementos
+                        for ($i = 0; $i < sizeof($array); $i++) {
+                            $msg = VentasModelo::restarInventario($array[$i],$datos[$i]['Cantidad']);
+                        }
+                        $conn->commit();
+                    }else {
+                        $msg = "OK";
+                        $conn->commit();
+                    }
+                }
             } else {
                 //Si algo falla, reestablece la bd a como estaba en un inicio.
                 $conn->rollBack();
@@ -526,7 +623,7 @@ class VentasModelo
             $conn = null;
             $conexion->closeConexion();
 
-            return "OK";
+            return $msg;
         } catch (PDOException $e) {
             return $e->getMessage();
         }
