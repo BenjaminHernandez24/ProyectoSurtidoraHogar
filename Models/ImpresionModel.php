@@ -36,14 +36,21 @@ class ImpresionModelo
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
 
+            //Abro la transacción.
+             $conn->beginTransaction();
+
             $pst = $conn->prepare(self::$EDITAR_IMPRESION);
             $resultado = $pst->execute([$valor, $ID]);
 
             if ($resultado == 1) {
-                $msg = "OK";
-            } else {
-                $msg = "Fallo al editar";
-            }
+                 $msg = "OK";
+                 //Si todo esta correcto insertamos.
+                 $conn->commit();
+             } else {
+                 $msg = "Fallo al editar";
+                 //Si algo falla, reestablece la bd a como estaba en un inicio.
+                 $conn->rollBack();
+             }
 
             $conexion->closeConexion();
             $conn = null;

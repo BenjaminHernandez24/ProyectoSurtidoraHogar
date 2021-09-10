@@ -25,6 +25,8 @@ if (isset($_POST['cambiarimpresion'])) {
         } else {
             $folio = $consulta['maximo'] + 1;
         }
+    }else{
+        $respuesta = "Fallo al editar";
     }
 
     $respuesta = ImpresionModelo::CambiarImpresion($_POST['impresiones'],$_POST['idVenta']);
