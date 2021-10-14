@@ -3,15 +3,15 @@
 
 class Conexion
 {
-	/*private $servername = "localhost"; 
+	private $servername = "localhost"; 
 	private $username = "root"; 
 	private $password = ""; 
-	private $bd_name = "lasurtidoradelhogar";*/
-
-	private $servername = "localhost";
-	private $username = "root";
-	private $password = "";
 	private $bd_name = "lasurtidoradelhogar";
+
+	/*private $servername = "169.254.148.73";
+	private $username = "Maestro";
+	private $password = "lasurtidoradedondavid123";
+	private $bd_name = "lasurtidoradelhogar";*/
 	private $conn;
 /*private $servername = "169.254.196.251"; 
 private $username = "Maestro";

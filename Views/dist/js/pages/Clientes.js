@@ -78,6 +78,7 @@ $(document).on("click", ".btnEditar", function() {
     } else {
         data = tablaClientes.row($(this).parents("tr")).data();
     }
+    console.log(tablaClientes.row($(this).parents("tr")));
     if (data[4] == 0) {
         notificarError('Por favor, active el estado del cliente para realizar esta acción');
     } else {
@@ -250,3 +251,12 @@ function notificarError(mensaje) {
 document.getElementById('altaCliente').addEventListener('click', () => {
     frmClientes.reset();
 })
+
+
+
+//Requerimos imprimir los numeros pares que se encuentran
+//compredidos entre el 1 y el 10
+for(var i = 0; i < 10; i++){ // SENTENCIA 1
+    if(i%2 == 0) //SENTENCIA 2
+        console.log(i) //SENTENCIA 3
+}

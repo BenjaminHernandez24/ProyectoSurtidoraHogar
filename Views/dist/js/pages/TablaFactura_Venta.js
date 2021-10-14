@@ -24,7 +24,7 @@ async function init() {
         }, {
             "data": "hora"
         }, {
-            "defaultContent": `<button class="btn btn-primary btn-sm ticket">Ticket</button>`
+            "defaultContent": "<button class='btn btn-info btn-primary btn-sm ticket' id='ticket'>Ticket</button>"
         }, {
             "defaultContent": `<button class="btn btn-primary btn-sm factura">Factura</button>`
         }, {
@@ -44,6 +44,8 @@ $(document).on('click', '.ticket', async function() {
         var data = tablaVentas.row($(this).parents("tr")).data();
     }
 
+    console.log(tablaVentas.row($(this).parents("tr")));
+
     const result = await Swal.fire({
         title: '¿DESEA GENERAR UN TICKET?',
         icon: 'question',
@@ -58,7 +60,7 @@ $(document).on('click', '.ticket', async function() {
 
             var impresion = new FormData();
             impresion.append('obtenerimpresion', 'OK');
-            impresion.append('idVenta', data[0]);
+            impresion.append('idVenta', ID_inventario);
             impresion.append('estatus', "Ticket");
 
             var peticion = await fetch('../Controllers/ImpresionController.php', {
@@ -73,7 +75,7 @@ $(document).on('click', '.ticket', async function() {
             } else {
                 var Cambiarimpresion = new FormData();
                 Cambiarimpresion.append('cambiarimpresion', 'OK');
-                Cambiarimpresion.append('idVenta', data[0]);
+                Cambiarimpresion.append('idVenta', ID_inventario);
 
                 /*POR AQUI GENERARE EL TICKET*/
                 if (resjson == "Factura") {
@@ -112,6 +114,7 @@ $(document).on('click', '.factura', async function() {
         var data = tablaVentas.row($(this).parents("tr")).data();
     }
 
+    var ID_inventario = data[0];
     const result = await Swal.fire({
         title: '¿DESEA GENERAR UNA FACTURA?',
         icon: 'question',
@@ -126,7 +129,7 @@ $(document).on('click', '.factura', async function() {
 
             var impresion = new FormData();
             impresion.append('obtenerimpresion', 'OK');
-            impresion.append('idVenta', data[0]);
+            impresion.append('idVenta', ID_inventario);
             impresion.append('estatus', "Factura");
             var peticion = await fetch('../Controllers/ImpresionController.php', {
                 method: 'POST',
@@ -140,7 +143,7 @@ $(document).on('click', '.factura', async function() {
             } else {
                 var Cambiarimpresion = new FormData();
                 Cambiarimpresion.append('cambiarimpresion', 'OK');
-                Cambiarimpresion.append('idVenta', data[0]);
+                Cambiarimpresion.append('idVenta', ID_inventario);
 
                 /*POR AQUI GENERARE EL TICKET*/
                 if (resjson == "Ticket") {
@@ -179,6 +182,7 @@ $(document).on('click', '.ambos', async function() {
         var data = tablaVentas.row($(this).parents("tr")).data();
     }
 
+    var ID_inventario = data[0];
     const result = await Swal.fire({
         title: '¿DESEA GENERAR UN TICKET Y UNA FACTURA?',
         icon: 'question',
@@ -192,7 +196,7 @@ $(document).on('click', '.ambos', async function() {
         try {
             var Cambiarimpresion = new FormData();
             Cambiarimpresion.append('cambiarimpresion', 'OK');
-            Cambiarimpresion.append('idVenta', data[0]);
+            Cambiarimpresion.append('idVenta', ID_inventario);
             Cambiarimpresion.append('impresiones', 'Ambos');
             Cambiarimpresion.append('estatus', "Ambos");
 

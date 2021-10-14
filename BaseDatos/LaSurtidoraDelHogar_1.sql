@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-07-2021 a las 01:17:15
+-- Tiempo de generación: 14-10-2021 a las 08:59:43
 -- Versión del servidor: 10.4.19-MariaDB
 -- Versión de PHP: 8.0.7
 
@@ -128,6 +128,18 @@ INSERT INTO `notificaciones` (`boton`, `total`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `paquetes`
+--
+
+CREATE TABLE `paquetes` (
+  `id_paquete` int(11) NOT NULL,
+  `id_prod_asociado` int(11) NOT NULL,
+  `id_prod_generado` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `productos`
 --
 
@@ -137,7 +149,8 @@ CREATE TABLE `productos` (
   `id_tipo` int(11) NOT NULL,
   `id_marca` int(11) NOT NULL,
   `precio_publico` decimal(10,2) NOT NULL,
-  `estatus` int(1) NOT NULL
+  `estatus` int(1) NOT NULL,
+  `estatus_paquete` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -260,6 +273,14 @@ ALTER TABLE `marcas_producto`
   ADD PRIMARY KEY (`id_marca`);
 
 --
+-- Indices de la tabla `paquetes`
+--
+ALTER TABLE `paquetes`
+  ADD PRIMARY KEY (`id_paquete`),
+  ADD KEY `id_prod_asociado` (`id_prod_asociado`),
+  ADD KEY `id_prod_generado` (`id_prod_generado`);
+
+--
 -- Indices de la tabla `productos`
 --
 ALTER TABLE `productos`
@@ -336,6 +357,12 @@ ALTER TABLE `marcas_producto`
   MODIFY `id_marca` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `paquetes`
+--
+ALTER TABLE `paquetes`
+  MODIFY `id_paquete` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
@@ -387,6 +414,13 @@ ALTER TABLE `entrada_compra`
 --
 ALTER TABLE `inventario`
   ADD CONSTRAINT `producto_inventario` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `paquetes`
+--
+ALTER TABLE `paquetes`
+  ADD CONSTRAINT `id_paquete_producto` FOREIGN KEY (`id_prod_generado`) REFERENCES `productos` (`id_producto`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `paquete_produscto` FOREIGN KEY (`id_prod_asociado`) REFERENCES `productos` (`id_producto`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `productos`
