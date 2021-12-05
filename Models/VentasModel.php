@@ -12,6 +12,10 @@ class VentasModelo
     private static $RESTA_STOCK = "UPDATE inventario SET stock= (stock-?) WHERE id_inventario = ?";
     private static $SUMA_STOCK = "UPDATE inventario SET stock= (stock+?) WHERE id_inventario = ?";
     private static $STOCK = "SELECT STOCK FROM inventario WHERE id_inventario = ?";
+
+    private static $EsPaquete = "SELECT p.estatus_paquete FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND i.id_producto = p.id_producto";
+    private static $ProductosPaquete = "SELECT id_inventario FROM inventario WHERE id_producto IN (SELECT pa.id_prod_asociado FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND p.id_producto=i.id_producto INNER JOIN paquetes pa ON pa.id_prod_generado = p.id_producto) ORDER BY id_inventario ASC";
+    private static $ObtenerPiezas = "SELECT pa.piezas FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND p.id_producto=i.id_producto INNER JOIN paquetes pa ON pa.id_prod_generado = p.id_producto ORDER BY i.id_inventario ASC";
     /* ===========================
         FUNCION PARA AGREGAR DETALLE SALIDA VENTA
      =============================*/
@@ -190,6 +194,7 @@ class VentasModelo
      =============================*/
     public static function restarInventario($id, $cantidad)
     {
+        $Romper = 0;
         try {
 
             $conexion = new Conexion();
@@ -197,32 +202,122 @@ class VentasModelo
 
             //Abro la transacción.
             $conn->beginTransaction();
+            //Es un paquete o producto lo que estoy recibiendo.
+            $pst = $conn->prepare(self::$EsPaquete); 
+            $pst->execute([$id]); 
+            $resultado = $pst->fetchAll(PDO::FETCH_ASSOC); 
+            $verificar_paquete = $resultado[0]["estatus_paquete"];
+            //Es un producto o paquete
+            if($verificar_paquete == 0){//Es producto...
 
-            $pst = $conn->prepare(self::$RESTA_STOCK);
+                $pst = $conn->prepare(self::$RESTA_STOCK);
 
-            $resultado = $pst->execute([$cantidad, $id]);
+                $resultado = $pst->execute([$cantidad, $id]);
 
-            if ($resultado == 1) {
-                //Si todo esta correcto insertamos.
+                if ($resultado == 1) {
+                    //Si todo esta correcto insertamos.
 
-                $pst = $conn->prepare(self::$STOCK);
-                $pst->execute([$id]);
+                    $pst = $conn->prepare(self::$STOCK);
+                    $pst->execute([$id]);
 
-                $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
+                    $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
 
-                if ($stock_verificar[0]["STOCK"] < 0) {
+                    if ($stock_verificar[0]["STOCK"] < 0) {
+                        $msg = "ERROR";
+                        $conn->rollBack();
+                    } else {
+                        $msg = "OK";
+                        $conn->commit();
+                    }
+                } else {
+                    //Si algo falla, reestablece la bd a como estaba en un inicio.
                     $msg = "ERROR";
                     $conn->rollBack();
-                } else {
-                    $msg = "OK";
-                    $conn->commit();
                 }
-            } else {
-                //Si algo falla, reestablece la bd a como estaba en un inicio.
-                $msg = "ERROR";
-                $conn->rollBack();
-            }
+            }else{
+                //Restamos primero al paquete.
+                $pst = $conn->prepare(self::$RESTA_STOCK);
+                $resultado = $pst->execute([$cantidad, $id]);
+                if($resultado == 1){
+                    $pst = $conn->prepare(self::$STOCK);
+                    $resultado = $pst->execute([$id]);
+                    if($resultado == 1){
+                        $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
+                        if ($stock_verificar[0]["STOCK"] < 0) {
+                            $msg = "ERROR";
+                            $conn->rollBack();
+                        } else {
+                            //Extraigo los productos asociados al paquete
+                            $pst = $conn->prepare(self::$ProductosPaquete); 
+                            $resultado = $pst->execute([$id]);
+                            if($resultado == 1){
+                                $resultadoInventario = $pst->fetchAll(PDO::FETCH_ASSOC);
+                                //Extraigo las piezas
+                                $pst = $conn->prepare(self::$ObtenerPiezas); 
+                                $resultado = $pst->execute([$id]); 
+                                if($resultado == 1){
+                                    $resultadoPiezas = $pst->fetchAll(PDO::FETCH_ASSOC);
+                                    $Arreglo_Id = [];
+                                    //Asocio y guardo productos con piezas
+                                    for($i = 0; $i < sizeof($resultadoInventario); $i++){
+                                        $Arreglo_Id[] = [
+                                            "inventario" => $resultadoInventario[$i]["id_inventario"],
+                                            "piezas" => $resultadoPiezas[$i]["piezas"]
+                                        ]; 
+                                    }
 
+                                    //Comenzamos a restar dinamicamente.
+                                    for($i = 0; $i < sizeof($Arreglo_Id); $i++){
+                                        $cantidad = $cantidad * $Arreglo_Id[$i]["piezas"];
+                                        $pst = $conn->prepare(self::$RESTA_STOCK);
+                                        $resultado = $pst->execute([$cantidad, $Arreglo_Id[$i]["inventario"]]);
+                                        if($resultado == 1){
+                                            $pst = $conn->prepare(self::$STOCK);
+                                            $resultado = $pst->execute([$Arreglo_Id[$i]["inventario"]]);
+                                            if($resultado == 1){
+                                                $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
+                                                if ($stock_verificar[0]["STOCK"] < 0) {
+                                                    $Romper = 2;
+                                                    break;
+                                                }
+                                            }else{
+                                                $Romper = 1;
+                                                break;
+                                            }
+                                        }else{
+                                            $Romper = 1;
+                                            break;
+                                        }
+                                    }
+                                    //Si Romper = 1, quiere decir que uno de ellos tuvo error
+                                    if($Romper == 1){
+                                        $msg = "ERROR";
+                                        $conn->rollBack();
+                                    }else if($Romper == 2){
+                                        $msg = "INSUFICIENTE";
+                                        $conn->rollBack();
+                                    }else{
+                                        $msg = "OK";
+                                        $conn->commit();
+                                    }
+                                }else{
+                                    $msg = "ERROR";
+                                    $conn->rollBack();
+                                }
+                            }else{
+                                $msg = "ERROR";
+                                $conn->rollBack(); 
+                            }
+                        }
+                    }else{
+                        $msg = "ERROR";
+                        $conn->rollBack();
+                    }
+                }else{
+                    $msg = "ERROR";
+                    $conn->rollBack();
+                }
+            }
             $conn = null;
             $conexion->closeConexion();
 
@@ -236,6 +331,7 @@ class VentasModelo
      =============================*/
     public static function sumarInventario($id, $cantidad)
     {
+        $Romper = 0;
         try {
 
             $conexion = new Conexion();
@@ -244,190 +340,86 @@ class VentasModelo
             //Abro la transacción.
             $conn->beginTransaction();
 
-            $pst = $conn->prepare(self::$SUMA_STOCK);
+            //Identificamos si lo que se ha seleccionado es un paquete o producto.
+            $pst = $conn->prepare(self::$EsPaquete); 
+            $pst->execute([$id]); 
+            $resultado = $pst->fetchAll(PDO::FETCH_ASSOC); 
+            $verificar_paquete = $resultado[0]["estatus_paquete"];
 
-            $resultado = $pst->execute([$cantidad, $id]);
+            if($verificar_paquete == 0){ //Si es un producto...
+                $pst = $conn->prepare(self::$SUMA_STOCK);
 
-            if ($resultado == 1) {
-                //Si todo esta correcto insertamos.
-                $conn->commit();
-            } else {
-                //Si algo falla, reestablece la bd a como estaba en un inicio.
-                $conn->rollBack();
+                $resultado = $pst->execute([$cantidad, $id]);
+
+                if ($resultado == 1) {
+                    //Si todo esta correcto insertamos.
+                    $conn->commit();
+                } else {
+                    //Si algo falla, reestablece la bd a como estaba en un inicio.
+                    $conn->rollBack();
+                }
+            }else{ //Si es un paquete...
+                //Primero sumamos el stock del paquete.
+                $pst = $conn->prepare(self::$SUMA_STOCK);
+                $resultado = $pst->execute([$cantidad, $id]);
+                if($resultado == 1){
+                    //Comienzo a extraer a los productos asociados al paquete.
+                    $pst = $conn->prepare(self::$ProductosPaquete); 
+                    $resultado = $pst->execute([$id]);
+                    if($resultado == 1){
+                        $resultadoInventario = $pst->fetchAll(PDO::FETCH_ASSOC);//Productos
+                        $pst = $conn->prepare(self::$ObtenerPiezas); 
+                        $resultado = $pst->execute([$id]); 
+                        if($resultado == 1){
+                            $resultadoPiezas = $pst->fetchAll(PDO::FETCH_ASSOC);//Piezas
+
+                            $Arreglo_Id = [];
+                            //Asocio y guardo mis datos en un array.
+                            for($i = 0; $i < sizeof($resultadoInventario); $i++){
+                                $Arreglo_Id[] = [
+                                    "inventario" => $resultadoInventario[$i]["id_inventario"],
+                                    "piezas" => $resultadoPiezas[$i]["piezas"]
+                                ]; 
+                            }
+                            //Sumamos stock de productos de manera dinamica
+                            for($i = 0; $i < sizeof($Arreglo_Id); $i++){
+                                //Preparamos la consulta para sumar
+                                $pst = $conn->prepare(self::$SUMA_STOCK);
+                                $cantidad = $cantidad * $Arreglo_Id[$i]["piezas"];
+                                
+                                $resultado = $pst->execute([$cantidad, $Arreglo_Id[$i]["inventario"]]);
+                                if ($resultado != 1) {
+                                    //Si algo falla, reestablece la bd a como estaba en un inicio.
+                                    $Romper = 1;
+                                    break;
+                                }
+                            }
+
+                            //Si Romper = 1, quiere decir que uno de ellos tuvo error
+                            if($Romper == 1){
+                                $msg = "ERROR";
+                                $conn->rollBack();
+                            }else{
+                                $msg = "OK";
+                                $conn->commit();
+                            }
+                        }else{
+                            $msg = "ERROR";
+                            $conn->rollBack();
+                        }
+                    }else{
+                        $msg = "ERROR";
+                        $conn->rollBack();
+                    }
+                }else{
+                    $msg = "ERROR";
+                    $conn->rollBack();
+                }
             }
-
             $conn = null;
             $conexion->closeConexion();
 
             return "OK";
-        } catch (PDOException $e) {
-            return $e->getMessage();
-        }
-    }
-
-    /* ===========================
-        FUNCION PARA RESTAR STOCK PARA PAQUETES
-     =============================*/
-    public static function restarInventarioPaquetes($id, $cantidad)
-    {
-        try {
-            $conexion = new Conexion();
-            $conn = $conexion->getConexion();
-
-            //Abro la transacción.
-            $conn->beginTransaction();
-
-            $pst = $conn->prepare(self::$RESTA_STOCK);
-
-            $resultado = $pst->execute([$cantidad, $id]);
-
-            if ($resultado == 1) {
-                //Si todo esta correcto insertamos.
-
-                $pst = $conn->prepare(self::$STOCK);
-                $pst->execute([$id]);
-
-                $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
-
-                if ($stock_verificar[0]["STOCK"] < 0) {
-                    $msg = "ERROR";
-                    $conn->rollBack();
-                } else {
-                    if ($id == 1141) { //vaso clasico oster completo
-                        $array = [847, 590, 776, 806];
-                        //Recorro todos los elementos
-                        for ($i = 0; $i < sizeof($array); $i++) {
-                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
-                        }
-                        $conn->commit();
-                    } else if ($id == 1142) { //vaso cube oster completo
-                        $array = [1154, 590, 775, 776];
-                        //Recorro todos los elementos
-                        for ($i = 0; $i < sizeof($array); $i++) {
-                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
-                        }
-                        $conn->commit();
-                    } else if ($id == 1159) { //vaso man mk completo
-                        $array = [1144, 779, 778, 741];
-                        //Recorro todos los elementos
-                        for ($i = 0; $i < sizeof($array); $i++) {
-                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
-                        }
-                        $conn->commit();
-                    } else if ($id == 1160) { //cam cople #!
-                        $array = [57, 59];
-                        //Recorro todos los elementos
-                        for ($i = 0; $i < sizeof($array); $i++) {
-                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
-                        }
-                        $conn->commit();
-                    } else if ($id == 1161) { //cam cople #2
-                        $array = [57, 59, 64];
-                        //Recorro todos los elementos
-                        for ($i = 0; $i < sizeof($array); $i++) {
-                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
-                        }
-                        $conn->commit();
-                    } else if ($id == 1162) { //cam cople #3
-                        $array = [57, 59, 64, 776];
-                        //Recorro todos los elementos
-                        for ($i = 0; $i < sizeof($array); $i++) {
-                            $msg = VentasModelo::restarInventario($array[$i], $cantidad);
-                        }
-                        $conn->commit();
-                    } else {
-                        $msg = "OK";
-                        $conn->commit();
-                    }
-                }
-            } else {
-                //Si algo falla, reestablece la bd a como estaba en un inicio.
-                $msg = "ERROR";
-                $conn->rollBack();
-            }
-
-            $conn = null;
-            $conexion->closeConexion();
-            return $msg;
-        } catch (PDOException $e) {
-            return $e->getMessage();
-        }
-    }
-
-    /* ===========================
-        FUNCION PARA SUMAR STOCK
-     =============================*/
-    public static function sumarInventarioPaquetes($id, $cantidad)
-    {
-        try {
-
-            $conexion = new Conexion();
-            $conn = $conexion->getConexion();
-
-            //Abro la transacción.
-            $conn->beginTransaction();
-
-            $pst = $conn->prepare(self::$SUMA_STOCK);
-
-            $resultado = $pst->execute([$cantidad, $id]);
-
-            if ($resultado == 1) {
-                if ($id == 1141) {
-                    $array = [847, 447, 776, 806];
-                    //Recorro todos los elementos
-                    for ($i = 0; $i < sizeof($array); $i++) {
-                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
-                    }
-                    $conn->commit();
-                } else if ($id == 1142) { //vaso cube oster completo
-                    $array = [1154, 590, 775, 776];
-                    //Recorro todos los elementos
-                    for ($i = 0; $i < sizeof($array); $i++) {
-                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
-                    }
-                    $conn->commit();
-                } else if ($id == 1159) { //vaso man mk completo
-                    $array = [1144, 779, 778, 741];
-                    //Recorro todos los elementos
-                    for ($i = 0; $i < sizeof($array); $i++) {
-                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
-                    }
-                    $conn->commit();
-                } else if ($id == 1160) { //cam cople #!
-                    $array = [57, 59];
-                    //Recorro todos los elementos
-                    for ($i = 0; $i < sizeof($array); $i++) {
-                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
-                    }
-                    $conn->commit();
-                } else if ($id == 1161) { //cam cople #2
-                    $array = [57, 59, 64];
-                    //Recorro todos los elementos
-                    for ($i = 0; $i < sizeof($array); $i++) {
-                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
-                    }
-                    $conn->commit();
-                } else if ($id == 1162) { //cam cople #3
-                    $array = [57, 59, 64, 776];
-                    //Recorro todos los elementos
-                    for ($i = 0; $i < sizeof($array); $i++) {
-                        $msg = VentasModelo::sumarInventario($array[$i], $cantidad);
-                    }
-                    $conn->commit();
-                } else {
-                    $msg = "OK";
-                    $conn->commit();
-                }
-            } else {
-                //Si algo falla, reestablece la bd a como estaba en un inicio.
-                $msg = "ERROR";
-                $conn->rollBack();
-            }
-
-            $conn = null;
-            $conexion->closeConexion();
-
-            return $msg;
         } catch (PDOException $e) {
             return $e->getMessage();
         }
@@ -468,6 +460,8 @@ class VentasModelo
 
     public static function SumaProductosCambio($datos, $posicion)
     {
+        $Romper = 0;
+        $cantidad = 0;
         try {
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
@@ -479,62 +473,75 @@ class VentasModelo
 
             for ($i = 0; $i < $posicion; $i++) {
                 $resultado = $pst->execute([$datos[$i]['Cantidad'], $datos[$i]['Inventario']]);
+                if($resultado != 1){ //Si no truena en las inserciones Romper = 0
+                    $Romper = 1;
+                    break;
+                }
             }
 
-            if ($resultado == 1) {
-                for ($i = 0; $i < $posicion; $i++) {
-                    if ($datos[$i]['Inventario'] == 1141) {
-                        $array = [847, 447, 776, 806];
-                        //Recorro todos los elementos
-                        for ($j = 0; $j < sizeof($array); $j++) {
-                            $msg = VentasModelo::sumarInventario($array[$j], $datos[$i]['Cantidad']);
+            if($Romper == 0){
+                //Vamos a Sumar solo el stock de Paquetes 
+                for($i=0; $i < $posicion; $i++){
+                    $pst = $conn->prepare(self::$EsPaquete); 
+                    $pst->execute([$datos[$i]['Inventario']]); 
+                    $resultado = $pst->fetchAll(PDO::FETCH_ASSOC); 
+                    $verificar_paquete = $resultado[0]["estatus_paquete"];
+                    if($verificar_paquete == 1){
+                        //Extraigo productos asociados al paquete
+                        $pst = $conn->prepare(self::$ProductosPaquete); 
+                        $resultado = $pst->execute([$datos[$i]['Inventario']]);
+                        if($resultado == 1){
+                            $resultadoInventario = $pst->fetchAll(PDO::FETCH_ASSOC);
+                            $pst = $conn->prepare(self::$ObtenerPiezas); 
+                            $resultado = $pst->execute([$datos[$i]['Inventario']]);
+                            if($resultado == 1){
+                                $resultadoPiezas = $pst->fetchAll(PDO::FETCH_ASSOC);
+                                $Arreglo_Id = [];
+                                //Guardo id inventario de los productos en array independiente
+                                for($j = 0; $j < sizeof($resultadoInventario); $j++){
+                                    $Arreglo_Id[$j] = [
+                                        "inventario" => $resultadoInventario[$j]["id_inventario"],
+                                        "piezas" => $resultadoPiezas[$j]["piezas"]
+                                    ]; 
+                                }
+
+                                for($j = 0; $j < sizeof($Arreglo_Id); $j++){
+                                    //Preparamos la consulta para sumar
+                                    $pst = $conn->prepare(self::$SUMA_STOCK);
+                                    $cantidad = $datos[$i]['Cantidad'] * $Arreglo_Id[$j]["piezas"];
+                                    $resultado = $pst->execute([$cantidad, $Arreglo_Id[$j]["inventario"]]);
+                                    if($resultado == 1){
+                                        $Romper = 0;
+                                    }else{
+                                        $Romper = 1;
+                                        break;
+                                    }
+                                }
+                            }else{
+                                $msg = "ERROR";
+                                $conn->rollBack();
+                                break;
+                            }
+                        }else{
+                            $msg = "ERROR";
+                            $conn->rollBack();
+                            break;
                         }
-                        $conn->commit();
-                    } else if ($datos[$i]['Inventario'] == 1142) { //vaso cube oster completo
-                        $array = [1154, 590, 775, 776];
-                        //Recorro todos los elementos
-                        for ($j = 0; $j < sizeof($array); $j++) {
-                            $msg = VentasModelo::sumarInventario($array[$j], $datos[$i]['Cantidad']);
-                        }
-                        $conn->commit();
-                    } else if ($datos[$i]['Inventario'] == 1159) { //vaso man mk completo
-                        $array = [1144, 779, 778, 741];
-                        //Recorro todos los elementos
-                        for ($j = 0; $j < sizeof($array); $j++) {
-                            $msg = VentasModelo::sumarInventario($array[$j], $datos[$i]['Cantidad']);
-                        }
-                        $conn->commit();
-                    } else if ($datos[$i]['Inventario'] == 1160) { //cam cople #!
-                        $array = [57, 59];
-                        //Recorro todos los elementos
-                        for ($j = 0; $j < sizeof($array); $j++) {
-                            $msg = VentasModelo::sumarInventario($array[$j], $datos[$i]['Cantidad']);
-                        }
-                        $conn->commit();
-                    } else if ($datos[$i]['Inventario'] == 1161) { //cam cople #2
-                        $array = [57, 59, 64];
-                        //Recorro todos los elementos
-                        for ($j = 0; $j < sizeof($array); $j++) {
-                            $msg = VentasModelo::sumarInventario($array[$j], $datos[$i]['Cantidad']);
-                        }
-                        $conn->commit();
-                    } else if ($datos[$i]['Inventario'] == 1162) { //cam cople #3
-                        $array = [57, 59, 64, 776];
-                        //Recorro todos los elementos
-                        for ($j = 0; $j < sizeof($array); $j++) {
-                            $msg = VentasModelo::sumarInventario($array[$j], $datos[$i]['Cantidad']);
-                        }
-                        $conn->commit();
-                    } else {
-                        $msg = "OK";
-                        $conn->commit();
                     }
                 }
-            } else {
-                //Si algo falla, reestablece la bd a como estaba en un inicio.
+
+                //Si Romper = 1, quiere decir que uno de ellos tuvo error
+                if($Romper == 1){
+                    $msg = "ERROR";
+                    $conn->rollBack();
+                }else{
+                    $msg = "OK";
+                    $conn->commit();
+                }
+            }else{
+                $msg = "ERROR";
                 $conn->rollBack();
             }
-
             $conn = null;
             $conexion->closeConexion();
 
@@ -546,6 +553,8 @@ class VentasModelo
 
     public static function RestaProductosCambio($datos, $posicion)
     {
+        $Romper = 0;
+        $cantidad = 0;
         try {
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
@@ -557,74 +566,96 @@ class VentasModelo
 
             for ($i = 0; $i < $posicion; $i++) {
                 $resultado = $pst->execute([$datos[$i]['Cantidad'], $datos[$i]['Inventario']]);
+                if($resultado != 1){ //Si no truena en las inserciones Romper = 0
+                    $Romper = 1;
+                    break;
+                }
             }
 
-            if ($resultado == 1) {
-                //Si todo esta correcto insertamos.
-                for ($i = 0; $i < $posicion; $i++) {
-                    $pst = $conn->prepare(self::$STOCK);
-                    $pst->execute([$datos[$i]['Inventario']]);
+            if($Romper == 0){
+                for($i=0; $i < $posicion; $i++){
+                    $pst = $conn->prepare(self::$EsPaquete); 
+                    $pst->execute([$datos[$i]['Inventario']]); 
+                    $resultado = $pst->fetchAll(PDO::FETCH_ASSOC); 
+                    $verificar_paquete = $resultado[0]["estatus_paquete"];
 
-                    $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
-                }
-                if ($stock_verificar[0]["STOCK"] < 0) {
-                    $msg = "ERROR";
-                    $conn->rollBack();
-                } else {
-                    for ($i = 0; $i < $posicion; $i++) {
-                        if ($datos[$i]['Inventario'] == 1141) { //vaso clasico oster completo
-                            $array = [847, 590, 776, 806];
-                            //Recorro todos los elementos
-                            for ($j = 0; $j < sizeof($array); $j++) {
-                                $msg = VentasModelo::restarInventario($array[$j], $datos[$i]['Cantidad']);
+                    //Si es un producto...
+                    if($verificar_paquete == 1){
+                        $pst = $conn->prepare(self::$ProductosPaquete); 
+                        $resultado = $pst->execute([$datos[$i]['Inventario']]);
+                        
+                        if($resultado == 1){
+                            $resultadoInventario = $pst->fetchAll(PDO::FETCH_ASSOC);
+
+                            $pst = $conn->prepare(self::$ObtenerPiezas); 
+                            $resultado = $pst->execute([$datos[$i]['Inventario']]); 
+                            if($resultado == 1){
+                                $resultadoPiezas = $pst->fetchAll(PDO::FETCH_ASSOC);
+
+                                $Arreglo_Id = [];
+                                //Guardo id inventario de los productos en array independiente
+                                for($j = 0; $j < sizeof($resultadoInventario); $j++){
+                                    $Arreglo_Id[] = [
+                                        "inventario" => $resultadoInventario[$j]["id_inventario"],
+                                        "piezas" => $resultadoPiezas[$j]["piezas"]
+                                    ]; 
+                                }
+                                //Disponemos a descontar dinamicamente...
+                                for($j = 0; $j < sizeof($Arreglo_Id); $j++){
+                                    $cantidad = 0;
+                                    $pst = $conn->prepare(self::$RESTA_STOCK);
+                                    $cantidad = $datos[$i]['Cantidad'] * $Arreglo_Id[$j]["piezas"];
+                                    
+                                    $resultado = $pst->execute([$cantidad, $Arreglo_Id[$j]["inventario"]]);
+                                    if ($resultado == 1) {
+                                        $pst = $conn->prepare(self::$STOCK);
+                                        $resultado = $pst->execute([$Arreglo_Id[$j]["inventario"]]);
+
+                                        if($resultado == 1){
+                                            $stock_verificar = $pst->fetchAll(PDO::FETCH_ASSOC);
+
+                                            if ($stock_verificar[0]["STOCK"] < 0) {
+                                                $Romper = 2;
+                                                break;
+                                            }
+                                        }else{
+                                            $Romper = 1;
+                                            break;
+                                        }
+                                    }else{
+                                        $Romper = 1;
+                                        break;
+                                    }
+                                }
+                            }else{
+                                $msg = "ERROR";
+                                $conn->rollBack();
+                                break;
                             }
-                            $conn->commit();
-                        } else if ($datos[$i]['Inventario'] == 1142) { //vaso cube oster completo
-                            $array = [1154, 590, 775, 776];
-                            //Recorro todos los elementos
-                            for ($j = 0; $j < sizeof($array); $j++) {
-                                $msg = VentasModelo::restarInventario($array[$j], $datos[$i]['Cantidad']);
-                            }
-                            $conn->commit();
-                        } else if ($datos[$i]['Inventario'] == 1159) { //vaso man mk completo
-                            $array = [1144, 779, 778, 741];
-                            //Recorro todos los elementos
-                            for ($j = 0; $j < sizeof($array); $j++) {
-                                $msg = VentasModelo::restarInventario($array[$j], $datos[$i]['Cantidad']);
-                            }
-                            $conn->commit();
-                        } else if ($datos[$i]['Inventario'] == 1160) { //cam cople #!
-                            $array = [57, 59];
-                            //Recorro todos los elementos
-                            for ($j = 0; $j < sizeof($array); $j++) {
-                                $msg = VentasModelo::restarInventario($array[$j], $datos[$i]['Cantidad']);
-                            }
-                            $conn->commit();
-                        } else if ($datos[$i]['Inventario'] == 1161) { //cam cople #2
-                            $array = [57, 59, 64];
-                            //Recorro todos los elementos
-                            for ($j = 0; $j < sizeof($array); $j++) {
-                                $msg = VentasModelo::restarInventario($array[$j], $datos[$i]['Cantidad']);
-                            }
-                            $conn->commit();
-                        } else if ($datos[$i]['Inventario'] == 1162) { //cam cople #3
-                            $array = [57, 59, 64, 776];
-                            //Recorro todos los elementos
-                            for ($j = 0; $j < sizeof($array); $j++) {
-                                $msg = VentasModelo::restarInventario($array[$j], $datos[$i]['Cantidad']);
-                            }
-                            $conn->commit();
-                        } else {
-                            $msg = "OK";
-                            $conn->commit();
+                        }else{
+                            $msg = "ERROR";
+                            $conn->rollBack();
+                            break;
                         }
                     }
                 }
-            } else {
-                //Si algo falla, reestablece la bd a como estaba en un inicio.
+
+                if($Romper == 1){
+                    //Si algo falla, reestablece la bd a como estaba en un inicio.
+                    $msg = "ERROR";
+                    $conn->rollBack();
+                }else if($Romper == 2){
+                    //Si algo falla, reestablece la bd a como estaba en un inicio.
+                    $msg = "INSUFICIENTE";
+                    $conn->rollBack();
+                }else{
+                    $msg = "OK";
+                    $conn->commit();
+                }
+            }else{
+                $msg = "ERROR";
                 $conn->rollBack();
             }
-
             $conn = null;
             $conexion->closeConexion();
 

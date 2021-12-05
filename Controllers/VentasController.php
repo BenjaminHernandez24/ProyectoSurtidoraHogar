@@ -85,24 +85,16 @@ if (isset($_POST['ExtraerStock'])) {
 }
 
 if (isset($_POST['restarInventario'])) {
-    if ($_POST['idInventario'] == 1141 || $_POST['idInventario'] == 1142 || 
-        $_POST['idInventario'] == 1159 || $_POST['idInventario'] == 1160 ||
-        $_POST['idInventario'] == 1161 || $_POST['idInventario'] == 1162) {
-        $respuesta = VentasModelo::restarInventarioPaquetes($_POST['idInventario'], $_POST['cantidad']);
-    } else {
-        $respuesta = VentasModelo::restarInventario($_POST['idInventario'], $_POST['cantidad']);
-    }
+    
+    $respuesta = VentasModelo::restarInventario($_POST['idInventario'], $_POST['cantidad']);
+    
     echo json_encode($respuesta);
 }
 
 if (isset($_POST['sumarInventario'])) {
-    if ($_POST['idInventario'] == 1141 || $_POST['idInventario'] == 1142 || 
-        $_POST['idInventario'] == 1159 || $_POST['idInventario'] == 1160 ||
-        $_POST['idInventario'] == 1161 || $_POST['idInventario'] == 1162) {
-        $respuesta = VentasModelo::sumarInventarioPaquetes($_POST['idInventario'], $_POST['cantidad']);
-    } else {
-        $respuesta = VentasModelo::sumarInventario($_POST['idInventario'], $_POST['cantidad']);
-    }
+    
+    $respuesta = VentasModelo::sumarInventario($_POST['idInventario'], $_POST['cantidad']);
+
     echo json_encode($respuesta);
 }
 

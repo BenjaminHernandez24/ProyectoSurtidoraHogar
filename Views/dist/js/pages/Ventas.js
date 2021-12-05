@@ -290,7 +290,9 @@ formDatosProducto.addEventListener('submit', async function(e) {
                 }
                 limpiarCampos("limpiartodo");
             }
-        } else {
+        } else if(respuesta == "INSUFICIENTE"){
+            notificarError("VERIFIQUE EL STOCK DE LOS PRODUCTOS ASOCIADOS AL PAQUETE");
+        }else {
             notificarError("Ocurrio un error");
         }
     } catch (error) {

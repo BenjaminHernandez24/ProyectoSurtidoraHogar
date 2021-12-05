@@ -309,6 +309,8 @@ async function sumar_restar_inventario(valorestabla_devuelve, filastabla_devuelv
 
         if (resjson_cambia.respuesta == "OK") {
             respuesta_cambia = "OK";
+        }else{
+            notificarError("VERIFIQUE EL STOCK DE LOS PRODUCTOS ASOCIADOS AL PAQUETE");
         }
 
         if (respuesta_devuelve == "OK" && respuesta_cambia == "OK") {
