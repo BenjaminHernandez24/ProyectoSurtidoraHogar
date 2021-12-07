@@ -126,7 +126,7 @@ form_agregar_paquete.addEventListener('submit', async function(e) {
         }else if (document.getElementById('total').value == "") {
             notificarError('Ingrese el total');
         }else{
-            notificacionExitosa('Paquete armado :D'); 
+            notificacionExitosa('¡Paquete armado!'); 
         }
     }   
 }) //Cierra función agregar paquete
@@ -179,8 +179,9 @@ form_datos_paquete.addEventListener('submit', async function(e) {
                try {
                 var DatosProductoPqt = new FormData();
                 DatosProductoPqt.append('agregar_producto', 'OK');
-                DatosProductoPqt.append('nombre_producto', nombre);
+                DatosProductoPqt.append('nombre_producto', producto);
                 DatosProductoPqt.append('cantidad', cantidad);
+                DatosProductoPqt.append('subtotal', subtotal);
                 var peticion = await fetch('../Controllers/PaqueteController.php', {
                     method: 'POST',
                     body: DatosProductoPqt
@@ -188,7 +189,7 @@ form_datos_paquete.addEventListener('submit', async function(e) {
             } catch (error) {
                 notificarError("Ocurrio un Error");
             }
-            //limpiarCampos("limpiartodo");
+            limpiarCampos("limpiartodo");
         }//cierre de else (pintar tabla)
     } catch (error) {
         notificarError("No se ha podido agregar los productos");

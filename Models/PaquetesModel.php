@@ -12,8 +12,10 @@ class PaqueteModelo
     //---------- Consultas para actualizar estatus de productos ------------// 
     private static $ACTUALIZAR_PRODUCTO = "UPDATE productos set estatus_paquete = 1 WHERE id_producto = ?";
     private static $BUSCAR_PROD_ID = "SELECT id_producto FROM productos WHERE nombre_producto=?";
+    //---------- Consultas para insertar paquete ------------// 
+    private static $INSERTAR_PAQUETE = "INSERT INTO paquetes ( id_prod_asociado, id_prod_generado, num_piezas, subtotal) values (?, ?, ?, ?)";
     //-------- FUNCIÓN PARA CAMBIAR ESTATUS DE PRODUCTO -------//
-public static function agregar_productos($paquete)
+public static function agregar_productos($nombre, $cantidad, $subtotal)
 {
     try {
         $conexion = new Conexion();
@@ -23,13 +25,16 @@ public static function agregar_productos($paquete)
 
             //-------- Se busca el ID del producto ------//
             $pst = $conn->prepare(self::$BUSCAR_PROD_ID);
-            $pst->execute([$paquete['nombre_producto']]);
-            $id_prod = $pst->fetchAll();
-            
+            $pst->execute([$nombre]);
+            $id_prod= $pst->fetchAll(PDO::FETCH_ASSOC);
+            $id_producto = $id_prod[0]["id_producto"];
 
         if (!empty($id_prod)) {
             $pst = $conn->prepare(self::$ACTUALIZAR_PRODUCTO);
-            $resultado=$pst->execute([$id_prod]);
+            $resultado1=$pst->execute([$id_producto]);
+
+            $pst = $conn->prepare(self::$INSERTAR_PAQUETE); 
+            $resultado=$pst->execute([$id_producto,$id_producto, $cantidad, $subtotal]); 
                 
         if ($resultado == 1) {
             $msg = "OK";
