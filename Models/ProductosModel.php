@@ -2,7 +2,7 @@
 require_once "Conexion.php";
 class ProductoModelo
 {
-    private static $INSERTAR_PRODUCTO = "INSERT INTO productos (nombre_producto, id_tipo, id_marca, precio_publico, estatus) values (?, ?, ?, ?, ?)";
+    private static $INSERTAR_PRODUCTO = "INSERT INTO productos (nombre_producto, id_tipo, id_marca, precio_publico, estatus, estatus_paquete) values (?, ?, ?, ?, ?, ?)";
     private static $EDITAR_PRODUCTO = "UPDATE productos set nombre_producto = ?, id_tipo = ?, id_marca =?, precio_publico=? WHERE id_producto = ?";
     private static $BORRAR_PRODUCTO = "DELETE FROM productos WHERE id_producto = ?";
     private static $VALIDAR_PRODUCTO_EXISTENTE = "SELECT * FROM productos WHERE nombre_producto = ? ";
@@ -29,7 +29,7 @@ class ProductoModelo
 
             if (empty($validar)) {
                 $pst = $conn->prepare(self::$INSERTAR_PRODUCTO);
-                $resultado=$pst->execute([$producto ['nombre_producto'],$producto ['id_tipo'],$producto ['id_marca'], $producto ['precio_publico'], 1]);
+                $resultado=$pst->execute([$producto ['nombre_producto'],$producto ['id_tipo'],$producto ['id_marca'], $producto ['precio_publico'], 1,0]);
                     
             if ($resultado == 1) {
                 $msg = "OK";

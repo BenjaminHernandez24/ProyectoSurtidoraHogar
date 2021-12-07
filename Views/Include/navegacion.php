@@ -178,6 +178,12 @@ include('Include/Ticket_Factura.php');
                                             </a>
                                         </li>
                                         <li class="nav-item">
+                                            <a href="../Views/Paquetes.php" class="nav-link">
+                                                <i class="fas fa-archive" style="color:white"></i>
+                                                <p style="color:white; font-size: 20px;">  Agregar Paquetes</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a href="../Views/Categoria_Tipo.php" class="nav-link">
                                                 <i class="nav-icon fas fa-boxes" style="color:white"></i>
                                                 <p style="color:white; font-size: 20px;"> Agregar Tipo </p>
