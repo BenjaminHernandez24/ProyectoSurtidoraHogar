@@ -46,14 +46,6 @@
                                                 <input id="cantidad" type="number" class="form-control input-lg" name="cantidad" total="" placeholder="0"  required>
                                             </div>
                                         </div>
-                                        
-                                        <div class="modal-body">
-                                        <label for="nom_empresa">Subtotal</label>
-                                            <div class="input-group mb-3">
-                                                <span class="input-group-text" id="addon-wrapping"><i style="font-size: 20px;" class="fas fa-dollar-sign"></i></span>
-                                                <input id="subtotal" name="subtotal" style="font-size: 40px;" type="number" step="any" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" readonly required>
-                                            </div>
-                                            </div>    
 
                                     </div>
                                 </div>
@@ -75,24 +67,20 @@
                                     <i class="fas fa-archive">   Detalles de Paquete</i>
                                 </div>
                                 <div class="modal-body">
-                                <label for="tipo">Tipo Paquete</label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="addon-wrapping"><i class="fas fa-blender"></i></span>
-                                    <select class="form-control" name="tipo_paquete" id="tipo_paquete">
-                                <option value="default">Selecciona un tipo</option>
-                              </select>
-                             </div>
-                          </div>
+                                <div class="col">
+                                <label for="nom_paquete">Nombre de paquete</label>
+                                    <div class="input-group mb-3">
+                                        <input id="nom_paquete" name="nom_paquete" type="text" class="form-control" placeholder="Nombre del Producto" aria-label="Recipient's username" >
+                                    </div>
+                                    </div>
+                                </div>
                                 <div class="modal-body">
-                                <label for="marca">Marca  Paquete</label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text" id="addon-wrapping"> <i class="fas fa-tag"></i></span>
-                                    <select class="form-control" name="marca_paquete" id="marca_paquete">
-                                    <option value="default">Selecciona una Marca</option>
-                                </select>
-                               </div>
-                            </div>
-
+                                        <label for="nom_empresa">Subtotal</label>
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text" id="addon-wrapping"><i style="font-size: 20px;" class="fas fa-dollar-sign"></i></span>
+                                                <input id="subtotal" name="subtotal" style="font-size: 40px;" type="number" step="any" class="form-control input-lg" id="nuevoTotalVenta" name="nuevoTotalVenta" total="" placeholder="0" readonly required>
+                                            </div>
+                                            </div>    
                                 <div class="modal-body">
                                 <div class="col">
                                 <label for="nom_empresa">Total</label>

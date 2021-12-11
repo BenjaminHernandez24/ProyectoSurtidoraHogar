@@ -4,7 +4,7 @@ require_once "../Models/PaquetesModel.php";
 //---------- Agregar Producto -------//
 if (isset($_POST['agregar_producto'])) {
     
-   $respuesta = PaqueteModelo::agregar_productos($_POST['nombre_producto'], $_POST['cantidad'],$_POST['subtotal']);
+   $respuesta = PaqueteModelo::agregar_productos($_POST['nombre_producto'],$_POST['nom_paquete'], $_POST['cantidad'],$_POST['subtotal']);
     echo json_encode($respuesta);
 }
 
