@@ -14,6 +14,9 @@ class PaqueteModelo
     private static $BUSCAR_PROD_ID = "SELECT id_producto FROM productos WHERE nombre_producto=?";
     //---------- Consultas para insertar paquete ------------// 
     private static $INSERTAR_PAQUETE = "INSERT INTO paquetes ( id_prod_asociado, id_prod_generado,nombre_paquete, num_piezas, subtotal) values (?, ?, ?, ?, ?)";
+    private static $BORRAR_PRODUCTO = "DELETE FROM paquetes WHERE  id_prod_asociado = ?";
+    private static $SELECT_PAQUETES = "SELECT nombre_paquete, num_piezas, subtotal FROM paquetes";
+
     //-------- FUNCIÓN PARA CAMBIAR ESTATUS DE PRODUCTO -------//
 public static function agregar_productos($nombre,$nombre_paquete, $cantidad, $subtotal)
 {
@@ -61,6 +64,69 @@ public static function agregar_productos($nombre,$nombre_paquete, $cantidad, $su
         return $e->getMessage();
     }
 }
+ 
+//-------- FUNCIÓN PARA ELIMINAR PRODUCTO -------//
+public static function eliminar_productos($producto)
+{
+    try {
+
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+        //Se abre la transacción.
+       $conn->beginTransaction();
+
+        //-------- Se busca el ID del producto ------//
+        $pst = $conn->prepare(self::$BUSCAR_PROD_ID);
+        $pst->execute([$producto]);
+        $id_prod= $pst->fetchAll(PDO::FETCH_ASSOC);
+        $id_producto = $id_prod[0]["id_producto"];
+
+    if (!empty($id_producto)) {
+        $pst = $conn->prepare(self::$BORRAR_PRODUCTO);
+        $resultado=$pst->execute([$id_producto]);
+
+        if ($resultado == 1) {
+           $msg = "OK";
+           //Si todo está correcto se inserta.
+           $conn->commit();
+       } else {
+           $msg = "Falló al eliminar";
+           //Si algo falla, reestablece la bd a como estaba en un inicio.
+           $conn->rollBack();
+       }
+
+        $conn = null;
+        $conexion->closeConexion();
+        return $msg;
+
+    } else {
+        return $msg="ERROR";
+    }
+    $conn = null;
+    $conexion->closeConexion();
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+}
+//-------- FUNCIÓN PARA OBTENER LOS PRODUCTOS DE PAQUETES-------//
+public static function obtener_paquetes()
+{
+    try {
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+
+        $pst = $conn->prepare(self::$SELECT_PAQUETES);
+        $pst->execute();
+
+        $productos = $pst->fetchAll();
+        $conn = null;
+        $conexion->closeConexion();
+
+        return $productos;
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+}
  //-------- FUNCIÓN PARA OBTENER LOS TIPOS DE PRODUCTO -------//
  public static function obtener_tipo_paquetes()
  {
@@ -100,7 +166,6 @@ public static function agregar_productos($nombre,$nombre_paquete, $cantidad, $su
           return $e->getMessage();
       }
   }
-
 
 //--------------- FUNCIONES PARA AUTOCOMPLETADO DE PRODUCTOS -------------//
 public static function obtenerProductos()

@@ -7,6 +7,35 @@ var id_paquete;
 var cantidad_editar;
 var precio_editar;
 var cont=0;
+
+//---------- Función para llenar Tabla  de Productos. ---------//
+async function tab_Productos() {
+    tabla_paquete = $("#TablaPaquetes").DataTable({
+        "responsive": true,
+        "autoWidth": false,
+        "ajax": {
+            "url": "../Controllers/PaqueteController.php",
+            "type": "POST",
+            "data": {
+                "obtener_paquete": "OK"
+            },
+           
+            "dataSrc": ""
+        },
+        "columns": [
+            {"data": "nombre_paquete"},
+            {"data": "num_piezas"},
+            {"data": "subtotal"},
+            {"defaultContent": "<button class='btn btn-success btn-sm btnVerStatus'>Ver</button>"},
+            {
+            "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div>"
+              
+            }
+        ]
+    });
+}
+tab_Productos();
+
 //---------------BUSQUEDA DE AUTOCOMPLETADO DE LOS PRODUCTOS ----------------//
 $(document).ready(async function autocompletado() {
     try {
@@ -45,7 +74,64 @@ $(document).ready(async function autocompletado() {
         notificarError(error);
     }
 });
+//---------- FUNCION PARA LLENAR SELECT DE TIPO DE PAQUETE ---------//
+async function llenar_Tipo_Producto(){
+    try {
 
+        var datosProducto = new FormData();
+        datosProducto.append('obtener_tipo_paquete','OK');
+        
+        var peticion = await fetch('../controllers/PaqueteController.php', {
+            method : 'POST',
+            body : datosProducto
+        });
+
+        var resjson = await peticion.json();
+
+        var selectTipoProducto = document.getElementById('tipo_paquete');
+        
+        for(item of resjson){
+            let option_r = document.createElement('option');
+            option_r.value = item.id_tipo;
+            option_r.text = item.descripcion_tipo;
+            selectTipoProducto.appendChild(option_r);
+
+        }
+        
+    } catch (error) {
+       notificarError(error);
+    }
+}
+llenar_Tipo_Producto();
+//---------- FUNCION PARA LLENAR SELECT DE MARCA PAQUETE ---------//
+async function llenar_Marca_Producto(){
+    try {
+
+        var datosProducto = new FormData();
+        datosProducto.append('obtener_marca_paquete','OK');
+        
+        var peticion = await fetch('../controllers/PaqueteController.php', {
+            method : 'POST',
+            body : datosProducto
+        });
+
+        var resjson = await peticion.json();
+
+        var selectMarcaProducto = document.getElementById('marca_paquete');
+       
+        for(item of resjson){
+            let optionM1 = document.createElement('option');
+            optionM1.value = item.id_marca;
+            optionM1.text = item.descripcion_marca;
+            selectMarcaProducto.appendChild(optionM1);
+
+        }
+        
+    } catch (error) {
+        notificarError(error);
+    }
+}
+llenar_Marca_Producto();
 
 ///------- Evento para botón de registro de Paquete------//
 form_agregar_paquete.addEventListener('submit', async function(e) {

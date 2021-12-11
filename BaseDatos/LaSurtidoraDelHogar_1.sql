@@ -135,9 +135,7 @@ CREATE TABLE `paquetes` (
   `id_paquete` int(11) NOT NULL,
   `id_prod_asociado` int(11) NOT NULL,
   `id_prod_generado` int(11) NOT NULL,
-  `nombre_paquete` varchar(100) NOT NULL,
   `num_piezas` int(11) NOT NULL,
-  `subtotal` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------

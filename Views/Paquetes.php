@@ -23,8 +23,9 @@ if (!isset($_SESSION['user']) ) {
         <?php include("include/navegacion.php"); ?>
         <!----------------- REGISTRO DE PAQUETES ------------------>
            <?php  include("FormularioPaquetes/FrmPaquetes.php"); ?> 
-        <!---------------- EDITAR PAQUETES ----------------->
+        <!---------------- VER  PAQUETES ----------------->
         <?php include("FormularioPaquetes/FrmEditarPaquetes.php"); ?>
+        
         <!---------------------- FOOTER ------------------------->
         <?php include("Include/footer.php") ?>
 

@@ -50,6 +50,11 @@ if (isset($_POST['agregar_producto'])) {
     $respuesta = PaqueteModelo::agregar_paquetes($Paquete);
     echo json_encode(['respuesta' => $respuesta]); 
 }
+//---------- Obtener  Producto -------//
+if (isset($_POST['obtener_paquete'])) {
 
+    $data = PaqueteModelo::obtener_paquetes();
+    echo json_encode($data);
+}
 
 ?>
