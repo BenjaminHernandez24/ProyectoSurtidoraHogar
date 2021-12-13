@@ -9,7 +9,7 @@ var precio_editar;
 var cont=0;
 
 //---------- Función para llenar Tabla  de Productos. ---------//
-async function tab_Productos() {
+/*async function tab_Productos() {
     tabla_paquete = $("#TablaPaquetes").DataTable({
         "responsive": true,
         "autoWidth": false,
@@ -34,9 +34,12 @@ async function tab_Productos() {
         ]
     });
 }
+
 tab_Productos();
+*/
 
 //---------------BUSQUEDA DE AUTOCOMPLETADO DE LOS PRODUCTOS ----------------//
+//Si encuentra el producto, llena el nombre del producto y el precio automáticamente//
 $(document).ready(async function autocompletado() {
     try {
         var Productos = new FormData();
@@ -64,6 +67,7 @@ $(document).ready(async function autocompletado() {
 
                     var datos = await peticionDatos.json();
                         $("#nombre_producto").val(datos.productos);
+                        $("#precio").val(datos.precio);
                     
                 } catch (error) {
                     notificarError(error);
@@ -74,6 +78,7 @@ $(document).ready(async function autocompletado() {
         notificarError(error);
     }
 });
+
 //---------- FUNCION PARA LLENAR SELECT DE TIPO DE PAQUETE ---------//
 async function llenar_Tipo_Producto(){
     try {
@@ -103,6 +108,7 @@ async function llenar_Tipo_Producto(){
     }
 }
 llenar_Tipo_Producto();
+
 //---------- FUNCION PARA LLENAR SELECT DE MARCA PAQUETE ---------//
 async function llenar_Marca_Producto(){
     try {
@@ -138,35 +144,32 @@ form_agregar_paquete.addEventListener('submit', async function(e) {
     e.preventDefault();
     var cont = $('#tablapqt tr').length;
     var total_art = cont-1 ;
-    //notificacionExitosa('Número de artículos ' + total_art); 
 
     if(total_art < 2){
         notificarError('Agregue más productos al paquete');
     }else{
-       
-       if (document.getElementById('total').value == "") {
-            notificarError('Ingrese el total');
-        }else{
-            notificacionExitosa('¡Paquete armado! (' + total_art + '  Articulos)'); 
-        }
+        notificacionExitosa('¡Paquete armado! (' + total_art + '  Articulos)');
+        document.getElementById('nom_paquete').disabled = false; 
+        document.getElementById('nom_paquete').value = "";
     }   
 }) //Cierra función agregar paquete
 
 //------------- LISTA DE PAQUETES (TABLA)  -----------//
 form_datos_paquete.addEventListener('submit', async function(e) {
     e.preventDefault();
-    let producto = document.getElementById('nombre_producto').value;
     let nombre_paquete = document.getElementById('nom_paquete').value;
+    let producto = document.getElementById('nombre_producto').value;
     let cantidad = parseFloat(document.getElementById('cantidad').value);
     let precio = parseFloat(document.getElementById('precio').value);
     let subtotal = precio * cantidad;
     var i = 0;
     try {
         
-            if (cantidad < 0 || precio < 0 || producto == "" || cantidad == "" || nombre_paquete == "") {
+            if (cantidad < 0 || precio < 0 || producto == "" || cantidad == "" || $.trim(nombre_paquete).length == 0) {
                 Error("Error en campo(s) o Falta nombre de paquete");
             } else {
                
+                document.getElementById('nom_paquete').disabled = true;
                 $('#tablapqt').DataTable().destroy();
                 $('#tablapqt').find('tbody').append(`<tr id="">
                 
@@ -187,15 +190,15 @@ form_datos_paquete.addEventListener('submit', async function(e) {
                         </td>
                       </tr>`);
                 $('#tablapqt').DataTable().draw();
-                if (document.getElementById('total').value == "") {
-                    $("#subtotal").val(subtotal);
-                    $("#total").val(subtotal);
-                } else {
-                    let total = parseFloat(document.getElementById('total').value);
-                    let suma_total = total + subtotal;
-                    $("#total").val(suma_total);
 
+                if (document.getElementById('subtotal').value == "") {
                     $("#subtotal").val(subtotal.toFixed(2));
+                    $("#total").val(subtotal.toFixed(2));
+                } else {
+                    let total = parseFloat(document.getElementById('subtotal').value);
+                    let suma_total = total + subtotal;
+                    $("#total").val(suma_total.toFixed(2));
+                    $("#subtotal").val(suma_total.toFixed(2));
                 }   
                 
                try {
@@ -221,7 +224,7 @@ form_datos_paquete.addEventListener('submit', async function(e) {
 })
 
 //---------------- FUNCION PARA  EDITAR EL PRODUCTO DE PAQUETE-----------//
-$('#tbody').on("click", ".btnEditar", async function() {
+/*$('#tbody').on("click", ".btnEditar", async function() {
     fila_editar = this.parentNode.parentNode;
     var producto = fila_editar.getElementsByTagName("td")[0].getElementsByTagName("P")[0].innerHTML;
     cantidad_editar = fila_editar.getElementsByTagName("td")[1].getElementsByTagName("P")[0].innerHTML;
@@ -237,9 +240,10 @@ $('#tbody').on("click", ".btnEditar", async function() {
             $("#cantidadEditar").val(n_precio);
 
         }
-});
+});*/
+
 //----------- FUNCION PARA ELIMINAR PRODUCTO DE LA LISTA DE PAQUETE ----------//
-$('#tbody').on('click', '.btnBorrar', async function() {
+/*$('#tbody').on('click', '.btnBorrar', async function() {
     var a = this.parentNode.parentNode;
    
     var producto = a.getElementsByTagName("td")[0].getElementsByTagName("P")[0].innerHTML;
@@ -257,13 +261,14 @@ $('#tbody').on('click', '.btnBorrar', async function() {
      $("#total").val(total_ac);
 
 
-})
-document.getElementById('buscar').addEventListener('keyup', () => {
+});*/
 
+document.getElementById('buscar').addEventListener('keyup', () => {
     if (document.getElementById('buscar').value == "") {
         limpiarCampos("limpiartodo");
     }
-})
+});
+
 //--------- FUNCIÓN PARA VALIDAR NO INGRESAR NÚMEROS NEGATIVOS EN EL PRECIO ----------//
 document.getElementById('precio').addEventListener('keyup', () => {
     if (!document.getElementById('precio').value == "") {
@@ -272,14 +277,16 @@ document.getElementById('precio').addEventListener('keyup', () => {
             Error("Ingrese un valor positivo en el precio");
         }
     } 
-})
+});
+
 /* FUNCION PARA BORRAR DATOS CUANDO NO SE ESTE ESCRIBIBIENDO EN EL INPUT DE BUSCAR PRODUCTO */
 document.getElementById('buscar').addEventListener('keyup', () => {
 
     if (document.getElementById('buscar').value == "") {
         limpiarCampos("limpiartodo");
     }
-})
+});
+
 //---------- Notificaciones ---------//
 function notificarError(mensaje) {
     Swal.fire({
@@ -288,6 +295,7 @@ function notificarError(mensaje) {
         text: mensaje
     })
 }
+
 function notificacionExitosa(mensaje) {
     Swal.fire(
         mensaje,
@@ -300,6 +308,7 @@ function notificacionExitosa(mensaje) {
         document.getElementById('cerrarEditar').click();
     });
 }
+
 /* FUNCION DE MENSAJE DE ERROR*/
 function Error(mensaje) {
     Swal.fire({
@@ -310,6 +319,7 @@ function Error(mensaje) {
         timer: 3000
     })
 }
+
 function limpiarCampos(mensaje) {
     if (mensaje == 'limpiartodo') {
         //form_datos_paquete.reset();
