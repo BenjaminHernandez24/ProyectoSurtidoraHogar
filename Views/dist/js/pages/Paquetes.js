@@ -221,47 +221,88 @@ form_datos_paquete.addEventListener('submit', async function(e) {
         notificarError("No se ha podido agregar los productos");
     }
 
-})
+});
 
-//---------------- FUNCION PARA  EDITAR EL PRODUCTO DE PAQUETE-----------//
-/*$('#tbody').on("click", ".btnEditar", async function() {
+//---------------- FUNCION PARA  EDITAR LOS VALORES DEL PAQUETE-----------//
+$('#tablapqt').on("click", ".btnEditar", async function() {
     fila_editar = this.parentNode.parentNode;
-    var producto = fila_editar.getElementsByTagName("td")[0].getElementsByTagName("P")[0].innerHTML;
+
+    //Obtenemos valores de la fila de la tablita a editar
     cantidad_editar = fila_editar.getElementsByTagName("td")[1].getElementsByTagName("P")[0].innerHTML;
     precio_editar = fila_editar.getElementsByTagName("td")[2].getElementsByTagName("P")[0].innerHTML;
+    total_editar = fila_editar.getElementsByTagName("td")[3].getElementsByTagName("P")[0].innerHTML;
+    valor_guardar = total_editar;
 
-   
-        var n_cantidad = $("#cantidadEditar").val(cantidad_editar);
-        var n_precio = $("#precioEditar").val(precio_editar);
-        if (n_cantidad < 0 || n_precio < 0 || n_cantidad == "" || n_precio == "" ) {
-            Error("Error en campo(s)");
-        }else {
-            $("#stockEditar").val(n_cantidad);
-            $("#cantidadEditar").val(n_precio);
+    //En el modal mostramos los datos de la fila seleccionada.
+    $("#cantidadEditar").val(cantidad_editar);
+    $("#total_editar").val(total_editar);
 
-        }
-});*/
+    $('#editar_cantidad_precio').modal('show');
+});
+
+//---------------- MODAL EDITAR CANTIDAD DE PRODUCTO A PAQUETE --------------//
+form_editar_paquete.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    //Obtenemos los valores de los campos del modal
+    var cantidad = parseFloat(document.getElementById("cantidadEditar").value);
+    var total_editar = parseFloat(document.getElementById("total_editar").value);
+
+    //Añadimos los valores correspondiente, a la fila correspondiente
+    fila_editar.getElementsByTagName("td")[1].getElementsByTagName("P")[0].innerHTML = cantidad;
+    fila_editar.getElementsByTagName("td")[3].getElementsByTagName("P")[0].innerHTML = total_editar;
+
+    //Obtenemos el subtotal que hay actualmente.
+    let total = parseFloat(document.getElementById('subtotal').value);
+
+    //Si la cantidad fué mayor se suma el resto de lo contrario el resto, se resta.
+    if((valor_guardar - total_editar) < 0){
+        total += (total_editar - valor_guardar);
+    }else{
+        total -= (valor_guardar - total_editar); 
+    }
+
+    //Asignamos valores a subtotal y total
+    $("#total").val(total.toFixed(2));
+    $("#subtotal").val(total.toFixed(2));
+
+    //Escondemos el modal
+    $('#editar_cantidad_precio').modal('hide');
+});
+
+//-- FUNCIÓN PARA EDITAR EN TIEMPO REAL EL TOTAL DE ACUERDO A LA CANTIDAD QUE SE MODIFIQUE --//
+document.getElementById('cantidadEditar').addEventListener('keyup', () => {
+    var cantidad = document.getElementById("cantidadEditar").value;
+    var subtotal_editar = cantidad*precio_editar;
+    $("#total_editar").val(subtotal_editar);
+});
 
 //----------- FUNCION PARA ELIMINAR PRODUCTO DE LA LISTA DE PAQUETE ----------//
-/*$('#tbody').on('click', '.btnBorrar', async function() {
+$('#tablapqt').on('click', '.btnBorrar', async function() {
     var a = this.parentNode.parentNode;
-   
-    var producto = a.getElementsByTagName("td")[0].getElementsByTagName("P")[0].innerHTML;
+
+    //Obtener valores necesarios para restar del subtotal y total
     var cantidad = a.getElementsByTagName("td")[1].getElementsByTagName("P")[0].innerHTML;
     var precio = a.getElementsByTagName("td")[2].getElementsByTagName("P")[0].innerHTML;
-    //var total_ini= a.getElementById('total').value;
+
+    total = parseFloat(document.getElementById('subtotal').value);
+    total = total - (cantidad*precio);
+    $("#subtotal").val(total.toFixed(2));
+    $("#total").val(total.toFixed(2));
+
+    //Verificamos que la tablita no esté vacía
+    var cont = $('#tablapqt tr').length;
+    var total_art = cont-2 ;
+
+    //Si está vacía, permitimos modificar el nombre del paquete
+    if(total_art < 1){
+        document.getElementById('nom_paquete').disabled = false;
+    }
 
     $('#tablapqt').DataTable().destroy();
     $(this).closest('tr').remove();
     $('#tablapqt').DataTable().draw();
-
-    let total_ini = parseFloat(document.getElementById('total').value);
-     let sub_restar = cantidad * precio;
-     let total_ac =  total_ini - sub_restar;
-     $("#total").val(total_ac);
-
-
-});*/
+});
 
 document.getElementById('buscar').addEventListener('keyup', () => {
     if (document.getElementById('buscar').value == "") {
