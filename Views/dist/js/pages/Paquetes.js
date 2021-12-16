@@ -163,12 +163,18 @@ form_datos_paquete.addEventListener('submit', async function(e) {
     let precio = parseFloat(document.getElementById('precio').value);
     let subtotal = precio * cantidad;
     var i = 0;
+    let selectTipoPaquete = document.getElementById('tipo_paquete').value;
+    let selectMarcaPaquete = document.getElementById('marca_paquete').value;
     try {
         
             if (cantidad < 0 || precio < 0 || producto == "" || cantidad == "" || $.trim(nombre_paquete).length == 0) {
                 Error("Error en campo(s) o Falta nombre de paquete");
-            } else {
-               
+            } else if (selectTipoPaquete === "default") {
+                notificarError('Seleccione un tipo de Paquete');
+            }else if(selectMarcaPaquete === "default"){
+                notificarError('Seleccione una marca de Paquete');
+        
+            }else{
                 document.getElementById('nom_paquete').disabled = true;
                 $('#tablapqt').DataTable().destroy();
                 $('#tablapqt').find('tbody').append(`<tr id="">
@@ -202,12 +208,15 @@ form_datos_paquete.addEventListener('submit', async function(e) {
                 }   
                 
                try {
+                let total_paquete= parseFloat(document.getElementById('total').value);
                 var DatosProductoPqt = new FormData();
                 DatosProductoPqt.append('agregar_producto', 'OK');
                 DatosProductoPqt.append('nombre_producto', producto);
                 DatosProductoPqt.append('nom_paquete', nombre_paquete);
                 DatosProductoPqt.append('cantidad', cantidad);
-                DatosProductoPqt.append('subtotal', subtotal);
+                DatosProductoPqt.append('tipo_paquete', selectTipoPaquete);
+                DatosProductoPqt.append('marca_paquete', selectMarcaPaquete);
+                DatosProductoPqt.append('total',total_paquete);
                 var peticion = await fetch('../Controllers/PaqueteController.php', {
                     method: 'POST',
                     body: DatosProductoPqt
@@ -221,7 +230,7 @@ form_datos_paquete.addEventListener('submit', async function(e) {
         notificarError("No se ha podido agregar los productos");
     }
 
-});
+})
 
 //---------------- FUNCION PARA  EDITAR LOS VALORES DEL PAQUETE-----------//
 $('#tablapqt').on("click", ".btnEditar", async function() {

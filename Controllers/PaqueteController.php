@@ -4,10 +4,15 @@
     //---------- Agregar Producto -------//
     if (isset($_POST['agregar_producto'])) {
         
-       $respuesta = PaqueteModelo::agregar_productos($_POST['nombre_producto'],$_POST['nom_paquete'], $_POST['cantidad'],$_POST['subtotal']);
-        echo json_encode($respuesta);
-    }
-
+        $respuesta = PaqueteModelo::agregar_productos(
+            $_POST['nombre_producto'],
+            $_POST['nom_paquete'],
+            $_POST['cantidad'],
+            $_POST['tipo_paquete'],
+            $_POST['marca_paquete'],
+            $_POST['total']);
+         echo json_encode($respuesta);
+     }
     //---------- Obtener Tipo Paquete -------//
     if (isset($_POST['obtener_tipo_paquete'])) {
 
