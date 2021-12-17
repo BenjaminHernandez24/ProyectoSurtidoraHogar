@@ -3,26 +3,32 @@
 
     //---------- Agregar Producto -------//
     if (isset($_POST['agregar_producto'])) {
-        
+        $posiciones = 0;
+        $data = json_decode($_POST['datos'], true);
+        $posiciones = count($data);
         $respuesta = PaqueteModelo::agregar_productos(
-            $_POST['nombre_producto'],
             $_POST['nom_paquete'],
-            $_POST['cantidad'],
+            $data,
+            $posiciones,
             $_POST['tipo_paquete'],
             $_POST['marca_paquete'],
             $_POST['total']);
          echo json_encode($respuesta);
      }
+
     //---------- Obtener Tipo Paquete -------//
     if (isset($_POST['obtener_tipo_paquete'])) {
-
         $tipo = PaqueteModelo::obtener_tipo_paquetes();
         echo json_encode($tipo);
     }
 
+    if (isset($_POST['obtenerID'])) {
+        $respuesta = PaqueteModelo::obtenerID($_POST['nombre']);
+        echo json_encode($respuesta);
+    }
+
     //---------- Obtener Marca Paquete -------//
     if (isset($_POST['obtener_marca_paquete'])) {
-
         $marca = PaqueteModelo::obtener_marca_paquetes();
         echo json_encode($marca);
     }
@@ -42,7 +48,6 @@
             $productos[]    = $data[$i]['nombre_producto'];
             $precio_unitario = $data[$i]['precio_publico'];
         }
-
         $respuesta = [
             "productos" => $productos,
             "precio" => $precio_unitario,
@@ -50,17 +55,7 @@
         echo json_encode($respuesta);
     }
 
-    //---- Funciones para agregar paquete  ------//
-    if (isset($_POST['agregar_producto'])) {
-        
-        $Paquete = array(
-            "nombre_producto" => $_POST['nombre_producto'],
-        );
-        $respuesta = PaqueteModelo::agregar_paquetes($Paquete);
-        echo json_encode(['respuesta' => $respuesta]); 
-    }
-
-    //---------- Obtener  Producto -------//
+    //---------- Obtener Paquete -------//
     if (isset($_POST['obtener_paquete'])) {
         $data = PaqueteModelo::obtener_paquetes();
         echo json_encode($data);

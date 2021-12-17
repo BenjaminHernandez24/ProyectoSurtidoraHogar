@@ -1,6 +1,7 @@
  var j = 0;
  var dataUno = 0;
  var contador = 0;
+ var filas = [];
 
 async function verNotificaciones(view = '')
  {
@@ -180,4 +181,83 @@ function prueba(pocision){
         $('#modalFrmNotificacion').modal('show');
        }
     });
+}
+
+//-------------------- REPORTES DE LAS NOTIFICACIONES ------------------------//
+
+function reporteNotificaciones(){
+    pdf = new jsPDF();
+    pdf.setFontSize(18);
+    pdf.text(85,12,"Notificaciones");
+    pdf.setLineWidth(0.6);
+    pdf.line(65, 15, 142, 15);
+    espacioFilas(1);
+    columns = ["Producto", "Stock"];
+    $.ajax({
+    url:"../Controllers/NotificacionController.php",
+    method:"POST",
+    data:'recibirNombreStock',
+    dataType:"json",
+    success:function(data)
+    { 
+
+      if(data.length != 0){ //¿Está vacío?
+        
+        var lista = new Array();
+        for(var i = 0; i < data.length; i++){
+            lista.push([data[i]["nombre"],data[i]["stock"]]);
+        }
+
+        guardarDatoDeFila(columns, lista);
+        pieDePagina();
+        pdf.save('ReporteNotificacion.pdf');
+        //reporteCreado("Reporte Generado Con Éxito");
+      }else{
+          //notificacionNoEncontrado('No hay notificaciones previas');
+          console.log('No hay notificaciones previas');
+      }
+    }
+  });
+}
+
+function espacioFilas(numero){
+  for( var i = 0; i < numero; i++){
+    columns = [];
+    pdf.autoTable(columns,filas,
+    { 
+      margin:{ top: 15  }
+    });
+  }
+}
+
+function guardarDatoDeFila(columns,lista){
+  pdf.autoTable(columns,lista,
+  {
+    rowPageBreak: 'avoid',
+    styles: {cellWidth: '100', fontSize: 11.3, cellPadding: 1},
+    headStyles: {fontSize: 13.3, valign: 'middle',halign: 'center',fillColor : [ 255 ,  127 ,  0] },
+    bodyStyles: {minCellHeight: 10.2, fontSize: 13.3, valign: 'middle', halign: 'center',textColor : [ 0 ,  0 ,  0]},
+    margin: {horizontal: 47, top:10, bottom:25},
+    columnStyles: { 
+      0: { halign: 'center',cellWidth:57} ,
+      1: { halign: 'center',cellWidth:57},
+    },
+  });
+}
+
+function pieDePagina(){
+  const pageCount = pdf.internal.getNumberOfPages();
+  // For each page, print the page number and the total pages
+  for(var i = 1; i <= pageCount; i++) {
+    //Marco de Pagina
+    pdf.setLineWidth(0.8);
+    pdf.rect(5, 5, 200, 288);
+    // Go to page i
+    pdf.setPage(i);
+     //Print Page 1 of 4 for example
+    pdf.setFontSize(10);
+    pdf.setFont("times");
+    pdf.setFontType("italic");
+    pdf.text('Página ' + String(i),210-15,297-15,null,null,"right");
+  }
 }

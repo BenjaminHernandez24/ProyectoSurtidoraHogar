@@ -149,4 +149,9 @@ if (isset($_POST['enviar_Total'])) {
     $boton = NotificacionModel::enviarTotal($data);
     echo json_encode(['respuesta' => $boton]);
 }
+
+if(isset($_POST['recibirNombreStock'])){
+    $productosVacios = NotificacionModel::productosConStockVacio();
+    echo json_encode($productosVacios,JSON_UNESCAPED_UNICODE);
+}
 ?>

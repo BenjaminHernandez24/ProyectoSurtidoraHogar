@@ -49,6 +49,10 @@ include('Include/Ticket_Factura.php');
                 
                 <li>
                     <hr class="dropdown-divider">
+                <li><a class="dropdown-item nav-link" type="button" onclick="reporteNotificaciones();" style="color:white" target="_blank"><i class="nav-icon fas fa-file-pdf" style="color:#F29F05;"> PDF Notificaciones</i></a></li>
+                    <img id="img2" src="dist/img/surtidora.png" style="display:none;">
+                <li>
+                    <hr class="dropdown-divider">
                 </li>
                 <li><a class="dropdown-item nav-link" href="../Views/Include/cerrarsesion.php" style="color:white"><i class="nav-icon fas fa-sign-out-alt" style="color:#F29F05;"> Salir</i></a></li>
             </ul>
@@ -179,7 +183,7 @@ include('Include/Ticket_Factura.php');
                                         </li>
                                         <li class="nav-item">
                                             <a href="../Views/Paquetes.php" class="nav-link">
-                                                <i class="fas fa-archive" style="color:white"></i>
+                                                <i class="nav-icon fas fa-archive" style="color:white"></i>
                                                 <p style="color:white; font-size: 20px;">  Agregar Paquetes</p>
                                             </a>
                                         </li>

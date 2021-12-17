@@ -25,7 +25,7 @@
 
                                     <label for="nom_empresa">Buscar Producto</label>
                                     <div class="input-group mb-3">
-                                        <input id="buscar" name="buscar" type="text" class="form-control" placeholder="Nombre del Producto" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                        <input id="buscar" name="buscar" type="text" class="form-control" placeholder="Nombre del Producto" aria-label="Recipient's username" aria-describedby="button-addon2" require>
                                     </div>
 
                                     <label for="nom_producto">Producto</label>
@@ -108,6 +108,7 @@
                         <table id="tablapqt" class="table table-light">
                             <thead class="thead-light">
                                 <tr class="table table-dark">
+                                    <th>ID Producto</th>
                                     <th>Producto</th>
                                     <th>Cantidad</th>
                                     <th>Precio Unitario</th>

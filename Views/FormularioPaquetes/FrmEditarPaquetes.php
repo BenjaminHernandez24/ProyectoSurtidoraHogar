@@ -25,7 +25,7 @@
                 </div>
                 <!--========================= PIE DEL MODAL ===========================-->
                 <div class="modal-footer">
-                    <button id="CerrarEditar" type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button id="cerrarEditar" type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-success">Guardar Cambio</button>
                 </div>
             </form>
