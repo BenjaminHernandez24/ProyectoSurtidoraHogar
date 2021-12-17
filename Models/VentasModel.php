@@ -268,9 +268,10 @@ class VentasModelo
 
                                     //Comenzamos a restar dinamicamente.
                                     for($i = 0; $i < sizeof($Arreglo_Id); $i++){
-                                        $cantidad = $cantidad * $Arreglo_Id[$i]["piezas"];
+                                        $cantidad_enviar = 0;
+                                        $cantidad_enviar = $cantidad * $Arreglo_Id[$i]["piezas"];
                                         $pst = $conn->prepare(self::$RESTA_STOCK);
-                                        $resultado = $pst->execute([$cantidad, $Arreglo_Id[$i]["inventario"]]);
+                                        $resultado = $pst->execute([$cantidad_enviar, $Arreglo_Id[$i]["inventario"]]);
                                         if($resultado == 1){
                                             $pst = $conn->prepare(self::$STOCK);
                                             $resultado = $pst->execute([$Arreglo_Id[$i]["inventario"]]);

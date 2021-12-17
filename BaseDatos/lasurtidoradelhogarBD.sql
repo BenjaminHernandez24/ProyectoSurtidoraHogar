@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-10-2021 a las 08:59:43
--- Versión del servidor: 10.4.19-MariaDB
--- Versión de PHP: 8.0.7
+-- Tiempo de generación: 17-12-2021 a las 05:29:48
+-- Versión del servidor: 10.4.21-MariaDB
+-- Versión de PHP: 8.0.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -135,7 +135,7 @@ CREATE TABLE `paquetes` (
   `id_paquete` int(11) NOT NULL,
   `id_prod_asociado` int(11) NOT NULL,
   `id_prod_generado` int(11) NOT NULL,
-  `num_piezas` int(11) NOT NULL
+  `piezas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
