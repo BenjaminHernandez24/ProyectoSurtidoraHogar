@@ -60,5 +60,10 @@
         $data = PaqueteModelo::obtener_paquetes();
         echo json_encode($data);
     }
+    //---------- Eliminar Producto -------//
+    if (isset($_POST['eliminar_producto'])) {
 
+    $respuesta = PaqueteModelo::eliminar_productos($_POST['id_producto']);
+    echo json_encode(['respuesta' => $respuesta]);
+    }   
 ?>

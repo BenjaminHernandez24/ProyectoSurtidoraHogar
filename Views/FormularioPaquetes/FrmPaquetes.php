@@ -121,20 +121,7 @@
                 </div>
             </div>
  
-            <!-- /.card-header -->
-            <div class="card-body">
-                <table id="TablaPaquetes" class="table table-light">
-                    <thead class="thead-light">
-                        <tr class="table table-dark">
-                            <th>Nombre paquete</th>
-                            <th>Número de Articulos</th>
-                            <th>Total</th>
-                            <th>Lista Productos</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>       
+                 
         </div> 
     </div>
 </div>

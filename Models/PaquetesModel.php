@@ -13,14 +13,16 @@ class PaqueteModelo
     //---------- Consultas para actualizar estatus de productos ------------// 
     private static $ACTUALIZAR_PRODUCTO = "UPDATE productos set estatus_paquete = 1 WHERE id_producto = ?";
     private static $BUSCAR_PROD_ID = "SELECT id_producto FROM productos WHERE nombre_producto=?";
-    //---------- Consultas para insertar paquete ------------// 
+    //---------- Consultas para Insertar paquete ------------// 
     private static $INSERTAR_PAQUETE = "INSERT INTO paquetes (id_prod_asociado, id_prod_generado, piezas) values (?, ?, ?)";
     private static $BORRAR_PRODUCTO = "DELETE FROM paquetes WHERE  id_prod_asociado = ?";
-    private static $SELECT_PAQUETES = "SELECT nombre_paquete, piezas, subtotal FROM paquetes";
+    private static $SELECT_PAQUETES_PRODUCTOS = "SELECT p.id_producto, p.nombre_producto, tp.descripcion_tipo, mp.descripcion_marca, p.precio_publico FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca WHERE p.estatus_paquete = 1;";
     private static $BUSCAR_PRODUCTO = "SELECT id_producto FROM productos WHERE nombre_producto = ?";
     private static $INSERTAR_PRODUCTO_PAQUETE = "INSERT INTO productos (nombre_producto, id_tipo, id_marca, precio_publico, estatus, estatus_paquete) values (?, ?, ?, ?, ?, ?);";
     private static $BUSCAR_ID_GENERADO_PAQUETE = "SELECT * FROM productos WHERE nombre_producto = ? ORDER BY id_producto DESC LIMIT 1;";
-   //-------- FUNCIÓN PARA INSERTAR PRODUCTO-PAQUETE  -------//
+    //---------- Consultas para Borrar paquete ------------// 
+    private static $BORRAR_PRODUCTO_PAQUETE = "DELETE FROM productos WHERE id_producto = ?;";
+    //-------- FUNCIÓN PARA INSERTAR PRODUCTO-PAQUETE  -------//
    public static function agregar_productos($nombre_paquete, $datos, $pocisiones, $tipo, $marca, $total_paquete)
    {
         $estado = 0;
@@ -79,7 +81,7 @@ class PaqueteModelo
         }
    }
     //-------- FUNCIÓN PARA ELIMINAR PRODUCTO -------//
-    public static function eliminar_productos($producto)
+  /*  public static function eliminar_productos($producto)
     {
         try {
             $conexion = new Conexion();
@@ -120,7 +122,7 @@ class PaqueteModelo
         } catch (PDOException $e) {
             return $e->getMessage();
         }
-    }
+    } */
 
     //-------- FUNCIÓN PARA OBTENER LOS PRODUCTOS DE PAQUETES-------//
     public static function obtener_paquetes()
@@ -129,7 +131,7 @@ class PaqueteModelo
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
 
-            $pst = $conn->prepare(self::$SELECT_PAQUETES);
+            $pst = $conn->prepare(self::$SELECT_PAQUETES_PRODUCTOS);
             $pst->execute();
 
             $productos = $pst->fetchAll();
@@ -247,4 +249,34 @@ class PaqueteModelo
         }
     }
 }
+//-------- FUNCIÓN PARA ELIMINAR TIPO DE PRODUCTO -------//
+/*public static function eliminar_productos($id_paquete)
+{
+    try {
+
+        $conexion = new Conexion();
+        $conn = $conexion->getConexion();
+        //Se abre la transacción.
+       $conn->beginTransaction();
+
+        $pst = $conn->prepare(self::$BORRAR_PRODUCTO_PAQUETE);
+        $resultado =$pst->execute([$id_paquete]);
+
+        if ($resultado == 1) {
+           $msg = "OK";
+           //Si todo está correcto se inserta.
+           $conn->commit();
+       } else {
+           $msg = "Falló al eliminar";
+           //Si algo falla, reestablece la bd a como estaba en un inicio.
+           $conn->rollBack();
+       }
+
+        $conn = null;
+        $conexion->closeConexion();
+       
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+}  */
 ?>

@@ -9,7 +9,7 @@ var precio_editar;
 var cont = 0;
 
 //---------- Función para llenar Tabla  de Productos. ---------//
-/*async function tab_Productos() {
+async function tab_Productos() {
     tabla_paquete = $("#TablaPaquetes").DataTable({
         "responsive": true,
         "autoWidth": false,
@@ -23,21 +23,20 @@ var cont = 0;
             "dataSrc": ""
         },
         "columns": [
-            {"data": "nombre_paquete"},
-            {"data": "num_piezas"},
-            {"data": "subtotal"},
+            {"data": "id_producto"},
+            {"data": "nombre_producto"},
+            {"data": "descripcion_tipo"},
+            {"data": "descripcion_marca"},
+            {"data": "precio_publico"},
             {"defaultContent": "<button class='btn btn-success btn-sm btnVerStatus'>Ver</button>"},
             {
-            "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-danger btn-sm btnBorrar'><i class='fas fa-trash-alt'></i></button></div></div>"
+            "defaultContent": "<div class='text-center'><div class='btn-group'><button class='btn btn-danger btn-sm btnBorrar-pqt'><i class='fas fa-trash-alt'></i></button></div></div>"
               
             }
         ]
     });
 }
-
 tab_Productos();
-*/
-
 //---------------BUSQUEDA DE AUTOCOMPLETADO DE LOS PRODUCTOS ----------------//
 //Si encuentra el producto, llena el nombre del producto y el precio automáticamente//
 $(document).ready(async function autocompletado() {
@@ -358,6 +357,55 @@ $('#tablapqt').on('click', '.btnBorrar', async function () {
     $('#tablapqt').DataTable().draw();
 });
 
+//---- FUNCIÓN PARA BORRAR PAQUETE ----//
+ $(document).on('click', ".btnBorrar-pqt", async function() {
+
+    if (tabla_paquete.row(this).child.isShown()) {
+        var data = tabla_paquete.row(this).data();
+    } else {
+        var data = tabla_paquete.row($(this).parents("tr")).data();
+    }
+
+    id_paquete = data[0];
+    notificacionExitosa('SIII');
+   /* const result = await Swal.fire({
+        title: '¿ESTÁ SEGURO(A) DE ELIMINAR ESTE PAQUETE?',
+        text: "¡Afectará las Ventas y se eliminará en: Compras, Ventas, Productos e Inventario!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#5bc0de',
+        cancelButtonColor: '#d9534f',
+        confirmButtonText: '¡Estoy seguro(a)!'
+    });
+//------- Si el usuario está seguro de la eliminación se ejecuta función Eliminar paquete------//
+    if (result.value) {
+        try {
+
+            var datosPaquete = new FormData();
+            datosPaquete.append('eliminar_paquete', 'OK');
+            datosPaquete.append('id_producto', id_paquete);
+ 
+            var peticion = await fetch('../Controllers/PaqueteController.php', {
+                method: 'POST',
+                body: datosPaquete
+            });
+ //---------- Esperamos la respuesta que obtiene nuestro controlador para hacer la consulta. ---------//
+            var resjson = await peticion.json();
+
+            if (resjson.respuesta == "OK") {
+                notificacionExitosa('¡ELiminación exitosa!');
+                tabla_paquete.ajax.reload(null, false);
+            } else {
+                notificarError(resjson.respuesta);
+            }
+
+        } catch (error) {
+            notificarError(error);
+        }
+    }  */
+
+})  
+//---------- FIN BORRAR PAQUETE ---------//
 /* FUNCION PARA BORRAR DATOS CUANDO NO SE ESTE ESCRIBIBIENDO EN EL INPUT DE BUSCAR PRODUCTO */
 document.getElementById('buscar').addEventListener('keyup', () => {
     if (document.getElementById('buscar').value == "") {

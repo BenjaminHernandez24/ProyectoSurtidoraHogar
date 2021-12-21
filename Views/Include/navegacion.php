@@ -181,12 +181,7 @@ include('Include/Ticket_Factura.php');
                                                 <p style="color:white; font-size: 20px;"> Agregar Productos</p>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="../Views/Paquetes.php" class="nav-link">
-                                                <i class="nav-icon fas fa-archive" style="color:white"></i>
-                                                <p style="color:white; font-size: 20px;">  Agregar Paquetes</p>
-                                            </a>
-                                        </li>
+                                        
                                         <li class="nav-item">
                                             <a href="../Views/Categoria_Tipo.php" class="nav-link">
                                                 <i class="nav-icon fas fa-boxes" style="color:white"></i>
@@ -202,6 +197,31 @@ include('Include/Ticket_Factura.php');
                                 </li>
                         </ul>
                         </li>
+                        <li class="nav-item has-treeview">
+                                    <a href="#" class="nav-link">
+                                        <i class="fas fa-archive   " style="color:white"></i>
+                                        <p style="color:white; font-size: 25px;">
+                                               Paquetes
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                            <a href="../Views/Paquetes.php" class="nav-link">
+                                                <i class="nav-icon fas fa-archive" style="color:white"></i>
+                                                <p style="color:white; font-size: 20px;">  Agregar Paquetes</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="../Views/EditarPaquetes.php" class="nav-link">
+                                                <i class="nav-icon fas fa-archive" style="color:white"></i>
+                                                <p style="color:white; font-size: 20px;">  Editar Paquetes</p>
+                                            </a>
+                                        </li>
+                                </li>   
+                        </ul>
+                        </li>
+
                         <!-------//</li>------->
                         <li class="nav-item">
                             <a href="../Views/Inventario.php" class="nav-link">
