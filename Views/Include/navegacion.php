@@ -199,7 +199,7 @@ include('Include/Ticket_Factura.php');
                         </li>
                         <li class="nav-item has-treeview">
                                     <a href="#" class="nav-link">
-                                        <i class="fas fa-archive   " style="color:white"></i>
+                                        <i class="nav-icon fas fa-archive   " style="color:white"></i>
                                         <p style="color:white; font-size: 25px;">
                                                Paquetes
                                             <i class="fas fa-angle-left right"></i>

@@ -21,11 +21,12 @@ if (!isset($_SESSION['user']) ) {
         <?php include("include/navegacion.php"); ?>
         <!----------------- EDITAR/VER DE PAQUETES ------------------>
         <?php  include("TablaPaquetes/TablaPaquetes.php"); ?> 
+        <?php  include("TablaPaquetes/InformacionPaquetes.php"); ?> 
         <?php include("Include/footer.php") ?>
       </div>
       <!-- ./wrapper -->
       <?php include("Include/scripts.php"); ?>
       <?php include("Include/tabla.php"); ?>
-      <script src="dist/js/pages/Paquetes.js"></script>
+      <script src="dist/js/pages/PaqueteEditar.js"></script>
     </body>
 </html>

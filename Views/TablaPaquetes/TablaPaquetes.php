@@ -19,7 +19,7 @@
                                             <th>Tipo</th>
                                             <th>Marca</th>
                                             <th>Precio</th>
-                                            <th>Lista Productos</th>
+                                            <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>

@@ -22,6 +22,7 @@
         echo json_encode($tipo);
     }
 
+    //Obtener el id de los productos que se van agregando a la tabla
     if (isset($_POST['obtenerID'])) {
         $respuesta = PaqueteModelo::obtenerID($_POST['nombre']);
         echo json_encode($respuesta);
@@ -55,15 +56,40 @@
         echo json_encode($respuesta);
     }
 
+    //---------------------- PAQUETE EDITAR --------------------//
+    
     //---------- Obtener Paquete -------//
     if (isset($_POST['obtener_paquete'])) {
         $data = PaqueteModelo::obtener_paquetes();
         echo json_encode($data);
     }
-    //---------- Eliminar Producto -------//
-    if (isset($_POST['eliminar_producto'])) {
+    //---------- Eliminar Paquete -------//
+    if (isset($_POST['eliminar_paquete'])) {
+        $respuesta = PaqueteModelo::eliminar_paquete($_POST['id_paquete']);
+        echo json_encode(['respuesta' => $respuesta]);
+    }
+    
+    //Activar paquete
+    if (isset($_POST['activarPaquete'])) {
 
-    $respuesta = PaqueteModelo::eliminar_productos($_POST['id_producto']);
-    echo json_encode(['respuesta' => $respuesta]);
-    }   
+        $Paquete = array(
+            "id_producto"  => $_POST['idPaquete'],
+            "estatus" => 1,
+        );
+
+        $respuesta = PaqueteModelo::Estatus($Paquete);
+        echo json_encode(['respuesta' => $respuesta]);
+    }
+
+    //Desactivar paquete
+    if (isset($_POST['desactivarPaquete'])) {
+
+        $Paquete = array(
+            "id_producto"  => $_POST['idPaquete'],
+            "estatus" => 0,
+        );
+
+        $respuesta = PaqueteModelo::Estatus($Paquete);
+        echo json_encode(['respuesta' => $respuesta]);
+    }
 ?>

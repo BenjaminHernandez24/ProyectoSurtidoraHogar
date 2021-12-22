@@ -12,26 +12,28 @@ class PaqueteModelo
     private static $SELECT_ALL_MARCA_PRODUCTO = "SELECT * FROM marcas_producto WHERE estatus = 1 ORDER BY descripcion_marca";
     //---------- Consultas para actualizar estatus de productos ------------// 
     private static $ACTUALIZAR_PRODUCTO = "UPDATE productos set estatus_paquete = 1 WHERE id_producto = ?";
-    private static $BUSCAR_PROD_ID = "SELECT id_producto FROM productos WHERE nombre_producto=?";
     //---------- Consultas para Insertar paquete ------------// 
     private static $INSERTAR_PAQUETE = "INSERT INTO paquetes (id_prod_asociado, id_prod_generado, piezas) values (?, ?, ?)";
     private static $BORRAR_PRODUCTO = "DELETE FROM paquetes WHERE  id_prod_asociado = ?";
-    private static $SELECT_PAQUETES_PRODUCTOS = "SELECT p.id_producto, p.nombre_producto, tp.descripcion_tipo, mp.descripcion_marca, p.precio_publico FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca WHERE p.estatus_paquete = 1;";
+    private static $SELECT_PAQUETES_PRODUCTOS = "SELECT p.id_producto, p.nombre_producto, tp.descripcion_tipo, mp.descripcion_marca, p.precio_publico, p.estatus FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca AND p.estatus_paquete = 1;";
     private static $BUSCAR_PRODUCTO = "SELECT id_producto FROM productos WHERE nombre_producto = ?";
     private static $INSERTAR_PRODUCTO_PAQUETE = "INSERT INTO productos (nombre_producto, id_tipo, id_marca, precio_publico, estatus, estatus_paquete) values (?, ?, ?, ?, ?, ?);";
     private static $BUSCAR_ID_GENERADO_PAQUETE = "SELECT * FROM productos WHERE nombre_producto = ? ORDER BY id_producto DESC LIMIT 1;";
     //---------- Consultas para Borrar paquete ------------// 
+    private static $BORRAR_PRODUCTO_RELACIONADO = "DELETE FROM paquetes WHERE id_prod_generado = ?;";
     private static $BORRAR_PRODUCTO_PAQUETE = "DELETE FROM productos WHERE id_producto = ?;";
+    private static $CAMBIAR_ESTATUS = "UPDATE productos SET estatus = ? WHERE id_producto = ?;";
+    
     //-------- FUNCIÓN PARA INSERTAR PRODUCTO-PAQUETE  -------//
-   public static function agregar_productos($nombre_paquete, $datos, $pocisiones, $tipo, $marca, $total_paquete)
-   {
+    public static function agregar_productos($nombre_paquete, $datos, $pocisiones, $tipo, $marca, $total_paquete)
+    {
         $estado = 0;
-
-       try {
+        try 
+        {
             $msg = "";
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
-           
+        
             //Se abre la transacción.
             $conn->beginTransaction();
 
@@ -75,55 +77,12 @@ class PaqueteModelo
             return $msg;   
             $conn = null;
             $conexion->closeConexion();  
-          
+            
         } catch (PDOException $e) {
             return $e->getMessage();
         }
-   }
-    //-------- FUNCIÓN PARA ELIMINAR PRODUCTO -------//
-  /*  public static function eliminar_productos($producto)
-    {
-        try {
-            $conexion = new Conexion();
-            $conn = $conexion->getConexion();
-            //Se abre la transacción.
-            $conn->beginTransaction();
-
-            //-------- Se busca el ID del producto ------//
-            $pst = $conn->prepare(self::$BUSCAR_PROD_ID);
-            $pst->execute([$producto]);
-            $id_prod= $pst->fetchAll(PDO::FETCH_ASSOC);
-            $id_producto = $id_prod[0]["id_producto"];
-
-            if (!empty($id_producto)) {
-                $pst = $conn->prepare(self::$BORRAR_PRODUCTO);
-                $resultado=$pst->execute([$id_producto]);
-
-                if ($resultado == 1) {
-                   $msg = "OK";
-                   //Si todo está correcto se inserta.
-                   $conn->commit();
-                } else {
-                   $msg = "Falló al eliminar";
-                   //Si algo falla, reestablece la bd a como estaba en un inicio.
-                   $conn->rollBack();
-                }
-
-                $conn = null;
-                $conexion->closeConexion();
-                return $msg;
-
-            } else {
-                return $msg="ERROR";
-            }
-
-            $conn = null;
-            $conexion->closeConexion();
-        } catch (PDOException $e) {
-            return $e->getMessage();
-        }
-    } */
-
+    }
+    
     //-------- FUNCIÓN PARA OBTENER LOS PRODUCTOS DE PAQUETES-------//
     public static function obtener_paquetes()
     {
@@ -144,7 +103,7 @@ class PaqueteModelo
         }
     }
 
-    //-------- FUNCIÓN PARA OBTENER ID DE LOS PRODUCTOS-------//
+    //-------- FUNCIÓN PARA OBTENER ID DE LOS PRODUCTOS AGREGADOS A LA TABLA-------//
     public static function obtenerID($nombre)
     {
         try {
@@ -248,35 +207,77 @@ class PaqueteModelo
             return $e->getMessage();
         }
     }
-}
-//-------- FUNCIÓN PARA ELIMINAR TIPO DE PRODUCTO -------//
-/*public static function eliminar_productos($id_paquete)
-{
-    try {
 
-        $conexion = new Conexion();
-        $conn = $conexion->getConexion();
-        //Se abre la transacción.
-       $conn->beginTransaction();
+    //-------- FUNCIÓN PARA ELIMINAR PAQUETE -------//
+    public static function eliminar_paquete($id_paquete)
+    {
+        try {
+            $conexion = new Conexion();
+            $conn = $conexion->getConexion();
+            //Se abre la transacción.
+            $conn->beginTransaction();
 
-        $pst = $conn->prepare(self::$BORRAR_PRODUCTO_PAQUETE);
-        $resultado =$pst->execute([$id_paquete]);
+            //Independiente del cascade eliminamos manualmente de paquetes
+            $pst = $conn->prepare(self::$BORRAR_PRODUCTO_RELACIONADO);
+            $resultado =$pst->execute([$id_paquete]);
 
-        if ($resultado == 1) {
-           $msg = "OK";
-           //Si todo está correcto se inserta.
-           $conn->commit();
-       } else {
-           $msg = "Falló al eliminar";
-           //Si algo falla, reestablece la bd a como estaba en un inicio.
-           $conn->rollBack();
-       }
+            if ($resultado == 1) {
+                //y luego de productos
+                $pst = $conn->prepare(self::$BORRAR_PRODUCTO_PAQUETE);
+                $resultado =$pst->execute([$id_paquete]);
+                if ($resultado == 1) {
+                    $msg = "OK";
+                    //Si todo está correcto se inserta.
+                    $conn->commit();
+                } else {
+                    $msg = "Falló al eliminar";
+                    //Si algo falla, reestablece la bd a como estaba en un inicio.
+                    $conn->rollBack();
+                }
+            } else {
+                $msg = "Falló al eliminar";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
+            }
 
-        $conn = null;
-        $conexion->closeConexion();
-       
-    } catch (PDOException $e) {
-        return $e->getMessage();
+            $conn = null;
+            $conexion->closeConexion();
+            
+            return $msg;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
     }
-}  */
+
+    public static function Estatus($paquete)
+    {
+        try {
+            $conexion = new Conexion();
+            $conn     = $conexion->getConexion();
+
+            //Abro la transacción.
+            $conn->beginTransaction();
+
+            $pst       = $conn->prepare(self::$CAMBIAR_ESTATUS);
+            $resultado = $pst->execute([$paquete['estatus'], $paquete['id_producto']]);
+
+            if ($resultado == 1) {
+                $msg = "OK";
+                //Si todo esta correcto insertamos.
+                $conn->commit();
+            } else {
+                $msg = "Fallo al cambiar estatus";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
+            }
+
+            $conn = null;
+            $conexion->closeConexion();
+
+            return $msg;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+}
 ?>
