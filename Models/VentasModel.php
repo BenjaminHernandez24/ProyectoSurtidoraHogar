@@ -268,7 +268,6 @@ class VentasModelo
 
                                     //Comenzamos a restar dinamicamente.
                                     for($i = 0; $i < sizeof($Arreglo_Id); $i++){
-                                        $cantidad_enviar = 0;
                                         $cantidad_enviar = $cantidad * $Arreglo_Id[$i]["piezas"];
                                         $pst = $conn->prepare(self::$RESTA_STOCK);
                                         $resultado = $pst->execute([$cantidad_enviar, $Arreglo_Id[$i]["inventario"]]);
@@ -281,6 +280,7 @@ class VentasModelo
                                                     $Romper = 2;
                                                     break;
                                                 }
+                                            $cantidad_enviar = 0;
                                             }else{
                                                 $Romper = 1;
                                                 break;
@@ -386,14 +386,15 @@ class VentasModelo
                             for($i = 0; $i < sizeof($Arreglo_Id); $i++){
                                 //Preparamos la consulta para sumar
                                 $pst = $conn->prepare(self::$SUMA_STOCK);
-                                $cantidad = $cantidad * $Arreglo_Id[$i]["piezas"];
+                                $cantidad_enviar = $cantidad * $Arreglo_Id[$i]["piezas"];
                                 
-                                $resultado = $pst->execute([$cantidad, $Arreglo_Id[$i]["inventario"]]);
+                                $resultado = $pst->execute([$cantidad_enviar, $Arreglo_Id[$i]["inventario"]]);
                                 if ($resultado != 1) {
                                     //Si algo falla, reestablece la bd a como estaba en un inicio.
                                     $Romper = 1;
                                     break;
                                 }
+                                $cantidad_enviar = 0;
                             }
 
                             //Si Romper = 1, quiere decir que uno de ellos tuvo error
@@ -509,14 +510,15 @@ class VentasModelo
                                 for($j = 0; $j < sizeof($Arreglo_Id); $j++){
                                     //Preparamos la consulta para sumar
                                     $pst = $conn->prepare(self::$SUMA_STOCK);
-                                    $cantidad = $datos[$i]['Cantidad'] * $Arreglo_Id[$j]["piezas"];
-                                    $resultado = $pst->execute([$cantidad, $Arreglo_Id[$j]["inventario"]]);
+                                    $cantidad_enviar = $datos[$i]['Cantidad'] * $Arreglo_Id[$j]["piezas"];
+                                    $resultado = $pst->execute([$cantidad_enviar, $Arreglo_Id[$j]["inventario"]]);
                                     if($resultado == 1){
                                         $Romper = 0;
                                     }else{
                                         $Romper = 1;
                                         break;
                                     }
+                                    $cantidad_enviar = 0;
                                 }
                             }else{
                                 $msg = "ERROR";
@@ -605,9 +607,9 @@ class VentasModelo
                                 for($j = 0; $j < sizeof($Arreglo_Id); $j++){
                                     $cantidad = 0;
                                     $pst = $conn->prepare(self::$RESTA_STOCK);
-                                    $cantidad = $datos[$i]['Cantidad'] * $Arreglo_Id[$j]["piezas"];
+                                    $cantidad_enviar = $datos[$i]['Cantidad'] * $Arreglo_Id[$j]["piezas"];
                                     
-                                    $resultado = $pst->execute([$cantidad, $Arreglo_Id[$j]["inventario"]]);
+                                    $resultado = $pst->execute([$cantidad_enviar, $Arreglo_Id[$j]["inventario"]]);
                                     if ($resultado == 1) {
                                         $pst = $conn->prepare(self::$STOCK);
                                         $resultado = $pst->execute([$Arreglo_Id[$j]["inventario"]]);
@@ -619,6 +621,7 @@ class VentasModelo
                                                 $Romper = 2;
                                                 break;
                                             }
+                                            $cantidad_enviar = 0;
                                         }else{
                                             $Romper = 1;
                                             break;

@@ -1,7 +1,7 @@
 <?php
 require_once 'Conexion.php';
 class NotificacionModel{
- private static $vacios = "SELECT p.nombre_producto as nombre, i.stock as stock FROM inventario i INNER JOIN productos p ON (i.stock <= i.estatus_alerta OR i.stock < 4) AND p.id_producto=i.id_producto ORDER BY i.id_inventario";
+ private static $vacios = "SELECT p.nombre_producto as nombre, i.stock as stock FROM inventario i INNER JOIN productos p ON (i.stock <= i.estatus_alerta OR i.stock < 4) AND p.id_producto=i.id_producto ORDER BY p.nombre_producto ASC";
  private static $boton = "SELECT boton FROM notificaciones";
  private static $uno = "UPDATE notificaciones SET boton=1";
  private static $total = "SELECT * FROM notificaciones";

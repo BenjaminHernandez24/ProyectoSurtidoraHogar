@@ -229,8 +229,8 @@ function guardarDatoDeFila(columns, lista) {
       rowPageBreak: 'avoid',
       styles: { cellWidth: '100', fontSize: 11.3, cellPadding: 1 },
       headStyles: { fontSize: 13.3, valign: 'middle', halign: 'center', fillColor: [255, 127, 0] },
-      bodyStyles: { minCellHeight: 10.2, fontSize: 13.3, valign: 'middle', halign: 'center', textColor: [0, 0, 0] },
-      margin: { horizontal: 47, top: 10, bottom: 25 },
+      bodyStyles: { minCellHeight: 11.2, fontSize: 13.3, valign: 'middle', halign: 'center', textColor: [0, 0, 0] },
+      margin: { horizontal: 47, top: 10, bottom: 14 },
       columnStyles: {
         0: { halign: 'center', cellWidth: 57 },
         1: { halign: 'center', cellWidth: 57 },
