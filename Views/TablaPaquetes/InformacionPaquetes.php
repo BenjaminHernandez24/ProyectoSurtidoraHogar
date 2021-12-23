@@ -1,4 +1,4 @@
-<div id="informacionPaquete" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div id="informacionPaquete" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: scroll;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -26,6 +26,7 @@
                                             <label for="nom_empresa">Buscar Producto</label>
                                             <div class="input-group mb-3">
                                                 <input id="buscar" name="buscar" type="text" class="form-control" placeholder="Nombre del Producto" aria-label="Recipient's username" aria-describedby="button-addon2" require>
+                                                <style> .ui-autocomplete { position: absolute; z-index: 2150000000 !important; cursor: default; border: 2px solid #ccc; padding: 5px 0; border-radius: 2px; } </style>
                                             </div>
 
                                             <label for="nom_producto">Producto</label>

@@ -6,12 +6,15 @@ class PaqueteModelo
     private static $SELECT_ALL = "SELECT nombre_producto FROM productos WHERE estatus=1 AND estatus_paquete = 0";
     private static $obtenerID = "SELECT id_producto FROM productos WHERE nombre_producto=?";
     private static $SELECT_LISTA_PRODUCTOS ="SELECT nombre_producto,precio_publico FROM productos WHERE estatus=1 AND nombre_producto=? ORDER BY (nombre_producto) DESC LIMIT 1";
+    
     //------------ Consultas para Select de Tipo y Marca Paquete -----------//
     //private static $INSERTAR_PRODUCTO = "INSERT INTO productos (nombre_producto, id_tipo, id_marca, precio_publico, estatus) values (?, ?, ?, ?, ?)";
     private static $SELECT_ALL_TIPO_PRODUCTO = "SELECT * FROM tipo_producto WHERE estatus = 1 ORDER BY descripcion_tipo ";
     private static $SELECT_ALL_MARCA_PRODUCTO = "SELECT * FROM marcas_producto WHERE estatus = 1 ORDER BY descripcion_marca";
+    
     //---------- Consultas para actualizar estatus de productos ------------// 
     private static $ACTUALIZAR_PRODUCTO = "UPDATE productos set estatus_paquete = 1 WHERE id_producto = ?";
+    
     //---------- Consultas para Insertar paquete ------------// 
     private static $INSERTAR_PAQUETE = "INSERT INTO paquetes (id_prod_asociado, id_prod_generado, piezas) values (?, ?, ?)";
     private static $BORRAR_PRODUCTO = "DELETE FROM paquetes WHERE  id_prod_asociado = ?";
@@ -19,10 +22,13 @@ class PaqueteModelo
     private static $BUSCAR_PRODUCTO = "SELECT id_producto FROM productos WHERE nombre_producto = ?";
     private static $INSERTAR_PRODUCTO_PAQUETE = "INSERT INTO productos (nombre_producto, id_tipo, id_marca, precio_publico, estatus, estatus_paquete) values (?, ?, ?, ?, ?, ?);";
     private static $BUSCAR_ID_GENERADO_PAQUETE = "SELECT * FROM productos WHERE nombre_producto = ? ORDER BY id_producto DESC LIMIT 1;";
+    
     //---------- Consultas para Borrar paquete ------------// 
     private static $BORRAR_PRODUCTO_RELACIONADO = "DELETE FROM paquetes WHERE id_prod_generado = ?;";
     private static $BORRAR_PRODUCTO_PAQUETE = "DELETE FROM productos WHERE id_producto = ?;";
     private static $CAMBIAR_ESTATUS = "UPDATE productos SET estatus = ? WHERE id_producto = ?;";
+    private static $OBTENER_ID_PRODUCTOS = "SELECT pa.id_prod_asociado, pa.id_prod_generado FROM productos p INNER JOIN paquetes pa ON p.nombre_producto = ? AND pa.id_prod_generado = p.id_producto;";
+    private static $OBTENER_DATOS_PRODUCTOS = "SELECT p.nombre_producto, p.precio_publico, pa.piezas FROM productos p INNER JOIN paquetes pa ON p.id_producto = ? AND pa.id_prod_generado = ?";
     
     //-------- FUNCIÓN PARA INSERTAR PRODUCTO-PAQUETE  -------//
     public static function agregar_productos($nombre_paquete, $datos, $pocisiones, $tipo, $marca, $total_paquete)
@@ -249,6 +255,7 @@ class PaqueteModelo
         }
     }
 
+    //FUNCION PARA CAMBIAR EL ESTATUS DEL PAQUETE
     public static function Estatus($paquete)
     {
         try {
@@ -275,6 +282,43 @@ class PaqueteModelo
             $conexion->closeConexion();
 
             return $msg;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    //EXTRAER DATOS PARA EDITAR LOS PAQUETES
+    public static function extraerDatosTablaEditar($nombre_paquete){
+        try {
+            $conexion = new Conexion();
+            $conn = $conexion->getConexion();
+
+            //Obtenemos los ID relacionados al paquete seleccionado
+            $pst = $conn->prepare(self::$OBTENER_ID_PRODUCTOS);
+            $pst->execute([$nombre_paquete]);
+            $resultado = $pst->fetchAll();
+
+            $enviar_datos = [];
+
+            for($i = 0; $i < count($resultado); $i++){
+                //Obtenemos informacion por separado de los productos asociados al paquete
+                $pst = $conn->prepare(self::$OBTENER_DATOS_PRODUCTOS);
+                $pst->execute([$resultado[$i]["id_prod_asociado"],$resultado[0]["id_prod_generado"]]);
+                $datos_producto = $pst->fetchAll();
+
+                //Arreglo preparado
+                $enviar_datos[$i] = [
+                    "id_producto" => $resultado[$i]["id_prod_asociado"],
+                    "nombre_producto" => $datos_producto[$i]["nombre_producto"],
+                    "piezas" => $datos_producto[$i]["piezas"],
+                    "precio" => $datos_producto[$i]["precio_publico"]
+                ];
+            }
+
+            $conn = null;
+            $conexion->closeConexion();
+
+            return $enviar_datos;
         } catch (PDOException $e) {
             return $e->getMessage();
         }

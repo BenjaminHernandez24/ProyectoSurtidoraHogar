@@ -92,4 +92,10 @@
         $respuesta = PaqueteModelo::Estatus($Paquete);
         echo json_encode(['respuesta' => $respuesta]);
     }
+
+    //Preparar la tabla de paquetes para editar
+    if(isset($_POST['crearTabla'])){
+        $respuesta = PaqueteModelo::extraerDatosTablaEditar($_POST['nombre_paquete']);
+        echo json_encode($respuesta);
+    }
 ?>

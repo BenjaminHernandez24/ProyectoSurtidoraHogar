@@ -22,6 +22,7 @@ if (!isset($_SESSION['user']) ) {
         <!----------------- EDITAR/VER DE PAQUETES ------------------>
         <?php  include("TablaPaquetes/TablaPaquetes.php"); ?> 
         <?php  include("TablaPaquetes/InformacionPaquetes.php"); ?> 
+        <?php  include("TablaPaquetes/EditarCantidadPaquete.php"); ?> 
         <?php include("Include/footer.php") ?>
       </div>
       <!-- ./wrapper -->

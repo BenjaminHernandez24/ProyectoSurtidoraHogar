@@ -327,7 +327,6 @@ $('#tablapqt').on('click', '.btnBorrar', async function () {
     $('#tablapqt').DataTable().draw();
 });
 
-//---------- FIN BORRAR PAQUETE ---------//
 /* FUNCION PARA BORRAR DATOS CUANDO NO SE ESTE ESCRIBIBIENDO EN EL INPUT DE BUSCAR PRODUCTO */
 document.getElementById('buscar').addEventListener('keyup', () => {
     if (document.getElementById('buscar').value == "") {
