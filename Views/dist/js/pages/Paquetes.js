@@ -7,107 +7,6 @@ var cantidad_editar;
 var precio_editar;
 var cont = 0;
 
-//---------------BUSQUEDA DE AUTOCOMPLETADO DE LOS PRODUCTOS ----------------//
-//Si encuentra el producto, llena el nombre del producto y el precio automáticamente//
-$(document).ready(async function autocompletado() {
-    try {
-        var Productos = new FormData();
-        Productos.append('obtenerProductos', 'OK');
-
-        var peticion = await fetch('../Controllers/PaqueteController.php', {
-            method: 'POST',
-            body: Productos
-        });
-
-        var data = await peticion.json();
-
-        $('#buscar').autocomplete({
-            source: data,
-            select: async function (event, item) {
-                try {
-                    var DatosProductos = new FormData();
-                    DatosProductos.append('obtener_lista_productos', 'OK');
-                    DatosProductos.append('valor', item.item.value);
-
-                    var peticionDatos = await fetch('../Controllers/PaqueteController.php', {
-                        method: 'POST',
-                        body: DatosProductos
-                    });
-
-                    var datos = await peticionDatos.json();
-                    $("#nombre_producto").val(datos.productos);
-                    $("#precio").val(datos.precio);
-
-                } catch (error) {
-                    notificarError(error);
-                }
-            }
-        });
-    } catch (error) {
-        notificarError(error);
-    }
-});
-
-//---------- FUNCION PARA LLENAR SELECT DE TIPO DE PAQUETE ---------//
-async function llenar_Tipo_Producto() {
-    try {
-
-        var datosProducto = new FormData();
-        datosProducto.append('obtener_tipo_paquete', 'OK');
-
-        var peticion = await fetch('../controllers/PaqueteController.php', {
-            method: 'POST',
-            body: datosProducto
-        });
-
-        var resjson = await peticion.json();
-
-        var selectTipoProducto = document.getElementById('tipo_paquete');
-
-        for (item of resjson) {
-            let option_r = document.createElement('option');
-            option_r.value = item.id_tipo;
-            option_r.text = item.descripcion_tipo;
-            selectTipoProducto.appendChild(option_r);
-
-        }
-
-    } catch (error) {
-        notificarError(error);
-    }
-}
-llenar_Tipo_Producto();
-
-//---------- FUNCION PARA LLENAR SELECT DE MARCA PAQUETE ---------//
-async function llenar_Marca_Producto() {
-    try {
-
-        var datosProducto = new FormData();
-        datosProducto.append('obtener_marca_paquete', 'OK');
-
-        var peticion = await fetch('../controllers/PaqueteController.php', {
-            method: 'POST',
-            body: datosProducto
-        });
-
-        var resjson = await peticion.json();
-
-        var selectMarcaProducto = document.getElementById('marca_paquete');
-
-        for (item of resjson) {
-            let optionM1 = document.createElement('option');
-            optionM1.value = item.id_marca;
-            optionM1.text = item.descripcion_marca;
-            selectMarcaProducto.appendChild(optionM1);
-
-        }
-
-    } catch (error) {
-        notificarError(error);
-    }
-}
-llenar_Marca_Producto();
-
 ///------- EVENTO PARA MANDAR LOS DATOS A LA BASE DE DATOS ------//
 form_agregar_paquete.addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -117,13 +16,16 @@ form_agregar_paquete.addEventListener('submit', async function (e) {
     var cont = $('#tablapqt tr').length;
     var total_art = cont - 1;
 
-    if (total_art < 2) {
+     /*Datos tabla*/
+     var valorestabla = document.getElementById("tablapqt").getElementsByTagName("p");
+     var valor_probar = valorestabla[2].innerHTML;
+    
+    if (total_art < 2 && valor_probar < 2 ) {
         notificarError('Agregue más productos al paquete');
     } else if(nombre_paquete.trim() == 0 || selectTipoPaquete == "default" || selectMarcaPaquete == "default"){
         notificarError('Verifique que haya agregado un nombre y seleccionado un tipo y marca producto.');
     }else {
         /*Datos tabla*/
-        var valorestabla = document.getElementById("tablapqt").getElementsByTagName("p");
         var filastabla = document.getElementById("tablapqt").getElementsByTagName('tr');
         var columnastabla = document.getElementById("tablapqt").getElementsByTagName('th');
 
@@ -179,7 +81,7 @@ form_agregar_paquete.addEventListener('submit', async function (e) {
             notificarError("Ocurrió un Error, paquete no creado!");
         }
     }
-}); //Cierra función agregar paquete
+});
 
 //------------- LISTA DE PAQUETES (TABLA)  -----------//
 form_datos_paquete.addEventListener('submit', async function (e) {
@@ -327,13 +229,6 @@ $('#tablapqt').on('click', '.btnBorrar', async function () {
     $('#tablapqt').DataTable().draw();
 });
 
-/* FUNCION PARA BORRAR DATOS CUANDO NO SE ESTE ESCRIBIBIENDO EN EL INPUT DE BUSCAR PRODUCTO */
-document.getElementById('buscar').addEventListener('keyup', () => {
-    if (document.getElementById('buscar').value == "") {
-        limpiarCampos("limpiartodo");
-    }
-});
-
 //---------- Notificaciones ---------//
 function notificarError(mensaje) {
     Swal.fire({
@@ -354,25 +249,4 @@ function notificacionExitosa(mensaje) {
         //document.getElementById('cerrar').click();
         document.getElementById('cerrarEditar').click();
     });
-}
-
-/* FUNCION DE MENSAJE DE ERROR*/
-function Error(mensaje) {
-    Swal.fire({
-        position: 'center',
-        icon: 'warning',
-        title: mensaje,
-        showConfirmButton: false,
-        timer: 3000
-    })
-}
-
-function limpiarCampos(mensaje) {
-    if (mensaje == 'limpiartodo') {
-        //form_datos_paquete.reset();
-        document.getElementById('precio').value = "";
-        document.getElementById('cantidad').value = "";
-        document.getElementById('buscar').value = "";
-        document.getElementById('nombre_producto').value = "";
-    }
 }

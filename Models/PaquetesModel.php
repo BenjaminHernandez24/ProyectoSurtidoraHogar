@@ -3,9 +3,10 @@ require_once "Conexion.php";
 class PaqueteModelo
 {
     //------------ Consultas para Autocompletado -----------//
-    private static $SELECT_ALL = "SELECT nombre_producto FROM productos WHERE estatus=1 AND estatus_paquete = 0";
+    private static $SELECT_ALL = "SELECT nombre_producto, precio_publico FROM productos WHERE estatus=1 AND estatus_paquete = 0";
     private static $obtenerID = "SELECT id_producto FROM productos WHERE nombre_producto=?";
-    private static $SELECT_LISTA_PRODUCTOS ="SELECT nombre_producto,precio_publico FROM productos WHERE estatus=1 AND nombre_producto=? ORDER BY (nombre_producto) DESC LIMIT 1";
+    private static $ID_TIPO = "SELECT id_tipo FROM tipo_producto WHERE descripcion_tipo = ?";
+    private static $ID_MARCA = "SELECT id_marca FROM marcas_producto WHERE descripcion_marca= ?";
     
     //------------ Consultas para Select de Tipo y Marca Paquete -----------//
     //private static $INSERTAR_PRODUCTO = "INSERT INTO productos (nombre_producto, id_tipo, id_marca, precio_publico, estatus) values (?, ?, ?, ?, ?)";
@@ -43,9 +44,19 @@ class PaqueteModelo
             //Se abre la transacción.
             $conn->beginTransaction();
 
+            //Obtenemos tipo
+            $pst = $conn->prepare(self::$ID_TIPO); 
+            $pst->execute([$tipo]);
+            $tipo_prod = $pst->fetch();
+
+            //obtenemos marca
+            $pst = $conn->prepare(self::$ID_MARCA); 
+            $pst->execute([$marca]);
+            $marca_prod = $pst->fetch();
+
             /* Insertamos el producto-paquete en tabla PRODUCTOS. */
             $pst = $conn->prepare(self::$INSERTAR_PRODUCTO_PAQUETE); 
-            $resultado=$pst->execute([$nombre_paquete, $tipo, $marca, $total_paquete, 1, 1]);
+            $resultado=$pst->execute([$nombre_paquete, $tipo_prod[0], $marca_prod[0], $total_paquete, 1, 1]);
 
             if($resultado == 1){
                 //Si se insertó bien, vamos a extraer el ID insertado.
@@ -190,25 +201,6 @@ class PaqueteModelo
             $conexion->closeConexion();
 
             return $productos;
-        } catch (PDOException $e) {
-            return $e->getMessage();
-        }
-    }
-
-    public static function obtener_lista_productos($nombre)
-    {
-        try {
-            $conexion = new Conexion();
-            $conn = $conexion->getConexion();
-
-            $pst = $conn->prepare(self::$SELECT_LISTA_PRODUCTOS);
-            $pst->execute([$nombre]);
-
-            $datosProductos = $pst->fetchAll(PDO::FETCH_ASSOC);
-            $conn = null;
-            $conexion->closeConexion();
-
-            return $datosProductos;
         } catch (PDOException $e) {
             return $e->getMessage();
         }

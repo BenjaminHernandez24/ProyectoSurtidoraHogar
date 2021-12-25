@@ -29,5 +29,6 @@ if (!isset($_SESSION['user']) ) {
       <?php include("Include/scripts.php"); ?>
       <?php include("Include/tabla.php"); ?>
       <script src="dist/js/pages/PaqueteEditar.js"></script>
+      <script src="dist/js/pages/Paquete_Funciones.js"></script>
     </body>
 </html>

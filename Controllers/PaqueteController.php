@@ -39,19 +39,11 @@
         $data = PaqueteModelo::obtenerProductos();
         for ($i = 0; $i < sizeof($data); $i++) {
             $productos[]    = $data[$i]['nombre_producto'];
-        }
-        echo json_encode($productos);
-    }
-
-    if (isset($_POST['obtener_lista_productos'])) {
-        $data = PaqueteModelo::obtener_lista_productos($_POST['valor']);
-        for ($i = 0; $i < sizeof($data); $i++) {
-            $productos[]    = $data[$i]['nombre_producto'];
-            $precio_unitario = $data[$i]['precio_publico'];
+            $valor[]        = $data[$i]['precio_publico'];
         }
         $respuesta = [
             "productos" => $productos,
-            "precio" => $precio_unitario,
+            "precio" => $valor
         ];
         echo json_encode($respuesta);
     }

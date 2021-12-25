@@ -5,47 +5,6 @@ const form_datos_paquete = document.getElementById('frmDatosPaqueteEditar');
 var tabla_paquete;
 var id_paquete;
 
-//---------------BUSQUEDA DE AUTOCOMPLETADO DE LOS PRODUCTOS ----------------//
-//Si encuentra el producto, llena el nombre del producto y el precio automáticamente//
-$(document).ready(async function autocompletado() {
-    try {
-        var Productos = new FormData();
-        Productos.append('obtenerProductos', 'OK');
-
-        var peticion = await fetch('../Controllers/PaqueteController.php', {
-            method: 'POST',
-            body: Productos
-        });
-
-        var data = await peticion.json();
-
-        $('#buscar').autocomplete({
-            source: data,
-            select: async function (event, item) {
-                try {
-                    var DatosProductos = new FormData();
-                    DatosProductos.append('obtener_lista_productos', 'OK');
-                    DatosProductos.append('valor', item.item.value);
-
-                    var peticionDatos = await fetch('../Controllers/PaqueteController.php', {
-                        method: 'POST',
-                        body: DatosProductos
-                    });
-
-                    var datos = await peticionDatos.json();
-                    $("#nombre_producto").val(datos.productos);
-                    $("#precio").val(datos.precio);
-
-                } catch (error) {
-                    notificarError(error);
-                }
-            }
-        });
-    } catch (error) {
-        notificarError(error);
-    }
-});
-
 //---------- Función para llenar Tabla Paquetes. ---------//
 async function tab_Productos() {
     tabla_paquete = $("#TablaPaquetes").DataTable({
@@ -82,64 +41,6 @@ async function tab_Productos() {
     });
 }
 tab_Productos();
-
-async function llenar_Tipo_Producto() {
-    try {
-
-        var datosProducto = new FormData();
-        datosProducto.append('obtener_tipo_paquete', 'OK');
-
-        var peticion = await fetch('../controllers/PaqueteController.php', {
-            method: 'POST',
-            body: datosProducto
-        });
-
-        var resjson = await peticion.json();
-
-        var selectTipoProducto = document.getElementById('tipo_paquete');
-
-        for (item of resjson) {
-            let option_r = document.createElement('option');
-            option_r.value = item.descripcion_tipo;
-            option_r.text = item.descripcion_tipo;
-            selectTipoProducto.appendChild(option_r);
-
-        }
-
-    } catch (error) {
-        notificarError(error);
-    }
-}
-llenar_Tipo_Producto();
-
-//---------- FUNCION PARA LLENAR SELECT DE MARCA PAQUETE ---------//
-async function llenar_Marca_Producto() {
-    try {
-
-        var datosProducto = new FormData();
-        datosProducto.append('obtener_marca_paquete', 'OK');
-
-        var peticion = await fetch('../controllers/PaqueteController.php', {
-            method: 'POST',
-            body: datosProducto
-        });
-
-        var resjson = await peticion.json();
-
-        var selectMarcaProducto = document.getElementById('marca_paquete');
-
-        for (item of resjson) {
-            let optionM1 = document.createElement('option');
-            optionM1.value = item.descripcion_marca;
-            optionM1.text = item.descripcion_marca;
-            selectMarcaProducto.appendChild(optionM1);
-        }
-
-    } catch (error) {
-        notificarError(error);
-    }
-}
-llenar_Marca_Producto();
 
 //---- FUNCIÓN PARA BORRAR PAQUETE ----//
 $(document).on('click', ".btnBorrar", async function () {
@@ -239,7 +140,7 @@ $(document).on('click', ".desactivar", async function () {
     }
 });
 
-//------- EDITAR EL PAQUETE -------//
+//------- ABRE MODAL DE EDITAR EL PAQUETE -------//
 $(document).on('click', ".btnEditar", async function () {
     try {
         if (tabla_paquete.row(this).child.isShown()) {
@@ -270,34 +171,12 @@ $(document).on('click', ".btnEditar", async function () {
 
         var respuesta =  await peticion.json();
 
+        //Llenamos nuestra tabla de manera dinámica
         for (var i = 0; i < respuesta.length; i++) {
             //Obtengo el subtotal
             var subtotal = parseFloat(respuesta[i]["piezas"]) * parseFloat(respuesta[i]["precio"]);
-
-            //Preparo mi tabla para descargar los datos de manera automática
-            $('#tablapqtEditar').DataTable().destroy();
-            $('#tablapqtEditar').find('tbody').append(`<tr id="">
-                
-            <td class="row-index">
-                <p>${respuesta[i]["id_producto"]}</p>
-                </td>
-                <td class="row-index">
-                <p>${respuesta[i]["nombre_producto"]}</p>
-                </td>
-                <td class="row-index">
-                <p>${respuesta[i]["piezas"]}</p>
-                </td>
-                <td class="row-index">
-                <p>${respuesta[i]["precio"]}</p>
-                </td>
-                <td class="row-index">
-                <p>${subtotal}</p>
-                </td>
-                <td class="">
-                <button class='btn btn-info btn-sm btnTablaEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnTablaBorrar'><i class='fas fa-trash-alt'></i></button>
-                </td>
-                </tr>`);
-            $('#tablapqtEditar').DataTable().draw();
+            //Lleno mi tabla, pasando los parámetros deseados.
+            tablaComunEditarAgregar(respuesta[i]["id_producto"],respuesta[i]["nombre_producto"],respuesta[i]["piezas"],respuesta[i]["precio"],subtotal);
         }
 
     } catch (error) {
@@ -330,31 +209,8 @@ form_datos_paquete.addEventListener('submit', async function (e) {
             if (respuesta == 0) {
                 notificarError("Producto no existente");
             } else {
-                
-                $('#tablapqtEditar').DataTable().destroy();
-                $('#tablapqtEditar').find('tbody').append(`<tr id="">
-                
-                    <td class="row-index">
-                     <p>${respuesta}</p>
-                     </td>
-                     <td class="row-index">
-                     <p>${producto}</p>
-                     </td>
-                     <td class="row-index">
-                     <p>${cantidad}</p>
-                     </td>
-                     <td class="row-index">
-                     <p>${precio}</p>
-                     </td>
-                     <td class="row-index">
-                     <p>${subtotal}</p>
-                     </td>
-                     <td class="">
-                     <button class='btn btn-info btn-sm btnTablaEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnTablaBorrar'><i class='fas fa-trash-alt'></i></button>
-                     </td>
-                      </tr>`);
-                $('#tablapqtEditar').DataTable().draw();
-
+                //Agregamos el producto a la tablita
+                tablaComunEditarAgregar(respuesta,producto,cantidad,precio,subtotal);
                 if (document.getElementById('subtotal').value == "") {
                     $("#subtotal").val(subtotal.toFixed(2));
                     $("#total").val(subtotal.toFixed(2));
@@ -374,6 +230,33 @@ form_datos_paquete.addEventListener('submit', async function (e) {
         notificarError("No se ha podido agregar los productos");
     }
 });
+
+//CODIGO EN COMUN
+function tablaComunEditarAgregar(idProducto, nombreProducto, cantidad, precio, subtotal){
+    $('#tablapqtEditar').DataTable().destroy();
+                $('#tablapqtEditar').find('tbody').append(`<tr id="">
+                
+                    <td class="row-index">
+                     <p>${idProducto}</p>
+                     </td>
+                     <td class="row-index">
+                     <p>${nombreProducto}</p>
+                     </td>
+                     <td class="row-index">
+                     <p>${cantidad}</p>
+                     </td>
+                     <td class="row-index">
+                     <p>${precio}</p>
+                     </td>
+                     <td class="row-index">
+                     <p>${subtotal}</p>
+                     </td>
+                     <td class="">
+                     <button class='btn btn-info btn-sm btnTablaEditar'><i class='fas fa-edit'></i></button><button class='btn btn-danger btn-sm btnTablaBorrar'><i class='fas fa-trash-alt'></i></button>
+                     </td>
+                      </tr>`);
+                $('#tablapqtEditar').DataTable().draw();
+}
 
 //---------------- FUNCION PARA  EDITAR LOS VALORES DEL PAQUETE-----------//
 $('#tablapqtEditar').on("click", ".btnTablaEditar", async function () {
@@ -461,14 +344,4 @@ function WarningEstatus(mensaje, icono) {
         showConfirmButton: false,
         timer: 3000
     })
-}
-
-function limpiarCampos(mensaje) {
-    if (mensaje == 'limpiartodo') {
-        //form_datos_paquete.reset();
-        document.getElementById('precio').value = "";
-        document.getElementById('cantidad').value = "";
-        document.getElementById('buscar').value = "";
-        document.getElementById('nombre_producto').value = "";
-    }
 }
