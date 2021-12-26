@@ -14,7 +14,7 @@ class VentasModelo
     private static $STOCK = "SELECT STOCK FROM inventario WHERE id_inventario = ?";
 
     private static $EsPaquete = "SELECT p.estatus_paquete FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND i.id_producto = p.id_producto";
-    private static $ProductosPaquete = "SELECT id_inventario FROM inventario WHERE id_producto IN (SELECT pa.id_prod_asociado FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND p.id_producto=i.id_producto INNER JOIN paquetes pa ON pa.id_prod_generado = p.id_producto) ORDER BY id_inventario ASC";
+    private static $ProductosPaquete = "SELECT id_inventario, stock FROM inventario WHERE id_producto IN (SELECT pa.id_prod_asociado FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND p.id_producto=i.id_producto INNER JOIN paquetes pa ON pa.id_prod_generado = p.id_producto) ORDER BY id_inventario ASC";
     private static $ObtenerPiezas = "SELECT pa.piezas FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND p.id_producto=i.id_producto INNER JOIN paquetes pa ON pa.id_prod_generado = p.id_producto ORDER BY i.id_inventario ASC";
     /* ===========================
         FUNCION PARA AGREGAR DETALLE SALIDA VENTA
@@ -154,10 +154,53 @@ class VentasModelo
             $conexion = new Conexion();
             $conn = $conexion->getConexion();
 
+            $productos = [];
+            //El arreglo solo se va a modificar si es un paquete
             $pst = $conn->prepare(self::$STOCK);
             $pst->execute([$ID]);
-
             $productos = $pst->fetchAll(PDO::FETCH_ASSOC);
+            $recibir = $productos[0]["STOCK"];
+
+            //Creando nuestro arreglo a enviar
+            $productos[0] = [
+                "Paquete" => 0,
+                "STOCK" => $recibir
+            ];
+
+            //¿Es paquete?
+            $pst = $conn->prepare(self::$EsPaquete); 
+            $pst->execute([$ID]); 
+            $resultado = $pst->fetchAll(PDO::FETCH_ASSOC); 
+            $verificar_paquete = $resultado[0]["estatus_paquete"];
+            //Es un paquete
+            if($verificar_paquete != 0){
+                //Extraigo las piezas
+                $pst = $conn->prepare(self::$ObtenerPiezas); 
+                $resultado = $pst->execute([$ID]); 
+                $resultadoPiezas = $pst->fetchAll(PDO::FETCH_ASSOC);
+
+                //Extraigo el stock de cada producto asociado
+                $pst = $conn->prepare(self::$ProductosPaquete); 
+                $resultado = $pst->execute([$ID]);
+                $resultadoInventario = $pst->fetchAll(PDO::FETCH_ASSOC);
+
+                $Arreglo_Paquete = [];
+                //Asocio y guardo productos con piezas
+                for($i = 0; $i < sizeof($resultadoInventario); $i++){
+                    $Arreglo_Paquete[] = [
+                        "piezas" => $resultadoPiezas[$i]["piezas"],
+                        "stock" => $resultadoInventario[$i]["stock"]
+                    ]; 
+                }
+
+                //Se modifica el arreglo del inicio
+                $productos[0] = [
+                    "Paquete" => 1,
+                    "arreglo" => $Arreglo_Paquete,
+                    "STOCK" => $recibir
+                ];
+            }
+
             $conn = null;
             $conexion->closeConexion();
 

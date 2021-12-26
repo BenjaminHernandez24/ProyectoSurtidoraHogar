@@ -1,18 +1,29 @@
 <?php
     require_once "../Models/PaquetesModel.php";
+    require_once "../Models/ValidacionesProductos/ValidacionProducto.php";
 
     //---------- Agregar Producto -------//
     if (isset($_POST['agregar_producto'])) {
-        $posiciones = 0;
-        $data = json_decode($_POST['datos'], true);
-        $posiciones = count($data);
-        $respuesta = PaqueteModelo::agregar_productos(
-            $_POST['nom_paquete'],
-            $data,
-            $posiciones,
-            $_POST['tipo_paquete'],
-            $_POST['marca_paquete'],
-            $_POST['total']);
+        //¿Existe otro producto o paquete con el mismo nombre?
+        $valor = [
+            "nombre_producto" => $_POST['nom_paquete']
+        ];
+        $respuesta = ValidacionProducto::ValidarProductoEditar($valor);
+
+        if ($respuesta == true) {
+            $respuesta = "existe";
+        } else {
+            $posiciones = 0;
+            $data = json_decode($_POST['datos'], true);
+            $posiciones = count($data);
+            $respuesta = PaqueteModelo::agregar_productos(
+                $_POST['nom_paquete'],
+                $data,
+                $posiciones,
+                $_POST['tipo_paquete'],
+                $_POST['marca_paquete'],
+                $_POST['total']);
+        }
          echo json_encode($respuesta);
      }
 

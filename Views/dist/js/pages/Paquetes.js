@@ -72,12 +72,18 @@ form_agregar_paquete.addEventListener('submit', async function (e) {
 
         respuesta = await peticion.json();
         if (respuesta == "OK") {
-            notificacionExitosa('¡Paquete armado! (' + total_art + '  Articulos)');
+            if(total_art > 1){
+                notificacionExitosa('¡Paquete armado! (' + total_art + '  Articulos)');
+            }else{
+                notificacionExitosa('¡Paquete armado! (' + total_art + '  Articulo)');
+            }
             document.getElementById('nom_paquete').value = "";
             $("#tablapqt").DataTable().clear().draw();
             $("#tablapqt").DataTable().destroy();
             $('#tablapqt').DataTable().draw();
-        } else {
+        } else if(respuesta == "existe"){
+            notificarError("El nombre del paquete ya existe");
+        }else{
             notificarError("Ocurrió un Error, paquete no creado!");
         }
     }

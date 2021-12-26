@@ -1,7 +1,8 @@
 /* VARIABLES PARA FORMULARIOS */
 const formDatosProducto = document.getElementById('frmDatosProducto');
 const formEditarDatosProducto = document.getElementById('frmEditarCantidad');
-
+let datosStockEditar;
+var validar_paquete;
 let timeout;
 
 /* VARIABLES PARA LA PARTE DE CLIENTE */
@@ -292,6 +293,7 @@ formDatosProducto.addEventListener('submit', async function(e) {
             }
         } else if(respuesta == "INSUFICIENTE"){
             notificarError("VERIFIQUE EL STOCK DE LOS PRODUCTOS ASOCIADOS AL PAQUETE");
+            limpiarCampos("limpiartodo");
         }else {
             notificarError("Ocurrio un error");
         }
@@ -325,7 +327,7 @@ $('#tbody').on('click', '.btnBorrar', async function() {
             body: sumarInventario
         });
     } catch (error) {
-        console.log(error);
+        notificarError(error);
     }
 
     let subtotal = parseFloat(document.getElementById('subtotal').value);
@@ -504,6 +506,8 @@ $('#tbody').on("click", ".btnEditar", async function() {
     cantidad_editar = fila_editar.getElementsByTagName("td")[2].getElementsByTagName("P")[0].innerHTML;
 
     try {
+        //Limpiamos arreglo que nos va ayudar para los stocks paquetes
+        datosStockEditar = [];
         var ExtraerStock = new FormData();
         ExtraerStock.append('ExtraerStock', 'OK');
         ExtraerStock.append('idInventario', ID_inventario);
@@ -513,13 +517,18 @@ $('#tbody').on("click", ".btnEditar", async function() {
             body: ExtraerStock
         });
         var datos = await peticion.json();
+        validar_paquete = datos[0]['Paquete'];
+        //Si es un paquete llenamos arreglo de stocks de productos relacionados
+        if(validar_paquete != 0){
+            //Llenamos arreglo en variable diferente
+            datosStockEditar = datos[0]['arreglo'];
+        }
         stock_editar = datos[0]['STOCK'];
         $("#stockEditar").val(datos[0]['STOCK']);
         $("#cantidadEditar").val(cantidad_editar);
     } catch (error) {
         notificarError(error);
     }
-
 
     /* Hacemos visible el modal */
     $('#modalEditarCantidad').modal('show');
@@ -676,18 +685,35 @@ document.getElementById('cantidadEditar').addEventListener('keyup', () => {
         let cantidad = parseFloat(document.getElementById('cantidadEditar').value);
 
         if (cantidad > 0) {
-            var resta = stock_editar - cantidad
+            
+            var resta = stock_editar - cantidad;
             resta_stock = resta + parseFloat(cantidad_editar);
             if (resta_stock < 0) {
                 Error("Error, Cantidad ingresada mayo al stock actual");
             } else {
                 document.getElementById('stockEditar').value = resta_stock;
             }
+
+            //Si es un paquete solo valida los stocks, de lo contrario lo ignora
+            if(validar_paquete == 1){
+                let cantidadModal = cantidad_editar - cantidad;
+                //Si lo ingresado es menor a lo que se tenia guardado en la tablita...
+                if(cantidadModal < 0){
+                    var cantidadRespaldo = cantidadModal * -1;
+                    //Recorremos arreglo de manera dinamica y restamos
+                    //Si da negativo mostramos error y rompemos ciclo
+                    for(var i = 0; i < datosStockEditar.length; i++){
+                        var resta_paquete = datosStockEditar[i]['stock'] - (datosStockEditar[i]['piezas']*cantidadRespaldo);
+                        if (resta_paquete < 0) {
+                            Error("Error, insuficiente stock en alguno de los productos relacionados al paquete");
+                            break;
+                        }
+                    }
+                }
+            }
         } else {
             Error("Error, Ingrese otra cantidad");
         }
-
-
     } else {
         document.getElementById('stockEditar').value = stock_editar;
     }
