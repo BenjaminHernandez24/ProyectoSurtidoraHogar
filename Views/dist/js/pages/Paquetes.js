@@ -10,82 +10,90 @@ var cont = 0;
 ///------- EVENTO PARA MANDAR LOS DATOS A LA BASE DE DATOS ------//
 form_agregar_paquete.addEventListener('submit', async function (e) {
     e.preventDefault();
-    let nombre_paquete = document.getElementById('nom_paquete').value;
-    let selectTipoPaquete = document.getElementById('tipo_paquete').value;
-    let selectMarcaPaquete = document.getElementById('marca_paquete').value;
+
     var cont = $('#tablapqt tr').length;
-    var total_art = cont - 1;
+    var total_art = cont - 2;
 
-     /*Datos tabla*/
-     var valorestabla = document.getElementById("tablapqt").getElementsByTagName("p");
-     var valor_probar = valorestabla[2].innerHTML;
-    
-    if (total_art < 2 && valor_probar < 2 ) {
-        notificarError('Agregue más productos al paquete');
-    } else if(nombre_paquete.trim() == 0 || selectTipoPaquete == "default" || selectMarcaPaquete == "default"){
-        notificarError('Verifique que haya agregado un nombre y seleccionado un tipo y marca producto.');
-    }else {
+    if(total_art > 0){
+        let nombre_paquete = document.getElementById('nom_paquete').value;
+        let selectTipoPaquete = document.getElementById('tipo_paquete').value;
+        let selectMarcaPaquete = document.getElementById('marca_paquete').value;
+        var cont = $('#tablapqt tr').length;
+        var total_art = cont - 1;
+
         /*Datos tabla*/
-        var filastabla = document.getElementById("tablapqt").getElementsByTagName('tr');
-        var columnastabla = document.getElementById("tablapqt").getElementsByTagName('th');
+        var valorestabla = document.getElementById("tablapqt").getElementsByTagName("p");
+        var valor_probar = valorestabla[2].innerHTML;
+        
+        if (total_art < 2 && valor_probar < 2 ) {
+            notificarError('Agregue más productos al paquete');
+        } else if(nombre_paquete.trim() == 0 || selectTipoPaquete == "default" || selectMarcaPaquete == "default"){
+            notificarError('Verifique que haya agregado un nombre y seleccionado un tipo y marca producto.');
+        }else {
+            /*Datos tabla*/
+            var filastabla = document.getElementById("tablapqt").getElementsByTagName('tr');
+            var columnastabla = document.getElementById("tablapqt").getElementsByTagName('th');
 
-        var lista = {};
-        var lista1 = new Array();
-        var lista2 = new Array();
+            var lista = {};
+            var lista1 = new Array();
+            var lista2 = new Array();
 
-        var k = 0;
-        let crearPaquete = new FormData();
-        let peticion;
+            var k = 0;
+            let crearPaquete = new FormData();
+            let peticion;
 
-        /* POSTERIORMENTE GUARDAMOS EN UNA LISTA DE ARREGLOS LOS PRODUCTOS AGREGADOS A LA VENTA*/
-        for (var i = 0; i < filastabla.length - 1; i++) {
-            lista = {};
-            for (var j = 0; j < columnastabla.length - 1; j++) {
-                var valor_input = valorestabla[k].innerHTML;
-                lista[j] = valor_input;
-                k++;
+            /* POSTERIORMENTE GUARDAMOS EN UNA LISTA DE ARREGLOS LOS PRODUCTOS AGREGADOS A LA VENTA*/
+            for (var i = 0; i < filastabla.length - 1; i++) {
+                lista = {};
+                for (var j = 0; j < columnastabla.length - 1; j++) {
+                    var valor_input = valorestabla[k].innerHTML;
+                    lista[j] = valor_input;
+                    k++;
+                }
+                lista1[i] = {
+                    "id_Producto": lista[0],
+                    "Cantidad": lista[2],
+                };
+
+                lista2 = JSON.stringify(lista1);
             }
-            lista1[i] = {
-                "id_Producto": lista[0],
-                "Cantidad": lista[2],
-            };
+        
+            let total_paquete = document.getElementById('total').value;
+            nombre_paquete = document.getElementById('nom_paquete').value;
+            selectTipoPaquete = document.getElementById('tipo_paquete').value;
+            selectMarcaPaquete = document.getElementById('marca_paquete').value;
 
-            lista2 = JSON.stringify(lista1);
-        }
-    
-        let total_paquete = document.getElementById('total').value;
-        nombre_paquete = document.getElementById('nom_paquete').value;
-        selectTipoPaquete = document.getElementById('tipo_paquete').value;
-        selectMarcaPaquete = document.getElementById('marca_paquete').value;
+            var DatosProductoPqt = new FormData();
+            DatosProductoPqt.append('agregar_producto', 'OK');
+            DatosProductoPqt.append('nom_paquete', nombre_paquete);
+            DatosProductoPqt.append('datos', lista2);
+            DatosProductoPqt.append('tipo_paquete', selectTipoPaquete);
+            DatosProductoPqt.append('marca_paquete', selectMarcaPaquete);
+            DatosProductoPqt.append('total', total_paquete);
+            peticion = await fetch('../Controllers/PaqueteController.php', {
+                method: 'POST',
+                body: DatosProductoPqt
+            });
 
-        var DatosProductoPqt = new FormData();
-        DatosProductoPqt.append('agregar_producto', 'OK');
-        DatosProductoPqt.append('nom_paquete', nombre_paquete);
-        DatosProductoPqt.append('datos', lista2);
-        DatosProductoPqt.append('tipo_paquete', selectTipoPaquete);
-        DatosProductoPqt.append('marca_paquete', selectMarcaPaquete);
-        DatosProductoPqt.append('total', total_paquete);
-        peticion = await fetch('../Controllers/PaqueteController.php', {
-            method: 'POST',
-            body: DatosProductoPqt
-        });
-
-        respuesta = await peticion.json();
-        if (respuesta == "OK") {
-            if(total_art > 1){
-                notificacionExitosa('¡Paquete armado! (' + total_art + '  Articulos)');
+            respuesta = await peticion.json();
+            if (respuesta == "OK") {
+                if(total_art > 1){
+                    notificacionExitosa('¡Paquete armado! (' + total_art + '  Articulos)');
+                }else{
+                    notificacionExitosa('¡Paquete armado! (' + total_art + '  Articulo)');
+                }
+                document.getElementById('nom_paquete').value = "";
+                $("#tablapqt").DataTable().clear().draw();
+                $("#tablapqt").DataTable().destroy();
+                $('#tablapqt').DataTable().draw();
+            } else if(respuesta == "existe"){
+                notificarError("El nombre del paquete ya existe");
             }else{
-                notificacionExitosa('¡Paquete armado! (' + total_art + '  Articulo)');
+                notificarError("Ocurrió un Error, paquete no creado!");
             }
-            document.getElementById('nom_paquete').value = "";
-            $("#tablapqt").DataTable().clear().draw();
-            $("#tablapqt").DataTable().destroy();
-            $('#tablapqt').DataTable().draw();
-        } else if(respuesta == "existe"){
-            notificarError("El nombre del paquete ya existe");
-        }else{
-            notificarError("Ocurrió un Error, paquete no creado!");
         }
+    }else{
+        notificarError("Agregue productos a la tabla");
     }
 });
 
@@ -225,10 +233,6 @@ $('#tablapqt').on('click', '.btnBorrar', async function () {
     total = total - (cantidad * precio);
     $("#subtotal").val(total.toFixed(2));
     $("#total").val(total.toFixed(2));
-
-    //Verificamos que la tablita no esté vacía
-    var cont = $('#tablapqt tr').length;
-    var total_art = cont - 2;
 
     $('#tablapqt').DataTable().destroy();
     $(this).closest('tr').remove();

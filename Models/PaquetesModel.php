@@ -18,7 +18,7 @@ class PaqueteModelo
     
     //---------- Consultas para Insertar paquete ------------// 
     private static $INSERTAR_PAQUETE = "INSERT INTO paquetes (id_prod_asociado, id_prod_generado, piezas) values (?, ?, ?)";
-    private static $BORRAR_PRODUCTO = "DELETE FROM paquetes WHERE  id_prod_asociado = ?";
+    private static $BORRAR_PRODUCTO = "DELETE FROM paquetes WHERE  id_prod_asociado = ? AND id_prod_generado=?";
     private static $SELECT_PAQUETES_PRODUCTOS = "SELECT p.id_producto, p.nombre_producto, tp.descripcion_tipo, mp.descripcion_marca, p.precio_publico, p.estatus FROM productos p INNER JOIN tipo_producto tp ON p.id_tipo=tp.id_tipo INNER JOIN marcas_producto mp ON p.id_marca=mp.id_marca AND p.estatus_paquete = 1;";
     private static $BUSCAR_PRODUCTO = "SELECT id_producto FROM productos WHERE nombre_producto = ?";
     private static $INSERTAR_PRODUCTO_PAQUETE = "INSERT INTO productos (nombre_producto, id_tipo, id_marca, precio_publico, estatus, estatus_paquete) values (?, ?, ?, ?, ?, ?);";
@@ -31,6 +31,9 @@ class PaqueteModelo
     private static $OBTENER_ID_PRODUCTOS = "SELECT pa.id_prod_asociado, pa.id_prod_generado FROM productos p INNER JOIN paquetes pa ON p.nombre_producto = ? AND pa.id_prod_generado = p.id_producto;";
     private static $OBTENER_DATOS_PRODUCTOS = "SELECT p.nombre_producto, p.precio_publico, pa.piezas FROM productos p INNER JOIN paquetes pa ON p.id_producto = ? AND pa.id_prod_generado = ?";
     
+    //---------- Consultas para editar el paquete ----------//
+    private static $UPDATE_DATOS_EDITAR = "UPDATE productos SET nombre_producto = ?, id_tipo = ?, id_marca = ?, precio_publico = ? WHERE id_producto = ?";
+    private static $UPDATE_DATOS_PAQUETE = "UPDATE paquetes SET piezas = ? WHERE id_prod_asociado = ? AND id_prod_generado = ?";
     //-------- FUNCIÓN PARA INSERTAR PRODUCTO-PAQUETE  -------//
     public static function agregar_productos($nombre_paquete, $datos, $pocisiones, $tipo, $marca, $total_paquete)
     {
@@ -311,6 +314,148 @@ class PaqueteModelo
             $conexion->closeConexion();
 
             return $enviar_datos;
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+
+    //EDITAR UN PAQUETE, AUN INCOMPLETO.
+    //-------- FUNCIÓN PARA INSERTAR PRODUCTO-PAQUETE  -------//
+    public static function editar_productos($datos,$pocisiones,$id,$nombre_paquete, $tipo, $marca, $total_paquete)
+    {
+        $estado = 0;
+        $validador = 0;
+        try 
+        {
+            $msg = "";
+            $conexion = new Conexion();
+            $conn = $conexion->getConexion();
+        
+            //Se abre la transacción.
+            $conn->beginTransaction();
+
+            //Obtenemos tipo
+            $pst = $conn->prepare(self::$ID_TIPO); 
+            $pst->execute([$tipo]);
+            $tipo_prod = $pst->fetch();
+
+            //obtenemos marca
+            $pst = $conn->prepare(self::$ID_MARCA); 
+            $pst->execute([$marca]);
+            $marca_prod = $pst->fetch();
+
+            /* Actualizamos el producto-paquete en tabla PRODUCTOS. */
+            $pst = $conn->prepare(self::$UPDATE_DATOS_EDITAR); 
+            $resultado=$pst->execute([$nombre_paquete, $tipo_prod[0], $marca_prod[0], $total_paquete,$id]);
+
+            if($resultado == 1){
+                //Obtenemos los ID relacionados al paquete seleccionado
+                $pst = $conn->prepare(self::$OBTENER_ID_PRODUCTOS);
+                $pst->execute([$nombre_paquete]);
+                $resultado = $pst->fetchAll(PDO::FETCH_ASSOC);
+
+                $datos_cargados = [];
+                //Cargamos los id de productos en el arreglo
+                for($i = 0; $i < count($resultado); $i++){
+                    //Arreglo preparado
+                    $datos_cargados[$i] = [
+                        "id_producto" => $resultado[$i]["id_prod_asociado"]
+                    ];
+                }
+                
+                //Si no existe, este será eliminado.
+                for($i = 0; $i < sizeof($datos_cargados); $i++){
+                    for($j=0; $j<$pocisiones;$j++){
+                        if($datos_cargados[$i]['id_producto'] == $datos[$j]['id_Producto']){
+                            $estado = 1;
+                            break;
+                        }
+                    }
+                    //Si no se encontró, eliminarlo.
+                    if($estado == 0){
+                        $pst = $conn->prepare(self::$BORRAR_PRODUCTO);
+                        $resultado =$pst->execute([$datos_cargados[$i]['id_producto'],$id]);
+
+                        if ($resultado != 1) {
+                            $validador = 1;
+                            break;
+                        }else{
+                            
+                            $datos_cargados[$i]['id_producto'] = "Eliminado";
+                        }
+                    }else{
+                        $estado = 0;
+                    }
+                }
+                
+                $estado = 0;
+                //Si no está será insertado.
+                for($i = 0; $i < $pocisiones; $i++){
+                    for($j = 0; $j<sizeof($datos_cargados); $j++){
+                        if($datos_cargados[$j]['id_producto'] != "Eliminado"){
+                            if($datos[$i]['id_Producto'] == $datos_cargados[$j]['id_producto']){
+                                $estado = 1;
+                                break;
+                            }
+                        }
+                    }
+                    //Si no se encontró, eliminarlo.
+                    if($estado == 0){
+                        $pst = $conn->prepare(self::$INSERTAR_PAQUETE);
+                        $resultado =$pst->execute([$datos[$i]['id_Producto'],$id,$datos[$i]['Cantidad']]);
+
+                        if ($resultado != 1) {
+                            $validador = 1;
+                            break;
+                        }else{
+                            
+                            $datos[$i]["id_Producto"] = "Eliminado";
+                        }
+                    }else{
+                        $estado = 0;
+                    }
+                }
+                
+                if($validador == 0){
+                    //Si todo se insertó y eliminó bien, hay que actualizar el resto.
+                    for($i = 0; $i < sizeof($datos); $i++){
+                        if($datos[$i]['id_Producto'] != "Eliminado"){
+                            $pst = $conn->prepare(self::$UPDATE_DATOS_PAQUETE);
+                            $resultado =$pst->execute([$datos[$i]['Cantidad'],$datos[$i]['id_Producto'],$id]);
+
+                            if ($resultado != 1) {
+                                $validador = 1;
+                                break;
+                            }
+                        }
+                    }
+
+                    if($validador == 0){
+                        $msg = "OK";
+                        //Si todo está correcto se inserta.
+                        $conn->commit();
+                    }else{
+                        $msg = "Fallo al insertar";
+                        //Si algo falla, reestablece la bd a como estaba en un inicio.
+                        $conn->rollBack();
+                        $validador = 0;
+                    }
+                    
+                }else{
+                    $msg = "Fallo al insertar";
+                    //Si algo falla, reestablece la bd a como estaba en un inicio.
+                    $conn->rollBack();
+                    $validador = 0;
+                }
+            }else{
+                $msg = "Fallo al insertar";
+                //Si algo falla, reestablece la bd a como estaba en un inicio.
+                $conn->rollBack();
+            }
+            return $msg;   
+            $conn = null;
+            $conexion->closeConexion();  
+            
         } catch (PDOException $e) {
             return $e->getMessage();
         }

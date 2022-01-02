@@ -706,6 +706,7 @@ document.getElementById('cantidadEditar').addEventListener('keyup', () => {
                         var resta_paquete = datosStockEditar[i]['stock'] - (datosStockEditar[i]['piezas']*cantidadRespaldo);
                         if (resta_paquete < 0) {
                             Error("Error, insuficiente stock en alguno de los productos relacionados al paquete");
+                            $('#modalEditarCantidad').modal('hide');
                             break;
                         }
                     }

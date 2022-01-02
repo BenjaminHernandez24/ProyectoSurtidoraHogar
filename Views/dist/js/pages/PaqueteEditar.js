@@ -1,6 +1,7 @@
 
 const form_editar_paquete = document.getElementById('frm_editar_paquete');
 const form_datos_paquete = document.getElementById('frmDatosPaqueteEditar');
+const guardarDatosEditar = document.getElementById('frmDetallePaqueteEditar');
 
 var tabla_paquete;
 var id_paquete;
@@ -142,6 +143,8 @@ $(document).on('click', ".desactivar", async function () {
 
 //------- ABRE MODAL DE EDITAR EL PAQUETE -------//
 $(document).on('click', ".btnEditar", async function () {
+    limpiarVariables();
+    var subtotal_Agregar = 0;
     try {
         if (tabla_paquete.row(this).child.isShown()) {
             var data = tabla_paquete.row(this).data();
@@ -153,10 +156,10 @@ $(document).on('click', ".btnEditar", async function () {
         $("#tablapqtEditar").DataTable().clear().draw();
 
         //En el modal mostramos los datos de la fila seleccionada.
+        id_paquete = data[0];
         $("#nom_paquete").val(data[1]);
         document.querySelector("#tipo_paquete").value = data[2];
         document.querySelector("#marca_paquete").value = data[3];
-        $("#subtotal").val(data[4]);
         $("#total").val(data[4]);
 
         //Extraemos los datos para formar la tablita automática.
@@ -173,11 +176,13 @@ $(document).on('click', ".btnEditar", async function () {
 
         //Llenamos nuestra tabla de manera dinámica
         for (var i = 0; i < respuesta.length; i++) {
-            //Obtengo el subtotal
+            //Obtengo el subtotal para la tabla
             var subtotal = parseFloat(respuesta[i]["piezas"]) * parseFloat(respuesta[i]["precio"]);
             //Lleno mi tabla, pasando los parámetros deseados.
             tablaComunEditarAgregar(respuesta[i]["id_producto"],respuesta[i]["nombre_producto"],respuesta[i]["piezas"],respuesta[i]["precio"],subtotal);
+            subtotal_Agregar += subtotal;
         }
+        $("#subtotal").val(subtotal_Agregar.toFixed(2));
 
     } catch (error) {
         notificarError(error);
@@ -217,7 +222,6 @@ form_datos_paquete.addEventListener('submit', async function (e) {
                 } else {
                     let total = parseFloat(document.getElementById('subtotal').value);
                     let suma_total = total + subtotal;
-                    $("#total").val(suma_total.toFixed(2));
                     $("#subtotal").val(suma_total.toFixed(2));
                 }
             }
@@ -258,6 +262,103 @@ function tablaComunEditarAgregar(idProducto, nombreProducto, cantidad, precio, s
                 $('#tablapqtEditar').DataTable().draw();
 }
 
+///------- EVENTO PARA MANDAR LOS DATOS A LA BASE DE DATOS ------//
+guardarDatosEditar.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    //Verificamos que la tablita no esté vacía
+    var cont = $('#tablapqtEditar tr').length;
+    var total_art = cont - 2;
+
+    if(total_art > 0){
+        let nombre_paquete = document.getElementById('nom_paquete').value;
+        let selectTipoPaquete = document.getElementById('tipo_paquete').value;
+        let selectMarcaPaquete = document.getElementById('marca_paquete').value;
+        var cont = $('#tablapqtEditar tr').length;
+        var total_art = cont - 1;
+
+        /*Datos tabla*/
+        var valorestabla = document.getElementById("tablapqtEditar").getElementsByTagName("p");
+        var valor_probar = valorestabla[2].innerHTML;
+        
+        if (total_art < 2 && valor_probar < 2 ) {
+            notificarError('Agregue más productos al paquete');
+        } else if(nombre_paquete.trim() == 0 || selectTipoPaquete == "default" || selectMarcaPaquete == "default"){
+            notificarError('Verifique que haya agregado un nombre y seleccionado un tipo y marca producto.');
+        }else {
+            /*Extraccion de datos*/
+            /*Datos tabla*/
+            var filastabla = document.getElementById("tablapqtEditar").getElementsByTagName('tr');
+            var columnastabla = document.getElementById("tablapqtEditar").getElementsByTagName('th');
+
+            var lista = {};
+            var lista1 = new Array();
+            var lista2 = new Array();
+
+            var k = 0;
+            let crearPaquete = new FormData();
+            let peticion;
+
+            /* POSTERIORMENTE GUARDAMOS EN UNA LISTA DE ARREGLOS LOS PRODUCTOS AGREGADOS A LA VENTA*/
+            for (var i = 0; i < filastabla.length - 1; i++) {
+                lista = {};
+                for (var j = 0; j < columnastabla.length - 1; j++) {
+                    var valor_input = valorestabla[k].innerHTML;
+                    lista[j] = valor_input;
+                    k++;
+                }
+                lista1[i] = {
+                    "id_Producto": lista[0],
+                    "Cantidad": lista[2],
+                };
+                lista2 = JSON.stringify(lista1);
+            }
+            
+            let total_paquete = document.getElementById('total').value;
+            nombre_paquete = document.getElementById('nom_paquete').value;
+            selectTipoPaquete = document.getElementById('tipo_paquete').value;
+            selectMarcaPaquete = document.getElementById('marca_paquete').value;
+
+            var DatosProductoEditar = new FormData();
+            DatosProductoEditar.append('editar_producto', 'OK');
+            DatosProductoEditar.append('idProducto', id_paquete);
+            DatosProductoEditar.append('datos', lista2);
+            DatosProductoEditar.append('nom_paquete', nombre_paquete);
+            DatosProductoEditar.append('tipo_paquete', selectTipoPaquete);
+            DatosProductoEditar.append('marca_paquete', selectMarcaPaquete);
+            DatosProductoEditar.append('total', total_paquete);
+            peticion = await fetch('../Controllers/PaqueteController.php', {
+                method: 'POST',
+                body: DatosProductoEditar
+            });
+
+            respuesta = await peticion.json();
+            if (respuesta == "OK") {
+                if(total_art > 1){
+                    notificacionExitosa('¡Paquete armado! (' + total_art + '  Articulos)');
+                }else{
+                    notificacionExitosa('¡Paquete armado! (' + total_art + '  Articulo)');
+                }
+                document.getElementById('nom_paquete').value = "";
+                $("#tablapqtEditar").DataTable().clear().draw();
+                $("#tablapqtEditar").DataTable().destroy();
+                $('#tablapqtEditar').DataTable().draw();
+                $('#informacionPaquete').modal('hide');
+                limpiarCampos('limpiartodo');
+                limpiarVariables();
+                tabla_paquete.ajax.reload(null, false);
+            } else if(respuesta == "existe"){
+                notificarError("El nombre del paquete ya existe");
+            }else{
+                notificarError("Ocurrió un Error, paquete no creado!");
+            }
+        }
+    }else{
+        notificarError("Agregue productos a la tabla");
+    }
+});
+
+
 //---------------- FUNCION PARA  EDITAR LOS VALORES DEL PAQUETE-----------//
 $('#tablapqtEditar').on("click", ".btnTablaEditar", async function () {
     fila_editar = this.parentNode.parentNode;
@@ -297,8 +398,7 @@ form_editar_paquete.addEventListener('submit', async function (e) {
         total -= (valor_guardar - total_editar);
     }
 
-    //Asignamos valores a subtotal y total
-    $("#total").val(total.toFixed(2));
+    //Asignamos valores a subtotal.
     $("#subtotal").val(total.toFixed(2));
 
     //Escondemos el modal
@@ -324,11 +424,9 @@ $('#tablapqtEditar').on('click', '.btnTablaBorrar', async function () {
     total = parseFloat(document.getElementById('subtotal').value);
     total = total - (cantidad * precio);
     $("#subtotal").val(total.toFixed(2));
-    $("#total").val(total.toFixed(2));
 
     //Verificamos que la tablita no esté vacía
     var cont = $('#tablapqtEditar tr').length;
-    var total_art = cont - 2;
 
     $('#tablapqtEditar').DataTable().destroy();
     $(this).closest('tr').remove();
@@ -344,4 +442,11 @@ function WarningEstatus(mensaje, icono) {
         showConfirmButton: false,
         timer: 3000
     })
+}
+
+function limpiarVariables(){
+    cantidad_editar = 0;
+    precio_editar = 0;
+    total_editar = 0;
+    valor_guardar = 0;
 }

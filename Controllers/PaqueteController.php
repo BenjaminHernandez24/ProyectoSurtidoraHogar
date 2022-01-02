@@ -101,4 +101,46 @@
         $respuesta = PaqueteModelo::extraerDatosTablaEditar($_POST['nombre_paquete']);
         echo json_encode($respuesta);
     }
+
+    //---------- Agregar Producto -------//
+    if (isset($_POST['editar_producto'])) {
+        //¿Existe otro producto o paquete con el mismo nombre?
+        $valor = [
+            "id_producto" => $_POST['idProducto'],
+            "nombre_producto" => $_POST['nom_paquete']
+        ];
+        $respuesta = ValidacionProducto::ValidarProductoNombre($valor);
+
+        $posiciones = 0;
+        $data = json_decode($_POST['datos'], true);
+        $posiciones = count($data);
+        //Si hubo un cambio en el nombre... hay que buscar que no exista
+        if($respuesta == true){
+            $respuesta = ValidacionProducto::ValidarProductoEditar($valor);
+            //Si existe...
+            if ($respuesta == true) {
+                $respuesta = "existe";
+            } else {
+                
+                $respuesta = PaqueteModelo::editar_productos(
+                    $data,
+                    $posiciones,
+                    $_POST['idProducto'],
+                    $_POST['nom_paquete'],
+                    $_POST['tipo_paquete'],
+                    $_POST['marca_paquete'],
+                    $_POST['total']);       
+            }
+        }else{
+            $respuesta = PaqueteModelo::editar_productos(
+                $data,
+                $posiciones,
+                $_POST['idProducto'],
+                $_POST['nom_paquete'],
+                $_POST['tipo_paquete'],
+                $_POST['marca_paquete'],
+                $_POST['total']);
+        }
+         echo json_encode($respuesta);
+     }
 ?>
