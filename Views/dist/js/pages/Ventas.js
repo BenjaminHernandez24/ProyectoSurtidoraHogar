@@ -140,6 +140,14 @@ function descuento_cliente_tarjeta(valor_pago, tipo_cliente, subtotal) {
         }
     }
     document.getElementById('total').value = total.toFixed(2);
+    //¿AGREGÓ UN CLIENTE DESPUÉS DE AGREGAR EL PAGO?
+    var validarClienteCobro = document.getElementById('cobro').value;
+    
+    if(validarClienteCobro != 0){
+        var validarClienteCambio = validarClienteCobro - total;
+        
+        document.getElementById('cambio').value = validarClienteCambio.toFixed(2);
+    }
 }
 
 /* ===========================
