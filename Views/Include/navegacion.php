@@ -62,7 +62,7 @@ include('Include/Ticket_Factura.php');
 <!-- /.navbar -->
 
 <!--Aqui Inicia Modal de Notificaciones-->
-<div id="modalFrmNotificacion" class="modal fade" role="dialog">
+<div id="modalFrmNotificacion" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="overflow-y: scroll;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <!--=====================================
