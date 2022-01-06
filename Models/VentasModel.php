@@ -14,8 +14,8 @@ class VentasModelo
     private static $STOCK = "SELECT STOCK FROM inventario WHERE id_inventario = ?";
 
     private static $EsPaquete = "SELECT p.estatus_paquete FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND i.id_producto = p.id_producto";
-    private static $ProductosPaquete = "SELECT id_inventario, stock FROM inventario WHERE id_producto IN (SELECT pa.id_prod_asociado FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND p.id_producto=i.id_producto INNER JOIN paquetes pa ON pa.id_prod_generado = p.id_producto) ORDER BY id_inventario ASC";
-    private static $ObtenerPiezas = "SELECT pa.piezas FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND p.id_producto=i.id_producto INNER JOIN paquetes pa ON pa.id_prod_generado = p.id_producto ORDER BY i.id_inventario ASC";
+    private static $ProductosPaquete = "SELECT id_inventario, stock FROM inventario WHERE id_producto IN (SELECT pa.id_prod_asociado FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND p.id_producto=i.id_producto INNER JOIN paquetes pa ON pa.id_prod_generado = p.id_producto) ORDER BY id_producto ASC";
+    private static $ObtenerPiezas = "SELECT piezas FROM paquetes WHERE id_prod_asociado IN (SELECT pa.id_prod_asociado FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND p.id_producto=i.id_producto INNER JOIN paquetes pa ON pa.id_prod_generado = p.id_producto) AND id_prod_generado = (SELECT pa.id_prod_generado FROM inventario i INNER JOIN productos p ON i.id_inventario = ? AND p.id_producto=i.id_producto INNER JOIN paquetes pa ON pa.id_prod_generado = p.id_producto group by pa.id_prod_generado) ORDER BY id_prod_asociado ASC";
     /* ===========================
         FUNCION PARA AGREGAR DETALLE SALIDA VENTA
      =============================*/
@@ -176,7 +176,7 @@ class VentasModelo
             if($verificar_paquete != 0){
                 //Extraigo las piezas
                 $pst = $conn->prepare(self::$ObtenerPiezas); 
-                $resultado = $pst->execute([$ID]); 
+                $resultado = $pst->execute([$ID,$ID]); 
                 $resultadoPiezas = $pst->fetchAll(PDO::FETCH_ASSOC);
 
                 //Extraigo el stock de cada producto asociado
@@ -297,7 +297,7 @@ class VentasModelo
                                 $resultadoInventario = $pst->fetchAll(PDO::FETCH_ASSOC);
                                 //Extraigo las piezas
                                 $pst = $conn->prepare(self::$ObtenerPiezas); 
-                                $resultado = $pst->execute([$id]); 
+                                $resultado = $pst->execute([$id,$id]); 
                                 if($resultado == 1){
                                     $resultadoPiezas = $pst->fetchAll(PDO::FETCH_ASSOC);
                                     $Arreglo_Id = [];
@@ -413,7 +413,7 @@ class VentasModelo
                     if($resultado == 1){
                         $resultadoInventario = $pst->fetchAll(PDO::FETCH_ASSOC);//Productos
                         $pst = $conn->prepare(self::$ObtenerPiezas); 
-                        $resultado = $pst->execute([$id]); 
+                        $resultado = $pst->execute([$id,$id]); 
                         if($resultado == 1){
                             $resultadoPiezas = $pst->fetchAll(PDO::FETCH_ASSOC);//Piezas
 
@@ -538,7 +538,7 @@ class VentasModelo
                         if($resultado == 1){
                             $resultadoInventario = $pst->fetchAll(PDO::FETCH_ASSOC);
                             $pst = $conn->prepare(self::$ObtenerPiezas); 
-                            $resultado = $pst->execute([$datos[$i]['Inventario']]);
+                            $resultado = $pst->execute([$datos[$i]['Inventario'],$datos[$i]['Inventario']]);
                             if($resultado == 1){
                                 $resultadoPiezas = $pst->fetchAll(PDO::FETCH_ASSOC);
                                 $Arreglo_Id = [];
@@ -634,7 +634,7 @@ class VentasModelo
                             $resultadoInventario = $pst->fetchAll(PDO::FETCH_ASSOC);
 
                             $pst = $conn->prepare(self::$ObtenerPiezas); 
-                            $resultado = $pst->execute([$datos[$i]['Inventario']]); 
+                            $resultado = $pst->execute([$datos[$i]['Inventario'],$datos[$i]['Inventario']]); 
                             if($resultado == 1){
                                 $resultadoPiezas = $pst->fetchAll(PDO::FETCH_ASSOC);
 
