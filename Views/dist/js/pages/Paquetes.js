@@ -11,10 +11,11 @@ var cont = 0;
 form_agregar_paquete.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    var cont = $('#tablapqt tr').length;
-    var total_art = cont - 2;
+    //Verificamos que la tablita no esté vacía
+    var cont = document.getElementById("tablapqt").getElementsByTagName("p");
+    var total_filas = cont.length;
 
-    if(total_art > 0){
+    if(total_filas > 0){
         let nombre_paquete = document.getElementById('nom_paquete').value;
         let selectTipoPaquete = document.getElementById('tipo_paquete').value;
         let selectMarcaPaquete = document.getElementById('marca_paquete').value;

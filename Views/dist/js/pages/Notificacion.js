@@ -194,21 +194,20 @@ function reporteNotificaciones() {
     dataType: "json",
     success: function (data) {
 
-      //if(data.length != 0){ //¿Está vacío?
+      if(data.length != 0){ //¿Está vacío?
 
-      var lista = new Array();
-      for (var i = 0; i < data.length; i++) {
-        lista.push([data[i]["nombre"], data[i]["stock"]]);
+        var lista = new Array();
+        for (var i = 0; i < data.length; i++) {
+          lista.push([data[i]["nombre"], data[i]["stock"]]);
+        }
+
+        guardarDatoDeFila(columns, lista);
+        pieDePagina();
+        pdf.save('ReporteNotificacion.pdf');
+        reporteCreado("Reporte Generado Con Éxito");
+      }else{
+        notificacionNoEncontrado('No hay notificaciones previas');
       }
-
-      guardarDatoDeFila(columns, lista);
-      pieDePagina();
-      pdf.save('ReporteNotificacion.pdf');
-      //reporteCreado("Reporte Generado Con Éxito");
-      /*}else{
-          //notificacionNoEncontrado('No hay notificaciones previas');
-          console.log('No hay notificaciones previas');
-      }*/
     }
   });
 }
@@ -275,4 +274,24 @@ function acomodarFecha() {
 
   pdf.setFontSize(14);
   pdf.text(131, 28, temp);
+}
+
+function notificacionNoEncontrado(mensaje) {
+  Swal.fire({
+      position: 'center',
+      icon: 'warning',
+      title: mensaje,
+      showConfirmButton: false,
+      timer: 2000
+  })
+}
+
+function reporteCreado(mensaje) {
+  Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: mensaje,
+      showConfirmButton: false,
+      timer: 2000
+  })
 }

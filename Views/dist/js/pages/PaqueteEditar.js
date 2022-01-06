@@ -267,10 +267,10 @@ guardarDatosEditar.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     //Verificamos que la tablita no esté vacía
-    var cont = $('#tablapqtEditar tr').length;
-    var total_art = cont - 2;
+    var cont = document.getElementById("tablapqtEditar").getElementsByTagName("p");
+    var total_filas = cont.length;
 
-    if(total_art > 0){
+    if(total_filas > 0){
         let nombre_paquete = document.getElementById('nom_paquete').value;
         let selectTipoPaquete = document.getElementById('tipo_paquete').value;
         let selectMarcaPaquete = document.getElementById('marca_paquete').value;
