@@ -238,6 +238,17 @@ $('#tablapqt').on('click', '.btnBorrar', async function () {
     $('#tablapqt').DataTable().destroy();
     $(this).closest('tr').remove();
     $('#tablapqt').DataTable().draw();
+
+    var cont = document.getElementById("tablapqt").getElementsByTagName("p");
+    var total_filas = cont.length;
+    if(total_filas == 0){
+        document.getElementById('nom_paquete').value = "";
+        limpiarCampos('limpiartodo');
+        $("#subtotal").val(0);
+        $("#total").val(0);
+        document.querySelector("#tipo_paquete").value = "default";
+        document.querySelector("#marca_paquete").value = "default";
+    }
 });
 
 //---------- Notificaciones ---------//

@@ -45,15 +45,12 @@ include('Include/Ticket_Factura.php');
             <?php } ?>
             <ul class="dropdown-menu" style="font-size: 20px;">
                 <li><a class="dropdown-item nav-link" href="../Views/Ajustes.php"><i class="nav-icon fas fa-sliders-h" style="color:#F29F05;"> Ajustes</i></a></li>
+                    <hr class="dropdown-divider">
                 <li><a class="dropdown-item nav-link" href="../Views/Ayuda.php" style="color:white" target="_blank"><i class="nav-icon fas fa-question-circle" style="color:#F29F05;"> Ayuda</i></a></li>
-                
-                <li>
                     <hr class="dropdown-divider">
                 <li><a class="dropdown-item nav-link" type="button" onclick="reporteNotificaciones();" style="color:white" target="_blank"><i class="nav-icon fas fa-file-pdf" style="color:#F29F05;"> PDF Notificaciones</i></a></li>
                     <img id="img2" src="dist/img/surtidora.png" style="display:none;">
-                <li>
                     <hr class="dropdown-divider">
-                </li>
                 <li><a class="dropdown-item nav-link" href="../Views/Include/cerrarsesion.php" style="color:white"><i class="nav-icon fas fa-sign-out-alt" style="color:#F29F05;"> Salir</i></a></li>
             </ul>
         </div>
