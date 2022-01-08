@@ -347,7 +347,7 @@ $('#tbody').on('click', '.btnBorrar', async function() {
         document.getElementById('cobro').disabled = true;
         document.getElementById('nuevoMetodoPago').disabled = true;
         document.getElementById('generar').disabled = true;
-        $("#generar").val("Ticket");
+        $("#generar").val("Ninguno");
         $("#nuevoMetodoPago").val("Efectivo");
         $("#fila_cobro").slideDown();
         document.getElementById('cobro').value = "";
